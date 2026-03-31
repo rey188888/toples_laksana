@@ -11,12 +11,11 @@ export default function Navbar() {
           Toples Laksana
         </Link>
 
-        {/* Center: Links */}
         <div className="hidden md:flex items-center space-x-10 text-sm font-semibold text-slate-600">
           <Link href="/" className="hover:text-emerald-800 transition-colors">Beranda</Link>
           <Link href="/catalog" className="hover:text-emerald-800 transition-colors">Katalog</Link>
-          <Link href="#" className="hover:text-emerald-800 transition-colors">Tentang Kami</Link>
-          <Link href="#" className="hover:text-emerald-800 transition-colors">Kontak</Link>
+          <Link href="/#mengapa" className="hover:text-emerald-800 transition-colors">Tentang Kami</Link>
+          <a href="#footer" className="hover:text-emerald-800 transition-colors">Kontak</a>
         </div>
 
         {/* Right: CTA */}

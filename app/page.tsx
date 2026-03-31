@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function HomePage() {
   return (
     <>
@@ -14,13 +16,21 @@ export default function HomePage() {
                 Solusi kemasan premium untuk UMKM hingga industri besar. Distribusi terpercaya dari Bandung dengan standar kualitas tinggi untuk menjaga kesegaran produk Anda.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button className="bg-primary text-on-primary px-8 py-4 font-bold flex items-center gap-3 transition-all hover:translate-y-[-2px] hover:shadow-xl">
+                <Link 
+                  href="/catalog" 
+                  className="bg-primary text-on-primary px-8 py-4 font-bold flex items-center gap-3 transition-all hover:translate-y-[-2px] hover:shadow-xl"
+                >
                   Lihat Katalog
-                  <span className="material-symbols-outlined">arrow_forward</span>
-                </button>
-                <button className="bg-surface-container-highest text-on-surface px-8 py-4 font-bold transition-all hover:bg-surface-container-high">
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+                <a 
+                  href="https://wa.me/6281234567890"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-surface-container-highest text-on-surface px-8 py-4 font-bold transition-all hover:bg-surface-container-high"
+                >
                   Konsultasi Produk
-                </button>
+                </a>
               </div>
             </div>
             <div className="col-span-12 lg:col-span-5 relative mt-12 lg:mt-0">
@@ -208,9 +218,12 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mt-20 text-center">
-              <button className="border-b-2 border-primary text-primary font-bold pb-1 hover:text-primary-container hover:border-primary-container transition-all">
+              <Link 
+                href="/catalog" 
+                className="border-b-2 border-primary text-primary font-bold pb-1 hover:text-primary-container hover:border-primary-container transition-all"
+              >
                 Tampilkan Semua Katalog Produk
-              </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -239,7 +252,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="col-span-12 lg:col-span-6">
+            <div className="col-span-12 lg:col-span-6" id="mengapa">
               <h2 className="text-4xl font-extrabold tracking-tight mb-8">Mengapa Toples Laksana?</h2>
               <ul className="space-y-8">
                 <li className="flex gap-6">

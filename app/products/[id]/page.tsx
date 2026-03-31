@@ -116,10 +116,15 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
             {/* CTAs */}
             <div className="space-y-4">
-              <button className="w-full bg-primary text-on-primary py-4 rounded-lg font-bold flex items-center justify-center space-x-3 hover:opacity-95 transition-all shadow-lg shadow-primary/10">
+              <a 
+                href="https://wa.me/6281234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-primary text-on-primary py-4 rounded-lg font-bold flex items-center justify-center space-x-3 hover:opacity-95 transition-all shadow-lg shadow-primary/10"
+              >
                 <span className="material-symbols-outlined">chat</span>
                 <span>Hubungi via WhatsApp</span>
-              </button>
+              </a>
               <a
                 className="w-full flex items-center justify-center space-x-2 py-3 text-primary font-bold text-sm hover:bg-surface-container-low rounded-lg transition-colors"
                 href="#"

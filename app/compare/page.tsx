@@ -113,22 +113,37 @@ export default function ComparisonPage() {
               <div className="grid grid-cols-4 items-center mt-6 bg-transparent border-none">
                 <div></div>
                 <div className="px-4">
-                  <button className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10">
+                  <a 
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10 text-center"
+                  >
                     <span className="material-symbols-outlined text-sm leading-none">send</span>
                     Pesan via WA
-                  </button>
+                  </a>
                 </div>
                 <div className="px-4">
-                  <button className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10">
+                  <a 
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10 text-center"
+                  >
                     <span className="material-symbols-outlined text-sm leading-none">send</span>
                     Pesan via WA
-                  </button>
+                  </a>
                 </div>
                 <div className="px-4">
-                  <button className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10">
+                  <a 
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10 text-center"
+                  >
                     <span className="material-symbols-outlined text-sm leading-none">send</span>
                     Pesan via WA
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

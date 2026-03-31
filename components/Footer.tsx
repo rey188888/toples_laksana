@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="w-full mt-20 bg-slate-50 border-t border-slate-200 font-manrope text-sm leading-relaxed">
+    <footer id="footer" className="w-full mt-20 bg-slate-50 border-t border-slate-200 font-manrope text-sm leading-relaxed">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 py-16 max-w-screen-2xl mx-auto">
         <div className="col-span-1 md:col-span-1">
           <div className="text-lg font-bold text-emerald-900 mb-6 italic">Toples Laksana</div>
@@ -18,8 +18,8 @@ export default function Footer() {
           <h5 className="font-bold text-emerald-900 mb-6 uppercase tracking-widest text-[10px]">Navigasi</h5>
           <ul className="space-y-4">
             <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="/catalog">Katalog</Link></li>
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="#">Tentang Kami</Link></li>
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="#">Kontak</Link></li>
+            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="/">Tentang Kami</Link></li>
+            <li><a className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">Kontak</a></li>
           </ul>
         </div>
         <div>
