@@ -1,63 +1,88 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer id="footer" className="w-full mt-20 bg-slate-50 border-t border-slate-200 font-manrope text-sm leading-relaxed">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 py-16 max-w-screen-2xl mx-auto">
-        <div className="col-span-1 md:col-span-1">
-          <div className="text-lg font-bold text-emerald-900 mb-6 italic">Toples Laksana</div>
-          <p className="text-slate-500 mb-8">
-            Distributor kemasan toples dan jar premium terpercaya di Bandung. Memberikan solusi kemasan berkualitas untuk masa depan bisnis Anda.
+    <footer id="footer" className="w-full mt-24 bg-white border-t border-border text-sm leading-relaxed relative overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 px-6 lg:px-12 py-16 lg:py-24 max-w-screen-2xl mx-auto relative z-10">
+
+        {/* Brand Column */}
+        <div className="md:col-span-12 lg:col-span-5 pr-0 lg:pr-12">
+          <Link href="/" className="flex items-center gap-2 text-2xl font-extrabold text-primary-500 mb-6">
+            Toples Laksana
+          </Link>
+          <p className="text-text-secondary mb-8 max-w-md text-base">
+            Distributor kemasan premium terpercaya di Bandung. Memberikan solusi kemasan berkualitas tinggi dan terjangkau untuk masa depan bisnis UMKM & Industri Nasional.
           </p>
           <div className="flex gap-4">
-            <span className="material-symbols-outlined text-emerald-800">social_leaderboard</span>
-            <span className="material-symbols-outlined text-emerald-800">public</span>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-50 flex items-center justify-center text-primary-500 hover:bg-primary-500 hover:text-white transition-colors">
+              <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+            </a>
           </div>
         </div>
-        <div>
-          <h5 className="font-bold text-emerald-900 mb-6 uppercase tracking-widest text-[10px]">Navigasi</h5>
-          <ul className="space-y-4">
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="/catalog">Katalog</Link></li>
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="/">Tentang Kami</Link></li>
-            <li><a className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">Kontak</a></li>
+
+        {/* Links Column 1 */}
+        <div className="md:col-span-4 lg:col-span-2">
+          <h5 className="font-black text-text-primary mb-6 uppercase tracking-[0.15em] text-[0.7rem]">Jelajahi</h5>
+          <ul className="space-y-4 font-semibold text-text-secondary">
+            <li><Link className="hover:text-primary-500 transition-colors" href="/catalog">Katalog Produk</Link></li>
+            <li><Link className="hover:text-primary-500 transition-colors" href="/compare">Bandingkan</Link></li>
+            <li><Link className="hover:text-primary-500 transition-colors" href="/#mengapa">Mengapa Kami?</Link></li>
           </ul>
         </div>
-        <div>
-          <h5 className="font-bold text-emerald-900 mb-6 uppercase tracking-widest text-[10px]">Bantuan</h5>
-          <ul className="space-y-4">
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="#">Kebijakan Privasi</Link></li>
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="#">Syarat & Ketentuan</Link></li>
-            <li><Link className="text-slate-500 hover:text-emerald-600 transition-opacity duration-200" href="#">FAQ</Link></li>
+
+        {/* Links Column 2 */}
+        <div className="md:col-span-4 lg:col-span-2">
+          <h5 className="font-black text-text-primary mb-6 uppercase tracking-[0.15em] text-[0.7rem]">Bantuan & Info</h5>
+          <ul className="space-y-4 font-semibold text-text-secondary">
+            <li><Link className="hover:text-primary-500 transition-colors" href="#">Pembelian Grosir</Link></li>
+            <li><Link className="hover:text-primary-500 transition-colors" href="#">Syarat Pengiriman</Link></li>
+            <li><Link className="hover:text-primary-500 transition-colors" href="#">F.A.Q</Link></li>
           </ul>
         </div>
-        <div>
-          <h5 className="font-bold text-emerald-900 mb-6 uppercase tracking-widest text-[10px]">Kontak Kami</h5>
-          <p className="text-slate-500 mb-4">Jl. Raya Bandung No. 123, Bojongloa Kaler, Bandung City, West Java</p>
-          <p className="text-slate-500 mb-4">+62 812-3456-7890</p>
-          <p className="text-slate-500">info@topleslaksana.com</p>
+
+        {/* Contact Column */}
+        <div className="md:col-span-4 lg:col-span-3">
+          <h5 className="font-black text-text-primary mb-6 uppercase tracking-[0.15em] text-[0.7rem]">Hubungi Kami</h5>
+          <div className="space-y-4 text-text-secondary">
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-primary-500 text-xl">location_on</span>
+              <p className="font-medium">Jl. Raya Bandung No. 123, Bojongloa Kaler, Kota Bandung, Jawa Barat</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-primary-500 text-xl">call</span>
+              <p className="font-medium font-mono text-base">+62 812-3456-7890</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-primary-500 text-xl">mail</span>
+              <p className="font-medium">sales@topleslaksana.com</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="max-w-screen-2xl mx-auto px-8 py-8 border-t border-slate-200/50 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-slate-500">© 2024 Toples Laksana Bandung. All Rights Reserved.</p>
-        <div className="flex gap-6">
-          <span className="text-[10px] font-bold tracking-widest text-slate-400">VISA</span>
-          <span className="text-[10px] font-bold tracking-widest text-slate-400">MASTERCARD</span>
-          <span className="text-[10px] font-bold tracking-widest text-slate-400">BCA</span>
-          <span className="text-[10px] font-bold tracking-widest text-slate-400">MANDIRI</span>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-border bg-background">
+        <div className="max-w-screen-2xl mx-auto px-6 lg:px-12 py-8 flex flex-col items-center justify-center text-center">
+          <p className="text-text-muted font-bold text-xs sm:text-sm">
+            © {new Date().getFullYear()} Toples Laksana Bandung.
+          </p>
         </div>
       </div>
 
       {/* Floating WhatsApp Button */}
       <a
-        className="fixed bottom-8 right-8 z-[100] bg-emerald-600 text-white p-4 rounded-full shadow-2xl hover:bg-emerald-700 transition-all hover:scale-110 flex items-center gap-3"
-        href="https://wa.me/6281234567890"
+        className="fixed bottom-6 right-6 z-45 bg-[#25D366] text-white p-3.5 sm:p-4 rounded-full shadow-xl shadow-[#25D366]/20 hover:bg-[#1EBE53] transition-all hover:scale-110 flex items-center justify-center group"
+        href="https://wa.me/6281234567890?text=Halo%20Admin%20Toples%20Laksana"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Chat WhatsApp"
       >
-        <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+        <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
           chat
         </span>
-        <span className="font-bold pr-2 hidden md:inline tracking-tight">Hubungi Kami</span>
+        <span className="font-extrabold hidden md:block tracking-tight text-sm max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-3 transition-all duration-300 whitespace-nowrap">
+          Konsultasi Sekarang
+        </span>
       </a>
     </footer>
   );

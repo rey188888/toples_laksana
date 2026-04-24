@@ -1,292 +1,188 @@
 import Link from 'next/link';
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+const CATEGORIES = [
+  {
+    name: "Jar Cylinder",
+    icon: "inventory_2",
+    desc: "Pilihan utama untuk cookies dan snack premium dengan tampilan modern transparan.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzxJdzAeDvCiiTEev_KPuhufrOsW-4weP20hY9TdXs8er6TOmLr4AvXn3K8qRC0hIwnPgMxbStj7wyzIDaNpCsFdsdo95aViXcLJAdRCqipUnLC4LegjActcaa15seUDTBk61Oe66f5bP_P3jWz4QNuEsS0FxNdCU6UFhzmuFNvhow5KXfEQCrIUXSy9GpqpAgT-3X6qeoKFsiyT-YtUeac0p6a9AmnKITQYmEOEh2kU2UdOyGpFWCNxDdoDIHxC5uyHymdk-cfN4",
+    tags: ["kue kering", "nastar"],
+  },
+  {
+    name: "Jar Kaca",
+    icon: "liquor",
+    desc: "Material kaca tebal grade industri, cocok untuk selai, madu, dan produk artisan.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAWD0LOM87TroBp7p7bL0Gmhik6I5j0yZzU4iyEoppXP9FP7XgrCkaoCBa8eVNWA8I_4AB5BbhksOPFpUOZHJMo-LEMQ0JNXsGd_tMTrMw2CpfkXDA09rHXTp_-e79KeLxBr8-SyRSBfe8PjZ3F2HyJVjYigXdSkLe24H1BWPeHaOqnZ_wGq2k8xQKsH9xTQjF4s3Xh78FokPVdL82DmnQrZPyQHIU7cvic4_Prx1yz8C0MwQFwoKY14noYZ35ikgOTxxHYv1U6Tjc",
+    tags: ["selai", "madu"],
+  },
+  {
+    name: "Tin Kaleng",
+    icon: "deployed_code",
+    desc: "Proteksi maksimal dengan material metalic yang memberikan kesan klasik dan eksklusif.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFC2Ygg12kybLX9yMU5bRNrzDjx8VvZUey0ur302MkDoHkye25yEINLA2SScmPJfiwrTHAxOA46ONTQRM7EYlWKjZMMUPzxnd5hAauHNAptky5xNzBpZeIe9HUoy34PwbuAj21D28RfdDacmSWjZmCSMZDXGhbkxJ9w6XwRbIeN3bq5sbbMqvjbKw-S_yQOh_COD1W3jkhSc8EcUN-BzMnZTupiuhvNyTz_BqaS5LMMc6LwBQMEkrM9i95ILvicI8q4w1GTX8O8UI",
+    tags: ["nastar", "kue kering"],
+  },
+  {
+    name: "Jar Plastik",
+    icon: "layers",
+    desc: "Ringan, ekonomis, dan tahan banting. Tersedia dalam berbagai ukuran praktis.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAKbnfpr0jzrRcJR179yN8q6F8d3bHp8A8tB31VCdmKcJF7o76mMI5iN_6vsxsh18xv5TqJgUBDsjftWT5X6mTgUVFe9sErpcvP5q5XWnPQl0H0BGeDvnz9H4rOmpbhtBvy0MbODM15gRWaczjbB6P9v2iD93j3-FSaPVx6UfKk_hB5X5SEmvlOYAH8_wmbcVU-s8ZcT2oRxl8Dg4njkVRbRerOxt-M-qQ3atFWa7IYFiojwiDa8f7YoZF-WRHZMWj__EdbCf9ReU8",
+    tags: ["bumbu", "bubuk kopi"],
+  },
+];
 
 export default function HomePage() {
   return (
-    <>
-      <main className="min-h-screen">
-        {/* Hero Section */}
-        <section className="relative min-h-[819px] flex items-center overflow-hidden px-8">
-          <div className="max-w-screen-2xl mx-auto w-full editorial-grid gap-8">
-            <div className="col-span-12 lg:col-span-7 flex flex-col justify-center z-10">
-              <span className="text-tertiary font-bold tracking-[0.2em] text-sm mb-6 uppercase">Industrial Packaging Excellence</span>
-              <h1 className="text-6xl md:text-8xl font-extrabold text-on-surface leading-[0.95] tracking-tighter mb-8">
-                Pilih Toples <br />Sesuai Kebutuhan
-              </h1>
-              <p className="text-xl text-on-surface-variant max-w-xl mb-10 leading-relaxed">
-                Solusi kemasan premium untuk UMKM hingga industri besar. Distribusi terpercaya dari Bandung dengan standar kualitas tinggi untuk menjaga kesegaran produk Anda.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link 
-                  href="/catalog" 
-                  className="bg-primary text-on-primary px-8 py-4 font-bold flex items-center gap-3 transition-all hover:translate-y-[-2px] hover:shadow-xl"
-                >
-                  Lihat Katalog
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </Link>
-                <a 
-                  href="https://wa.me/6281234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-surface-container-highest text-on-surface px-8 py-4 font-bold transition-all hover:bg-surface-container-high"
-                >
-                  Konsultasi Produk
-                </a>
-              </div>
-            </div>
-            <div className="col-span-12 lg:col-span-5 relative mt-12 lg:mt-0">
-              <div className="absolute inset-0 bg-primary-fixed rounded-full blur-[120px] opacity-30 -z-10 transform translate-x-1/4"></div>
-              <div className="aspect-square bg-surface-container-low rounded-xl overflow-hidden relative shadow-2xl">
-                <img
-                  alt="Premium Glass Jars"
-                  className="w-full h-full object-cover mix-blend-multiply opacity-90"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWD0LOM87TroBp7p7bL0Gmhik6I5j0yZzU4iyEoppXP9FP7XgrCkaoCBa8eVNWA8I_4AB5BbhksOPFpUOZHJMo-LEMQ0JNXsGd_tMTrMw2CpfkXDA09rHXTp_-e79KeLxBr8-SyRSBfe8PjZ3F2HyJVjYigXdSkLe24H1BWPeHaOqnZ_wGq2k8xQKsH9xTQjF4s3Xh78FokPVdL82DmnQrZPyQHIU7cvic4_Prx1yz8C0MwQFwoKY14noYZ35ikgOTxxHYv1U6Tjc"
-                />
-                <div className="absolute bottom-8 left-8 bg-surface/90 backdrop-blur-md p-6 border-l-4 border-tertiary">
-                  <p className="text-sm font-bold text-tertiary mb-1">BEST SELLER 2024</p>
-                  <p className="text-lg font-bold text-on-surface">Cylinder Premium Series</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="bg-surface-container-low py-20 px-8">
-          <div className="max-w-screen-2xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="flex flex-col items-center md:items-start">
-                <h2 className="text-5xl font-extrabold text-primary mb-2">50+</h2>
-                <p className="text-on-surface-variant font-medium tracking-wide">Varian Produk Aktif</p>
-              </div>
-              <div className="flex flex-col items-center md:items-start border-l-0 md:border-l border-outline-variant/20 md:pl-12">
-                <h2 className="text-5xl font-extrabold text-primary mb-2">4</h2>
-                <p className="text-on-surface-variant font-medium tracking-wide">Kategori Utama Kemasan</p>
-              </div>
-              <div className="flex flex-col items-center md:items-start border-l-0 md:border-l border-outline-variant/20 md:pl-12">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-5xl font-extrabold text-primary mb-2">Siap Kirim</h2>
-                  <span className="material-symbols-outlined text-tertiary text-4xl">local_shipping</span>
-                </div>
-                <p className="text-on-surface-variant font-medium tracking-wide">Pusat Distribusi Bandung</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Category Grid */}
-        <section className="py-32 px-8">
-          <div className="max-w-screen-2xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-              <div>
-                <span className="text-tertiary font-bold tracking-widest text-xs uppercase mb-4 block">Our Specialties</span>
-                <h2 className="text-4xl font-extrabold tracking-tight">Kategori Kemasan</h2>
-              </div>
-              <p className="text-on-surface-variant max-w-md text-right hidden md:block">
-                Kami menyediakan berbagai material berkualitas tinggi untuk menyesuaikan dengan karakteristik produk Anda.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="group bg-surface-container-lowest p-8 hover:bg-primary transition-all duration-500 cursor-pointer">
-                <div className="w-14 h-14 bg-primary-fixed rounded-lg flex items-center justify-center mb-8 group-hover:bg-on-primary-container transition-colors">
-                  <span className="material-symbols-outlined text-primary text-3xl group-hover:text-primary-container">inventory_2</span>
-                </div>
-                <h3 className="text-xl font-bold mb-4 group-hover:text-on-primary">Jar Cylinder</h3>
-                <p className="text-on-surface-variant group-hover:text-on-primary-container/80 text-sm leading-relaxed">
-                  Pilihan utama untuk cookies dan snack premium dengan tampilan modern transparan.
-                </p>
-              </div>
-              <div className="group bg-surface-container-lowest p-8 hover:bg-primary transition-all duration-500 cursor-pointer">
-                <div className="w-14 h-14 bg-primary-fixed rounded-lg flex items-center justify-center mb-8 group-hover:bg-on-primary-container transition-colors">
-                  <span className="material-symbols-outlined text-primary text-3xl group-hover:text-primary-container">liquor</span>
-                </div>
-                <h3 className="text-xl font-bold mb-4 group-hover:text-on-primary">Jar Kaca</h3>
-                <p className="text-on-surface-variant group-hover:text-on-primary-container/80 text-sm leading-relaxed">
-                  Material kaca tebal grade industri, cocok untuk selai, madu, dan produk artisan.
-                </p>
-              </div>
-              <div className="group bg-surface-container-lowest p-8 hover:bg-primary transition-all duration-500 cursor-pointer">
-                <div className="w-14 h-14 bg-primary-fixed rounded-lg flex items-center justify-center mb-8 group-hover:bg-on-primary-container transition-colors">
-                  <span className="material-symbols-outlined text-primary text-3xl group-hover:text-primary-container">deployed_code</span>
-                </div>
-                <h3 className="text-xl font-bold mb-4 group-hover:text-on-primary">Tin Kaleng</h3>
-                <p className="text-on-surface-variant group-hover:text-on-primary-container/80 text-sm leading-relaxed">
-                  Proteksi maksimal dengan material metalic yang memberikan kesan klasik dan eksklusif.
-                </p>
-              </div>
-              <div className="group bg-surface-container-lowest p-8 hover:bg-primary transition-all duration-500 cursor-pointer">
-                <div className="w-14 h-14 bg-primary-fixed rounded-lg flex items-center justify-center mb-8 group-hover:bg-on-primary-container transition-colors">
-                  <span className="material-symbols-outlined text-primary text-3xl group-hover:text-primary-container">layers</span>
-                </div>
-                <h3 className="text-xl font-bold mb-4 group-hover:text-on-primary">Jar Plastik</h3>
-                <p className="text-on-surface-variant group-hover:text-on-primary-container/80 text-sm leading-relaxed">
-                  Ringan, ekonomis, dan tahan banting. Tersedia dalam berbagai ukuran praktis.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Products */}
-        <section className="bg-surface-container-low py-32 px-8">
-          <div className="max-w-screen-2xl mx-auto">
-            <div className="mb-20 text-center">
-              <h2 className="text-4xl font-extrabold tracking-tight mb-4">Produk Unggulan</h2>
-              <div className="h-1 w-20 bg-primary mx-auto"></div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {/* Product 1 */}
-              <div className="bg-surface-container-lowest group overflow-hidden">
-                <div className="aspect-[4/5] relative bg-white overflow-hidden flex items-center justify-center p-12">
-                  <div className="absolute inset-0 bg-primary-fixed/20 scale-0 group-hover:scale-100 transition-transform duration-700 rounded-full blur-3xl opacity-50"></div>
-                  <img
-                    alt="Cylinder Jar Premium"
-                    className="relative z-10 w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzxJdzAeDvCiiTEev_KPuhufrOsW-4weP20hY9TdXs8er6TOmLr4AvXn3K8qRC0hIwnPgMxbStj7wyzIDaNpCsFdsdo95aViXcLJAdRCqipUnLC4LegjActcaa15seUDTBk61Oe66f5bP_P3jWz4QNuEsS0FxNdCU6UFhzmuFNvhow5KXfEQCrIUXSy9GpqpAgT-3X6qeoKFsiyT-YtUeac0p6a9AmnKITQYmEOEh2kU2UdOyGpFWCNxDdoDIHxC5uyHymdk-cfN4"
-                  />
-                  <div className="absolute top-4 left-4 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-3 py-1 tracking-widest uppercase">GRADE A+</div>
-                </div>
-                <div className="p-8">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-bold text-lg">Jar Cylinder Premium 600ml</h4>
-                    <span className="text-xs font-semibold text-on-surface-variant bg-surface-container-high px-2 py-1">600ml</span>
-                  </div>
-                  <p className="text-on-surface-variant text-sm mb-6">Material PET High-Density, Seal Kedap Udara.</p>
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">Mulai Dari</span>
-                      <span className="text-xl font-extrabold text-primary">Rp 4.500</span>
-                    </div>
-                    <button className="w-10 h-10 bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container transition-colors">
-                      <span className="material-symbols-outlined text-sm">add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* Product 2 */}
-              <div className="bg-surface-container-lowest group overflow-hidden">
-                <div className="aspect-[4/5] relative bg-white overflow-hidden flex items-center justify-center p-12">
-                  <img
-                    alt="Cylinder Jar Premium"
-                    className="relative z-10 w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFC2Ygg12kybLX9yMU5bRNrzDjx8VvZUey0ur302MkDoHkye25yEINLA2SScmPJfiwrTHAxOA46ONTQRM7EYlWKjZMMUPzxnd5hAauHNAptky5xNzBpZeIe9HUoy34PwbuAj21D28RfdDacmSWjZmCSMZDXGhbkxJ9w6XwRbIeN3bq5sbbMqvjbKw-S_yQOh_COD1W3jkhSc8EcUN-BzMnZTupiuhvNyTz_BqaS5LMMc6LwBQMEkrM9i95ILvicI8q4w1GTX8O8UI"
-                  />
-                  <div className="absolute top-4 left-4 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-3 py-1 tracking-widest uppercase">GRADE A+</div>
-                </div>
-                <div className="p-8">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-bold text-lg">Jar Cylinder Premium 800ml</h4>
-                    <span className="text-xs font-semibold text-on-surface-variant bg-surface-container-high px-2 py-1">800ml</span>
-                  </div>
-                  <p className="text-on-surface-variant text-sm mb-6">Material PET High-Density, Scratch Resistant.</p>
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">Mulai Dari</span>
-                      <span className="text-xl font-extrabold text-primary">Rp 5.200</span>
-                    </div>
-                    <button className="w-10 h-10 bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container transition-colors">
-                      <span className="material-symbols-outlined text-sm">add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* Product 3 */}
-              <div className="bg-surface-container-lowest group overflow-hidden">
-                <div className="aspect-[4/5] relative bg-white overflow-hidden flex items-center justify-center p-12">
-                  <img
-                    alt="Cylinder Jar Premium"
-                    className="relative z-10 w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKbnfpr0jzrRcJR179yN8q6F8d3bHp8A8tB31VCdmKcJF7o76mMI5iN_6vsxsh18xv5TqJgUBDsjftWT5X6mTgUVFe9sErpcvP5q5XWnPQl0H0BGeDvnz9H4rOmpbhtBvy0MbODM15gRWaczjbB6P9v2iD93j3-FSaPVx6UfKk_hB5X5SEmvlOYAH8_wmbcVU-s8ZcT2oRxl8Dg4njkVRbRerOxt-M-qQ3atFWa7IYFiojwiDa8f7YoZF-WRHZMWj__EdbCf9ReU8"
-                  />
-                  <div className="absolute top-4 left-4 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-3 py-1 tracking-widest uppercase">GRADE A+</div>
-                </div>
-                <div className="p-8">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-bold text-lg">Jar Cylinder Premium 1000ml</h4>
-                    <span className="text-xs font-semibold text-on-surface-variant bg-surface-container-high px-2 py-1">1000ml</span>
-                  </div>
-                  <p className="text-on-surface-variant text-sm mb-6">Ideal untuk penyimpanan pasta atau sereal.</p>
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">Mulai Dari</span>
-                      <span className="text-xl font-extrabold text-primary">Rp 6.000</span>
-                    </div>
-                    <button className="w-10 h-10 bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container transition-colors">
-                      <span className="material-symbols-outlined text-sm">add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-20 text-center">
-              <Link 
-                href="/catalog" 
-                className="border-b-2 border-primary text-primary font-bold pb-1 hover:text-primary-container hover:border-primary-container transition-all"
+    <main className="bg-background">
+      {/* ═══════════ HERO ═══════════ */}
+      <section className="relative min-h-screen flex items-center pt-20 pb-12 px-6 lg:px-12 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+          <div className="lg:col-span-7">
+            <span className="inline-block text-primary-600 font-bold tracking-[0.2em] text-xs mb-4 uppercase">
+              Distributor Kemasan Premium
+            </span>
+            <h1 className="text-5xl lg:text-7xl font-extrabold text-text-primary leading-[1.1] tracking-tight mb-6">
+              Kehangatan untuk setiap <br />
+              <span className="text-primary-500">dapur.</span>
+            </h1>
+            <p className="text-lg text-text-secondary max-w-xl mb-10 leading-relaxed">
+              Tingkatkan nilai produk ritel atau horeka Anda dengan koleksi kemasan organik pilihan kami, dirancang untuk menghadirkan keindahan taktil pada ruang sehari-hari.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/catalog"
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "bg-primary-500 text-white rounded-xl font-bold transition-all hover:bg-primary-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/20 gap-2 h-14 px-8"
+                )}
               >
-                Tampilkan Semua Katalog Produk
+                Jelajahi Katalog
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </Link>
+              <Link
+                href="/catalog?category=Jar+Cylinder"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "bg-white text-text-primary border-border rounded-xl font-bold transition-all hover:bg-secondary-50 gap-2 h-14 px-8"
+                )}
+              >
+                Lihat Koleksi
               </Link>
             </div>
           </div>
-        </section>
-
-        {/* Info / Location Section */}
-        <section className="py-32 px-8">
-          <div className="max-w-screen-2xl mx-auto editorial-grid gap-16 items-center">
-            <div className="col-span-12 lg:col-span-6 bg-surface-container-high relative min-h-[400px]">
-              <div className="absolute inset-0 grayscale contrast-125 opacity-40">
-                <img
-                  alt="Industrial Warehouse"
-                  className="w-full h-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_wMtWhj_UxjMo9O2INgEuZ1PLuaR0VC8I91V17liFjw42XYBunVDI5kaPdERBMI7qjKCNST5w9RqcbEomAY0U9x30fW37LEeQdBecB02M1Dm972I1a4sXASQmJgTULMPueBNcY-k63v4d6B7unxDzERD0No_RXoqs-vaoPdxoSdDw0U793Glx_DCWlX_7ei457Jq8CeNLbYpSv1Qwmnqso9DhWUM8fx_knDxqBegPTcHa6-9WibcoMumrlknXcR1rxCCWNxsg-Ak"
-                />
-              </div>
-              <div className="relative z-10 p-12 h-full flex flex-col justify-end">
-                <div className="bg-primary p-12 text-on-primary max-w-sm ml-auto -mb-16 shadow-2xl">
-                  <h3 className="text-2xl font-bold mb-4">Pengiriman Dari Bandung</h3>
-                  <p className="text-on-primary/80 text-sm mb-6 leading-relaxed">
-                    Strategis untuk distribusi ke seluruh pulau Jawa dan Indonesia. Kami menggunakan ekspedisi terpercaya untuk keamanan barang pecah belah.
-                  </p>
-                  <div className="flex items-center gap-2 font-bold text-sm">
-                    <span className="material-symbols-outlined">location_on</span>
-                    Bojongloa Kaler, Kota Bandung
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-span-12 lg:col-span-6" id="mengapa">
-              <h2 className="text-4xl font-extrabold tracking-tight mb-8">Mengapa Toples Laksana?</h2>
-              <ul className="space-y-8">
-                <li className="flex gap-6">
-                  <span className="text-tertiary font-bold text-lg">01.</span>
-                  <div>
-                    <h4 className="font-bold text-lg mb-2">Kualitas Industri</h4>
-                    <p className="text-on-surface-variant text-sm">
-                      Hanya menjual produk grade industri yang lolos kontrol kualitas ketat untuk ketebalan dan kejernihan material.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-6">
-                  <span className="text-tertiary font-bold text-lg">02.</span>
-                  <div>
-                    <h4 className="font-bold text-lg mb-2">Ready Stock</h4>
-                    <p className="text-on-surface-variant text-sm">
-                      Gudang kami selalu terisi penuh untuk mendukung kelancaran produksi bisnis Anda tanpa hambatan stok.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-6">
-                  <span className="text-tertiary font-bold text-lg">03.</span>
-                  <div>
-                    <h4 className="font-bold text-lg mb-2">Harga Kompetitif</h4>
-                    <p className="text-on-surface-variant text-sm">
-                      Skema harga grosir yang sangat bersahabat bagi reseller maupun pelaku industri kecil menengah.
-                    </p>
-                  </div>
-                </li>
-              </ul>
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="aspect-4/5 w-full max-w-[450px] max-h-[75vh] rounded-3xl overflow-hidden shadow-2xl relative group">
+              <img
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWD0LOM87TroBp7p7bL0Gmhik6I5j0yZzU4iyEoppXP9FP7XgrCkaoCBa8eVNWA8I_4AB5BbhksOPFpUOZHJMo-LEMQ0JNXsGd_tMTrMw2CpfkXDA09rHXTp_-e79KeLxBr8-SyRSBfe8PjZ3F2HyJVjYigXdSkLe24H1BWPeHaOqnZ_wGq2k8xQKsH9xTQjF4s3Xh78FokPVdL82DmnQrZPyQHIU7cvic4_Prx1yz8C0MwQFwoKY14noYZ35ikgOTxxHYv1U6Tjc"
+                alt="Koleksi Jar Premium"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
           </div>
-        </section>
-      </main>
-    </>
+        </div>
+      </section>
+
+      {/* ═══════════ CATEGORIES ═══════════ */}
+      <section className="py-24 px-6 lg:px-12 max-w-screen-2xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div>
+            <h2 className="text-3xl font-extrabold text-text-primary tracking-tight">Koleksi Pilihan</h2>
+            <p className="text-text-secondary mt-2">Dikurasi untuk pembeli profesional dan studio desain.</p>
+          </div>
+          <Link href="/catalog" className="text-primary-500 font-bold hover:underline flex items-center gap-1">
+            Lihat Semua Kategori <span className="material-symbols-outlined text-sm">arrow_forward</span>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.name}
+              href={`/catalog?category=${encodeURIComponent(cat.name)}`}
+              className="group flex flex-col"
+            >
+              <div className="aspect-square rounded-2xl bg-white border border-border overflow-hidden mb-4 relative transition-all group-hover:shadow-lg group-hover:-translate-y-1">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+              </div>
+              <h3 className="text-lg font-bold text-text-primary group-hover:text-primary-50 transition-colors">
+                {cat.name}
+              </h3>
+              <p className="text-sm text-text-secondary line-clamp-2 mt-1">{cat.desc}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════════ TRENDING / POPULAR ═══════════ */}
+      <section className="py-24 bg-secondary-50 px-6 lg:px-12">
+        <div className="max-w-screen-2xl mx-auto text-center mb-16">
+          <span className="text-accent-500 font-black tracking-widest text-xs uppercase mb-4 block">Paling Banyak Diminati</span>
+          <h2 className="text-4xl font-extrabold text-text-primary tracking-tight">Sedang Tren</h2>
+          <p className="text-text-secondary mt-4 max-w-xl mx-auto">
+            Produk terpopuler kami berdasarkan interaksi pelanggan dan permintaan grosir bulan ini.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-screen-2xl mx-auto">
+          {[
+            { name: "Sage Stoneware Mug", price: "Rp 12.500", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzxJdzAeDvCiiTEev_KPuhufrOsW-4weP20hY9TdXs8er6TOmLr4AvXn3K8qRC0hIwnPgMxbStj7wyzIDaNpCsFdsdo95aViXcLJAdRCqipUnLC4LegjActcaa15seUDTBk61Oe66f5bP_P3jWz4QNuEsS0FxNdCU6UFhzmuFNvhow5KXfEQCrIUXSy9GpqpAgT-3X6qeoKFsiyT-YtUeac0p6a9AmnKITQYmEOEh2kU2UdOyGpFWCNxDdoDIHxC5uyHymdk-cfN4" },
+            { name: "Oatmeal Linen Napkins", price: "Rp 45.000", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFC2Ygg12kybLX9yMU5bRNrzDjx8VvZUey0ur302MkDoHkye25yEINLA2SScmPJfiwrTHAxOA46ONTQRM7EYlWKjZMMUPzxnd5hAauHNAptky5xNzBpZeIe9HUoy34PwbuAj21D28RfdDacmSWjZmCSMZDXGhbkxJ9w6XwRbIeN3bq5sbbMqvjbKw-S_yQOh_COD1W3jkhSc8EcUN-BzMnZTupiuhvNyTz_BqaS5LMMc6LwBQMEkrM9i95ILvicI8q4w1GTX8O8UI" },
+            { name: "Ribbed Ceramic Canister", price: "Rp 32.000", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAKbnfpr0jzrRcJR179yN8q6F8d3bHp8A8tB31VCdmKcJF7o76mMI5iN_6vsxsh18xv5TqJgUBDsjftWT5X6mTgUVFe9sErpcvP5q5XWnPQl0H0BGeDvnz9H4rOmpbhtBvy0MbODM15gRWaczjbB6P9v2iD93j3-FSaPVx6UfKk_hB5X5SEmvlOYAH8_wmbcVU-s8ZcT2oRxl8Dg4njkVRbRerOxt-M-qQ3atFWa7IYFiojwiDa8f7YoZF-WRHZMWj__EdbCf9ReU8" },
+            { name: "Olive Wood Board", price: "Rp 85.000", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAWD0LOM87TroBp7p7bL0Gmhik6I5j0yZzU4iyEoppXP9FP7XgrCkaoCBa8eVNWA8I_4AB5BbhksOPFpUOZHJMo-LEMQ0JNXsGd_tMTrMw2CpfkXDA09rHXTp_-e79KeLxBr8-SyRSBfe8PjZ3F2HyJVjYigXdSkLe24H1BWPeHaOqnZ_wGq2k8xQKsH9xTQjF4s3Xh78FokPVdL82DmnQrZPyQHIU7cvic4_Prx1yz8C0MwQFwoKY14noYZ35ikgOTxxHYv1U6Tjc" },
+          ].map((item) => (
+            <Card key={item.name} className="overflow-hidden border-border hover:shadow-xl transition-all group rounded-2xl bg-white">
+              <CardContent className="p-4">
+                <div className="aspect-square rounded-xl bg-secondary-50 overflow-hidden mb-4 flex items-center justify-center">
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="font-bold text-text-primary text-sm sm:text-base">{item.name}</h4>
+                    <p className="text-primary-500 font-bold mt-1 text-sm">{item.price}</p>
+                  </div>
+                  <div className="bg-accent-50 text-accent-500 p-2 rounded-lg shrink-0">
+                    <span className="material-symbols-outlined text-sm">trending_up</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════════ FINAL CTA ═══════════ */}
+      <section className="py-32 px-6 lg:px-12 text-center max-w-7xl mx-auto">
+        <h2 className="text-4xl lg:text-6xl font-extrabold text-text-primary tracking-tight mb-8">
+          Siap meningkatkan estetika <br />
+          <span className="text-primary-500">bisnis Anda?</span>
+        </h2>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link
+            href="/catalog"
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "bg-primary-500 text-white rounded-2xl font-bold text-lg hover:bg-primary-600 transition-all hover:shadow-2xl hover:shadow-primary-500/30 gap-3 h-16 px-12"
+            )}
+          >
+            Buka Katalog
+            <span className="material-symbols-outlined">shopping_bag</span>
+          </Link>
+          <a
+            href="https://wa.me/6281234567890"
+            className={cn(
+              buttonVariants({ variant: "outline", size: "lg" }),
+              "bg-white text-text-primary border-2 border-primary-500 rounded-2xl font-bold text-lg hover:bg-primary-50 transition-all gap-3 h-16 px-12"
+            )}
+          >
+            Hubungi Kami
+            <span className="material-symbols-outlined">chat</span>
+          </a>
+        </div>
+      </section>
+    </main>
   );
 }

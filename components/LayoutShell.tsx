@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { cn } from "@/lib/utils";
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -11,13 +12,13 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
   const isDedicatedPage = pathname === '/login' || pathname.startsWith('/admin');
 
   if (isDedicatedPage) {
-    return <main className="flex-grow flex flex-col">{children}</main>;
+    return <main className="grow flex flex-col">{children}</main>;
   }
 
   return (
     <>
       <Navbar />
-      <div className="pt-20 flex-grow flex flex-col">
+      <div className={cn("grow flex flex-col", pathname !== '/' && "pt-16 lg:pt-20")}>
         {children}
       </div>
       <Footer />

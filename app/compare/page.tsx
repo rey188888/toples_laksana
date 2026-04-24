@@ -1,167 +1,195 @@
-export default function ComparisonPage() {
-  return (
-    <div className="bg-surface selection:bg-primary-fixed selection:text-on-primary-fixed font-body">
+import Link from "next/link";
+import connectDB from "@/lib/mongodb";
+import ProductModel from "@/models/Product";
+import type { Product } from "@/types/product";
+import { getLowestRetailPrice, getSpecValue } from "@/types/product";
+import { formatPrice } from "@/lib/price-calculator";
+import { buildInquiryUrl } from "@/lib/whatsapp-builder";
+import type { Metadata } from "next";
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+export const metadata: Metadata = {
+  title: "Bandingkan Spesifikasi Kemasan — Toples Laksana",
+};
+
+interface ComparePageProps {
+  searchParams: Promise<{ ids?: string }>;
+}
+
+export default async function ComparisonPage({ searchParams }: ComparePageProps) {
+  const { ids } = await searchParams;
+  let products: Product[] = [];
+
+  if (ids) {
+    const idArray = ids.split(",").slice(0, 4); // Max 4
+    await connectDB();
+    const fetched = await ProductModel.find({ _id: { $in: idArray }, is_active: true }).lean();
+    // Serialize object IDs
+    products = JSON.parse(JSON.stringify(fetched));
+    
+    // Sort to match the requested ID order
+    products.sort((a, b) => idArray.indexOf(a._id) - idArray.indexOf(b._id));
+  }
+
+  return (
+    <div className="bg-surface text-on-surface font-body min-h-screen">
+      <main className="max-w-[1400px] mx-auto px-6 py-12 md:py-20 lg:px-12">
         {/* Header Section */}
         <div className="mb-12">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-[2px] bg-tertiary"></span>
-            <span className="text-tertiary font-bold text-xs tracking-widest uppercase">Katalog Perbandingan</span>
+            <span className="text-tertiary font-extrabold text-[0.65rem] tracking-[0.2em] uppercase">Katalog Perbandingan</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary leading-tight">Bandingkan Produk</h1>
-          <p className="text-on-surface-variant max-w-2xl mt-4 text-lg font-medium leading-relaxed">
-            Analisis spesifikasi teknis dari koleksi kemasan premium kami untuk menemukan solusi paling tepat bagi kebutuhan industri Anda.
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface leading-tight mb-4">
+            Bandingkan Produk
+          </h1>
+          <p className="text-on-surface-variant max-w-2xl text-lg font-medium leading-relaxed">
+            Analisis spesifikasi teknis dari koleksi kemasan kami untuk menemukan solusi paling tepat bagi kebutuhan bisnis Anda. Maksimal 4 produk.
           </p>
         </div>
 
-        {/* Comparison Matrix Container */}
-        <div className="overflow-x-auto no-scrollbar pb-8">
-          <div className="min-w-[900px]">
-            {/* Table Header (Product Images & Titles) */}
-            <div className="grid grid-cols-4 items-stretch mb-8 gap-4">
-              {/* Technical Specs Label */}
-              <div className="flex flex-col justify-end pb-8">
-                <span className="text-xs font-black uppercase tracking-[0.2em] text-outline opacity-60">Spesifikasi Detail</span>
-              </div>
-              {/* Product 1 Card */}
-              <div className="bg-white p-6 flex flex-col items-center text-center shadow-sm border border-outline-variant/10 rounded-sm">
-                <div className="relative w-full aspect-square mb-6 group">
-                  <div className="absolute inset-0 bg-primary-fixed opacity-10 rounded-full scale-75 group-hover:scale-90 transition-transform duration-500"></div>
-                  <img
-                    alt="Cylinder Premium Jar"
-                    className="w-full h-full object-contain relative z-10 transform group-hover:scale-105 transition-transform duration-500"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZdR4Y9ow5hYRDj17NLaSxnnqoLNUpxvdDxBUSDwF0MeSlefKSOmZa68p0fLuB8RtYscqA7v0-fTNboF2ivtDvYkTj4Sri-cR-ZE1bCHLyxhLl1zQM0cse-WDkM4L6mOT5_XQLNkWnnbKJHN3KC6j54Nt0QKRC6NEaBGG9YSzj1Tnp4hktx6cP5hapjqR4ZD9cIZhSatKfPF0h5t95Q7XKyhTiyxQf2OZzReRuWWP_RuXQkAiAFzG0WC1eS_ZZxRPeA1AHfHPRjiU"
-                  />
+        {products.length === 0 ? (
+          <div className="bg-surface-container-lowest border border-outline-variant/10 rounded-2xl p-16 text-center max-w-2xl mx-auto shadow-sm">
+            <span className="material-symbols-outlined text-6xl text-outline-variant/50 mb-4">compare</span>
+            <h2 className="text-2xl font-bold text-on-surface mb-2">Belum ada produk yang dipilih</h2>
+            <p className="text-on-surface-variant mb-8">
+              Pilih produk dari halaman katalog dengan mencentang kotak &quot;Bandingkan&quot; pada kartu produk.
+            </p>
+            <Link
+              href="/catalog"
+              className="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container hover:text-on-primary-container transition-all shadow-md shadow-primary/10 inline-flex text-white"
+            >
+              Kembali ke Katalog
+            </Link>
+          </div>
+        ) : (
+          <div className="overflow-x-auto no-scrollbar pb-8">
+            <div className="min-w-[900px] max-w-full">
+              {/* Product Headers */}
+              <div className="grid grid-cols-5 items-stretch gap-4 mb-6">
+                <div className="flex flex-col justify-end pb-8">
+                  <span className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-outline-variant">Matriks Spesifikasi</span>
                 </div>
-                <h3 className="text-lg font-bold text-primary mb-1 leading-tight">Cylinder Premium 200ml</h3>
-                <span className="text-[10px] font-mono text-secondary tracking-widest uppercase">CAT-CYL</span>
-              </div>
-              {/* Product 2 Card */}
-              <div className="bg-white p-6 flex flex-col items-center text-center shadow-sm border border-outline-variant/10 rounded-sm">
-                <div className="relative w-full aspect-square mb-6 group">
-                  <div className="absolute inset-0 bg-primary-fixed opacity-10 rounded-full scale-75 group-hover:scale-90 transition-transform duration-500"></div>
-                  <img
-                    alt="Glass Mason Jar"
-                    className="w-full h-full object-contain relative z-10 transform group-hover:scale-105 transition-transform duration-500"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDceBXKm1G88zNf02qSebsrnJtRIuhidiTic2UgdMxX51cbGhgLJJU8VPEn0ce9rQBCBPC3zrKQROOEMFCcyoEtbGA2qxQJ58g6oiIVwEOwO7R4GqCMng5JFXR1O4Zhn0LdhWqTttE8OzvfNk0I2gy1Uxi4_F4gioq5b7oNzmzFcHnSUL_y_vCblt0mQPZim5_CFMEwG4ctDY6QfYYIuJK1iWBlOuXlKwjGy7fcsGNvYhuCvrrtplIWjDAzOx8g0wlQUfMXklGOjBg"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-primary mb-1 leading-tight">Jar Kaca Mason 250ml</h3>
-                <span className="text-[10px] font-mono text-secondary tracking-widest uppercase">CAT-KAC</span>
-              </div>
-              {/* Product 3 Card */}
-              <div className="bg-white p-6 flex flex-col items-center text-center shadow-sm border border-outline-variant/10 rounded-sm">
-                <div className="relative w-full aspect-square mb-6 group">
-                  <div className="absolute inset-0 bg-primary-fixed opacity-10 rounded-full scale-75 group-hover:scale-90 transition-transform duration-500"></div>
-                  <img
-                    alt="Square Tin Container"
-                    className="w-full h-full object-contain relative z-10 transform group-hover:scale-105 transition-transform duration-500"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuClAoiFS5qJBSiPRbFMei8OZqB0sg3Av31xxHgW0JMa0u5w5HShjdWjfuG2jj8T3uhf88_3paBpDnQbNNfFGG33sG10KuCYPCy9Yh2DOtlw8iSGfZJgUyMIgIzjPSncQd2EHXk2_mQmbGn_oh3c4GCeogxhu3rhZ0ygLZ5k1pw2fh5qPmXDBwDHVuX2VBX6jM_hFt6lUJ2ixLufzOgUTXQ8L8cSlEPznBCtETtG_Mn7Lw48mHVDavwj5uCjmdXOsLcsoE5sVQ1M4Ag"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-primary mb-1 leading-tight">Tin Kaleng Kotak 1821ml</h3>
-                <span className="text-[10px] font-mono text-secondary tracking-widest uppercase">CAT-TIN</span>
-              </div>
-            </div>
+                
+                {products.map((product) => (
+                  <div key={product._id} className="bg-surface-container-lowest p-6 flex flex-col items-center text-center shadow-sm border border-outline-variant/10 rounded-2xl relative">
+                    <Link href={`/catalog?ids=${ids?.split(',').filter(id => id !== product._id).join(',')}`} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-high hover:bg-error/10 text-on-surface-variant hover:text-error flex items-center justify-center transition-colors">
+                      <span className="material-symbols-outlined text-sm">close</span>
+                    </Link>
+                    <div className="relative w-full aspect-square mb-6 group">
+                      <div className="absolute inset-0 bg-primary-fixed/20 opacity-0 group-hover:opacity-100 rounded-full scale-75 group-hover:scale-100 transition-all duration-500 blur-2xl"></div>
+                      {product.images?.[0] ? (
+                        <img
+                          alt={product.name}
+                          className="w-full h-full object-contain relative z-10 transform group-hover:scale-105 transition-transform duration-500"
+                          src={product.images[0]}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center relative z-10 text-outline-variant/40">
+                          <span className="material-symbols-outlined text-6xl">inventory_2</span>
+                        </div>
+                      )}
+                    </div>
+                    <Link href={`/products/${product._id}`} className="hover:text-primary transition-colors">
+                      <h3 className="text-sm font-extrabold text-on-surface mb-2 leading-tight">{product.name}</h3>
+                    </Link>
+                    <span className="text-[0.6rem] font-mono font-bold px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant tracking-widest uppercase">
+                      {product.sku}
+                    </span>
+                  </div>
+                ))}
 
-            {/* Comparison Rows */}
-            <div className="flex flex-col gap-1 ring-1 ring-outline-variant/10 rounded-lg overflow-hidden">
-              {/* Volume Row */}
-              <div className="grid grid-cols-4 items-center bg-surface-container-low group hover:bg-primary/5 transition-colors">
-                <div className="px-6 py-5 text-xs font-black text-on-surface uppercase tracking-widest border-r border-outline-variant/10">Volume</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">200ml</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">250ml</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">1821ml</div>
-              </div>
-              {/* Material Body Row */}
-              <div className="grid grid-cols-4 items-center bg-white group hover:bg-primary/5 transition-colors border-t border-outline-variant/10">
-                <div className="px-6 py-5 text-xs font-black text-on-surface uppercase tracking-widest border-r border-outline-variant/10">Bahan Badan</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium border-r border-outline-variant/5">Polypropylene (PP)</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium border-r border-outline-variant/5">Borosilicate Glass</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">Electrolytic Tinplate</div>
-              </div>
-              {/* Material Lid Row */}
-              <div className="grid grid-cols-4 items-center bg-surface-container-low group hover:bg-primary/5 transition-colors border-t border-outline-variant/10">
-                <div className="px-6 py-5 text-xs font-black text-on-surface uppercase tracking-widest border-r border-outline-variant/10">Bahan Tutup</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">Polypropylene (PP)</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">Aluminium (ALU)</div>
-                <div className="px-6 py-5 text-sm text-center text-on-surface-variant font-medium">Tin-plated Steel</div>
-              </div>
-              {/* Grade Row */}
-              <div className="grid grid-cols-4 items-center bg-white group hover:bg-primary/5 transition-colors border-t border-outline-variant/10">
-                <div className="px-6 py-5 text-xs font-black text-on-surface uppercase tracking-widest border-r border-outline-variant/10">Grade</div>
-                <div className="px-6 py-5 text-center">
-                  <span className="inline-block bg-tertiary-container text-on-tertiary-container text-[8px] font-black px-2 py-0.5 rounded-sm tracking-widest uppercase">Premium</span>
-                </div>
-                <div className="px-6 py-5 text-center">
-                  <span className="inline-block bg-tertiary-container text-on-tertiary-container text-[8px] font-black px-2 py-0.5 rounded-sm tracking-widest uppercase">Premium</span>
-                </div>
-                <div className="px-6 py-5 text-center">
-                  <span className="inline-block bg-tertiary-container text-on-tertiary-container text-[8px] font-black px-2 py-0.5 rounded-sm tracking-widest uppercase">Premium</span>
-                </div>
-              </div>
-              {/* Price Row */}
-              <div className="grid grid-cols-4 items-center bg-surface-container-low group hover:bg-primary/5 transition-colors border-t border-outline-variant/10">
-                <div className="px-6 py-5 text-xs font-black text-on-surface uppercase tracking-widest border-r border-outline-variant/10">Harga Satuan</div>
-                <div className="px-6 py-5 text-center font-bold text-primary text-xl tracking-tighter">Rp 3.500</div>
-                <div className="px-6 py-5 text-center font-bold text-primary text-xl tracking-tighter">Rp 8.750</div>
-                <div className="px-6 py-5 text-center font-bold text-primary text-xl tracking-tighter">Rp 12.400</div>
+                {/* Empty slots for visual balance if < 4 products */}
+                {Array.from({ length: 4 - products.length }).map((_, i) => (
+                  <div key={`empty-${i}`} className="bg-transparent border-2 border-dashed border-outline-variant/20 rounded-2xl flex flex-col items-center justify-center p-6 text-outline-variant/50 min-h-[300px]">
+                    <span className="material-symbols-outlined text-4xl mb-4">add_circle</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-center">Slot Kosong</span>
+                  </div>
+                ))}
               </div>
 
-              {/* Action Row (Buttons) */}
-              <div className="grid grid-cols-4 items-center mt-6 bg-transparent border-none">
+              {/* Matrix Table */}
+              <div className="flex flex-col border border-outline-variant/15 rounded-2xl overflow-hidden shadow-sm bg-white">
+                
+                {/* Visual Row Renderer */}
+                {[
+                  { label: "Volume Kapasitas", getter: (p: Product) => `${getSpecValue(p.specifications, 'volume_ml') || '-'} ml` },
+                  { label: "Tinggi Total", getter: (p: Product) => `${getSpecValue(p.specifications, 'tinggi_cm') || '-'} cm` },
+                  { label: "Ø Diameter Badan", getter: (p: Product) => `${getSpecValue(p.specifications, 'diameter_badan_cm') || '-'} cm` },
+                  { label: "Bahan Badan", getter: (p: Product) => p.materials.body },
+                  { label: "Bahan Tutup", getter: (p: Product) => p.materials.lid_material },
+                  { label: "Tipe Tutup", getter: (p: Product) => p.materials.lid_type, capitalize: true },
+                  { label: "Kategori Kemasan", getter: (p: Product) => p.category },
+                ].map((row, idx) => (
+                  <div key={row.label} className={`grid grid-cols-5 items-stretch ${idx % 2 === 0 ? 'bg-surface-container-lowest' : 'bg-surface-container-low/30'} hover:bg-primary/5 transition-colors border-b border-outline-variant/10 last:border-b-0`}>
+                    <div className="px-6 py-5 text-[0.65rem] font-extrabold text-on-surface-variant uppercase tracking-widest border-r border-outline-variant/10 flex items-center">{row.label}</div>
+                    {products.map((p) => (
+                      <div key={`${p._id}-${row.label}`} className={`px-6 py-5 text-sm text-center text-on-surface font-semibold border-r border-outline-variant/10 last:border-r-0 flex items-center justify-center ${row.capitalize ? 'capitalize' : ''}`}>
+                        {row.getter(p)}
+                      </div>
+                    ))}
+                    {Array.from({ length: 4 - products.length }).map((_, i) => (
+                      <div key={`empty-cell-${i}`} className="border-r border-outline-variant/10 last:border-r-0" />
+                    ))}
+                  </div>
+                ))}
+
+                {/* Price Row (Highlight) */}
+                <div className="grid grid-cols-5 items-stretch bg-primary/5 border-t-2 border-primary/10">
+                   <div className="px-6 py-8 text-[0.65rem] font-extrabold text-primary uppercase tracking-widest border-r border-primary/10 flex items-center">
+                    Harga Ecer Terendah 
+                   </div>
+                   {products.map((p) => (
+                      <div key={`${p._id}-price`} className="px-6 py-8 text-center border-r border-primary/10 last:border-r-0 flex flex-col items-center justify-center">
+                        <span className="text-2xl font-extrabold text-primary tracking-tight">
+                          {formatPrice(getLowestRetailPrice(p.variants))}
+                        </span>
+                        <span className="text-[0.6rem] font-bold text-on-surface-variant mt-1 uppercase tracking-widest">
+                          / pcs
+                        </span>
+                      </div>
+                    ))}
+                    {Array.from({ length: 4 - products.length }).map((_, i) => (
+                      <div key={`empty-price-${i}`} className="border-r border-primary/10 last:border-r-0" />
+                    ))}
+                </div>
+              </div>
+
+              {/* Action Keys */}
+              <div className="grid grid-cols-5 items-center mt-6 gap-4">
                 <div></div>
-                <div className="px-4">
-                  <a 
-                    href="https://wa.me/6281234567890"
+                {products.map((p) => (
+                  <a
+                    key={`${p._id}-cta`}
+                    href={buildInquiryUrl(p)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10 text-center"
+                    className="w-full bg-primary text-on-primary py-3.5 px-4 rounded-xl font-bold text-[0.65rem] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/15"
                   >
-                    <span className="material-symbols-outlined text-sm leading-none">send</span>
-                    Pesan via WA
+                    <span className="material-symbols-outlined text-base">chat</span>
+                    Tanya Admin
                   </a>
-                </div>
-                <div className="px-4">
-                  <a 
-                    href="https://wa.me/6281234567890"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10 text-center"
-                  >
-                    <span className="material-symbols-outlined text-sm leading-none">send</span>
-                    Pesan via WA
-                  </a>
-                </div>
-                <div className="px-4">
-                  <a 
-                    href="https://wa.me/6281234567890"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-primary text-on-primary py-3 px-4 rounded font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all shadow-md shadow-primary/10 text-center"
-                  >
-                    <span className="material-symbols-outlined text-sm leading-none">send</span>
-                    Pesan via WA
-                  </a>
-                </div>
+                ))}
+                 {Array.from({ length: 4 - products.length }).map((_, i) => (
+                  <div key={`empty-cta-${i}`} />
+                ))}
               </div>
+
             </div>
           </div>
-        </div>
+        )}
 
         {/* Technical Disclaimer Section */}
-        <div className="mt-24 p-8 bg-white border-l-4 border-primary shadow-sm rounded-r-lg">
-          <h4 className="text-primary font-bold mb-3 flex items-center gap-2 tracking-tight uppercase text-sm">
-            <span className="material-symbols-outlined text-lg leading-none">info</span>
-            Catatan Teknis Engineering
+        <div className="mt-20 p-8 bg-surface-container-high border border-outline-variant/20 rounded-2xl">
+          <h4 className="text-on-surface font-extrabold mb-3 flex items-center gap-2 tracking-tight text-sm uppercase">
+            <span className="material-symbols-outlined text-primary text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>
+            Catatan Teknis Industrial
           </h4>
-          <p className="text-sm text-on-surface-variant leading-relaxed font-medium">
-            Semua dimensi produk diukur dalam toleransi ±0.5mm. Kapasitas volume didasarkan pada pengisian hingga bahu produk (fill to shoulder). Untuk pesanan custom di atas 10.000 unit, mohon hubungi tim teknik kami untuk integrasi label otomatis dan spesifikasi toleransi khusus. Sertifikasi Food Grade tersedia untuk semua SKU yang tercantum di atas.
+          <p className="text-sm text-on-surface-variant leading-relaxed">
+            *Semua dimensi produk diukur dengan toleransi manufaktur ±0.5mm. Kapasitas volume didasarkan pada tingkat pengisian wajar produk (*fill to shoulder*). 
+            Harga grosir skala besar berlaku. Silakan hubungi admin kami untuk permintaan kustomisasi warna khusus atau logo pada tutup kemasan dengan Minimum Order Quantity (MOQ) pabrik.
           </p>
         </div>
       </main>
-
     </div>
   );
 }
