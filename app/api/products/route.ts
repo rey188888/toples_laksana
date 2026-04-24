@@ -125,3 +125,37 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+/**
+ * POST /api/products
+ * Creates a new product entry.
+ */
+export async function POST(request: NextRequest) {
+  try {
+    await connectDB();
+    const body = await request.json();
+
+    // Basic validation for required fields
+    if (!body.name || !body.sku || !body.category) {
+      return NextResponse.json(
+        { error: "Missing required fields (name, sku, category)" },
+        { status: 400 }
+      );
+    }
+
+    const product = await Product.create(body);
+    return NextResponse.json({ data: product }, { status: 201 });
+  } catch (error: any) {
+    console.error("[API] POST /api/products error:", error);
+    if (error.code === 11000) {
+      return NextResponse.json(
+        { error: "SKU already exists" },
+        { status: 409 }
+      );
+    }
+    return NextResponse.json(
+      { error: error.message || "Failed to create product" },
+      { status: 500 }
+    );
+  }
+}

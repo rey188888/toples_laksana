@@ -31,8 +31,8 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
   }
 
   return (
-    <div className="bg-background text-text-primary font-sans min-h-screen">
-      <main className="max-w-[1400px] mx-auto px-6 py-12 md:py-20 lg:px-12">
+    <div className="bg-background text-text-primary font-sans min-h-screen pt-8">
+      <main className="max-w-screen-2xl mx-auto px-6 pb-20 lg:px-12">
         {/* Header Section */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">

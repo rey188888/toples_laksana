@@ -49,3 +49,63 @@ export async function GET(
     );
   }
 }
+
+/**
+ * PATCH /api/products/[id]
+ * Updates an existing product by ID.
+ */
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    const body = await request.json();
+
+    const product = await Product.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ data: product });
+  } catch (error: any) {
+    console.error("[API] PATCH /api/products/[id] error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to update product" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE /api/products/[id]
+ * Deletes a product by ID.
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+    const { id } = await params;
+
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Product deleted successfully" });
+  } catch (error: any) {
+    console.error("[API] DELETE /api/products/[id] error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to delete product" },
+      { status: 500 }
+    );
+  }
+}
