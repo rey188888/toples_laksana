@@ -12,7 +12,7 @@ export default function LoginPage() {
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-500/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-500/5 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
-      <main className="flex-grow flex items-center justify-center p-6 relative z-10 w-full max-w-screen-2xl mx-auto">
+      <main className="grow flex items-center justify-center p-6 relative z-10 w-full max-w-screen-2xl mx-auto">
         {/* Back Link */}
         <div className="absolute top-8 left-8">
           <Link
@@ -86,7 +86,7 @@ export default function LoginPage() {
                 className="w-full bg-primary-500 text-white font-bold py-4 rounded-xl shadow-xl shadow-primary-500/20 hover:bg-primary-600 transition-all flex items-center justify-center gap-3 group uppercase tracking-widest text-xs active:scale-[0.98]"
                 type="submit"
               >
-                <span>Masuk ke Panel</span>
+                <span>Masuk</span>
                 <span className="material-symbols-outlined text-sm transform group-hover:translate-x-1 transition-transform">
                   arrow_forward
                 </span>

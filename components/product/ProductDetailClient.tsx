@@ -51,23 +51,23 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   return (
     <main className="pb-20 max-w-screen-2xl mx-auto px-4 sm:px-8">
       {/* Breadcrumbs */}
-      <nav className="mb-8 flex items-center flex-wrap gap-1 text-sm text-on-surface-variant font-medium">
-        <Link className="hover:text-primary transition-colors" href="/">Beranda</Link>
+      <nav className="mb-8 flex items-center flex-wrap gap-1 text-sm text-text-secondary font-medium">
+        <Link className="hover:text-primary-600 transition-colors" href="/">Beranda</Link>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
-        <Link className="hover:text-primary transition-colors" href="/catalog">Katalog</Link>
+        <Link className="hover:text-primary-600 transition-colors" href="/catalog">Katalog</Link>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
-        <Link className="hover:text-primary transition-colors" href={`/catalog?category=${encodeURIComponent(product.category)}`}>
+        <Link className="hover:text-primary-600 transition-colors" href={`/catalog?category=${encodeURIComponent(product.category)}`}>
           {product.category}
         </Link>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
-        <span className="text-on-surface font-semibold truncate max-w-[200px]">{product.name}</span>
+        <span className="text-text-primary font-bold truncate max-w-[200px]">{product.name}</span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
         {/* ══════════ LEFT: Image Gallery ══════════ */}
         <div className="lg:col-span-7 space-y-4">
           {/* Main Image */}
-          <div className="relative bg-surface-container-low rounded-xl overflow-hidden aspect-4/3 flex items-center justify-center group">
+          <div className="relative bg-secondary-50 rounded-xl overflow-hidden aspect-4/3 flex items-center justify-center group">
             <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-primary-fixed to-transparent" />
             {product.images?.[mainImage] ? (
               <img
@@ -87,9 +87,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <button
                   key={i}
                   onClick={() => setMainImage(i)}
-                  className={`aspect-square bg-surface-container-low rounded-lg p-2 overflow-hidden hover:bg-surface-container-high transition-all ${
-                    i === mainImage ? "ring-2 ring-primary ring-offset-2" : ""
-                  }`}
+                  className={`aspect-square bg-secondary-50 rounded-lg p-2 overflow-hidden hover:bg-secondary-100 transition-all ${i === mainImage ? "ring-2 ring-primary-500 ring-offset-2" : ""
+                    }`}
                 >
                   <img alt={`${product.name} ${i + 1}`} className="w-full h-full object-contain" src={src} />
                 </button>
@@ -173,11 +172,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       key={v.sku_variant}
                       onClick={() => { setSelectedVariantIdx(i); setQuantity(1); }}
-                      className={`relative w-9 h-9 rounded-full border-2 transition-all ${
-                        isActive
+                      className={`relative w-9 h-9 rounded-full border-2 transition-all ${isActive
                           ? "ring-2 ring-primary ring-offset-2 border-primary scale-110"
                           : "border-outline-variant/30 hover:border-primary/50 hover:scale-105"
-                      }`}
+                        }`}
                       style={{ backgroundColor: hex }}
                       title={v.color}
                     >
@@ -206,21 +204,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <div className="flex bg-surface-container-low rounded-lg p-1 mb-5">
               <button
                 onClick={() => { setPricingMode("retail"); setQuantity(1); }}
-                className={`flex-1 py-2 text-[0.7rem] font-bold uppercase tracking-widest rounded-md transition-all ${
-                  pricingMode === "retail"
+                className={`flex-1 py-2 text-[0.7rem] font-bold uppercase tracking-widest rounded-md transition-all ${pricingMode === "retail"
                     ? "bg-white text-primary shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
-                }`}
+                  }`}
               >
                 Ecer /pcs
               </button>
               <button
                 onClick={() => { setPricingMode("wholesale"); setQuantity(1); }}
-                className={`flex-1 py-2 text-[0.7rem] font-bold uppercase tracking-widest rounded-md transition-all ${
-                  pricingMode === "wholesale"
+                className={`flex-1 py-2 text-[0.7rem] font-bold uppercase tracking-widest rounded-md transition-all ${pricingMode === "wholesale"
                     ? "bg-white text-primary shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
-                }`}
+                  }`}
               >
                 Per {formatUnitType(unitType)}
               </button>
@@ -361,11 +357,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3.5 text-sm font-bold whitespace-nowrap transition-all border-b-2 ${
-                activeTab === tab.id
+              className={`flex items-center gap-2 px-6 py-3.5 text-sm font-bold whitespace-nowrap transition-all border-b-2 ${activeTab === tab.id
                   ? "border-primary text-primary"
                   : "border-transparent text-on-surface-variant hover:text-primary hover:border-primary/30"
-              }`}
+                }`}
             >
               <span className="material-symbols-outlined text-base">{tab.icon}</span>
               {tab.label}

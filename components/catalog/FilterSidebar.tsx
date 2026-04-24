@@ -52,7 +52,7 @@ export default function FilterSidebar({
           <span className="material-symbols-outlined text-base">category</span>
           Jenis Kemasan
         </h3>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-2 gap-2">
           {categoryList.map((cat) => {
             const isActive = filters.category?.includes(cat.value);
             const config = CATEGORY_CONFIG[cat.value];
@@ -94,26 +94,28 @@ export default function FilterSidebar({
             return (
               <label
                 key={uc.tag}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all group ${
+                className={`flex items-start gap-2 px-2 py-2.5 rounded-xl cursor-pointer transition-all group ${
                   isActive
                     ? "bg-primary-50 border border-primary-200 shadow-sm"
                     : "hover:bg-secondary-50 border border-transparent"
                 }`}
               >
-                <input
-                  className="w-4 h-4 rounded-md border-border text-primary-500 focus:ring-primary-500 cursor-pointer accent-primary-500"
-                  type="checkbox"
-                  checked={isActive || false}
-                  onChange={() => onToggleArray("tags", uc.tag)}
-                />
-                <span className="material-symbols-outlined text-lg text-text-muted group-hover:text-primary-500 transition-colors">
+                <div className="pt-0.5 shrink-0">
+                  <input
+                    className="w-4 h-4 rounded-md border-border text-primary-500 focus:ring-primary-500 cursor-pointer accent-primary-500"
+                    type="checkbox"
+                    checked={isActive || false}
+                    onChange={() => onToggleArray("tags", uc.tag)}
+                  />
+                </div>
+                <span className="material-symbols-outlined text-lg text-text-muted group-hover:text-primary-500 transition-colors shrink-0">
                   {uc.icon}
                 </span>
-                <span className={`text-xs font-bold flex-1 ${isActive ? "text-primary-700" : "text-text-secondary group-hover:text-primary-600"} transition-colors`}>
+                <span className={`text-[0.7rem] font-bold flex-1 min-w-0 leading-tight pt-0.5 ${isActive ? "text-primary-700" : "text-text-secondary group-hover:text-primary-600"} transition-colors`}>
                   {uc.label}
                 </span>
                 {facetCount !== undefined && (
-                  <span className="text-[0.6rem] font-black text-text-muted bg-white border border-border px-2 py-0.5 rounded-lg shadow-xs">
+                  <span className="text-[0.6rem] font-black text-text-muted bg-white border border-border px-2 py-0.5 rounded-lg shadow-xs shrink-0">
                     {facetCount}
                   </span>
                 )}
@@ -130,29 +132,27 @@ export default function FilterSidebar({
           Volume / Ukuran
         </h3>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-2 gap-2">
           {[
-            { label: "Mini ≤100ml", min: 0, max: 100 },
-            { label: "Sedang", min: 100, max: 500 },
-            { label: "Besar", min: 500, max: 1000 },
-            { label: "Jumbo 1L+", min: 1000, max: 9999 },
+            { label: "150ml", value: 150 },
+            { label: "250ml", value: 250 },
+            { label: "500ml", value: 500 },
+            { label: "750ml", value: 750 },
+            { label: "1000ml", value: 1000 },
+            { label: "1500ml", value: 1500 },
           ].map((chip) => {
-            const isActive = filters.volume_min === chip.min && filters.volume_max === chip.max;
+            const isActive = filters.volume_min === chip.value && filters.volume_max === chip.value;
             return (
               <button
                 key={chip.label}
                 onClick={() => {
                   if (isActive) {
                     onSetFilters({ volume_min: undefined, volume_max: undefined });
-                    setVolumeMin(vRange.min);
-                    setVolumeMax(vRange.max);
                   } else {
-                    onSetFilters({ volume_min: chip.min, volume_max: chip.max });
-                    setVolumeMin(chip.min);
-                    setVolumeMax(chip.max);
+                    onSetFilters({ volume_min: chip.value, volume_max: chip.value });
                   }
                 }}
-                className={`px-3 py-2 rounded-lg text-[0.65rem] font-black transition-all border ${
+                className={`px-3 py-2.5 rounded-xl text-[0.65rem] font-black transition-all border ${
                   isActive
                     ? "bg-primary-500 text-white border-primary-500 shadow-md shadow-primary-500/20"
                     : "bg-white text-text-secondary border-border hover:border-primary-200"
@@ -162,23 +162,6 @@ export default function FilterSidebar({
               </button>
             );
           })}
-        </div>
-
-        <div className="space-y-3 px-1">
-          <input
-            className="w-full accent-primary-500 cursor-pointer h-1.5 bg-secondary-100 rounded-lg appearance-none"
-            type="range"
-            min={vRange.min}
-            max={vRange.max}
-            value={volumeMax}
-            onChange={(e) => setVolumeMax(parseInt(e.target.value))}
-            onMouseUp={() => onSetFilters({ volume_min: volumeMin > 0 ? volumeMin : undefined, volume_max: volumeMax < vRange.max ? volumeMax : undefined })}
-            onTouchEnd={() => onSetFilters({ volume_min: volumeMin > 0 ? volumeMin : undefined, volume_max: volumeMax < vRange.max ? volumeMax : undefined })}
-          />
-          <div className="flex justify-between text-[0.65rem] font-black text-secondary-600 tracking-widest uppercase">
-            <span>{volumeMin}ml</span>
-            <span>{volumeMax}ml</span>
-          </div>
         </div>
       </section>
 
@@ -203,7 +186,7 @@ export default function FilterSidebar({
       {/* ── Advanced Filters Panel ── */}
       <div
         className={`space-y-8 overflow-hidden transition-all duration-500 ease-in-out ${
-          showAdvanced ? "max-h-[1000px] opacity-100 mt-6" : "max-h-0 opacity-0"
+          showAdvanced ? "max-h-[1000px] opacity-100 mt-6 pb-6" : "max-h-0 opacity-0"
         }`}
       >
         {/* Material Body */}
@@ -268,7 +251,7 @@ export default function FilterSidebar({
             <span className="material-symbols-outlined text-base">palette</span>
             Warna Tutup
           </h3>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-wrap gap-x-3 gap-y-5 p-1.5">
             {(facets?.colors || []).map((color) => {
               const isActive = filters.colors?.includes(color.value);
               const hex = COLOR_SWATCHES[color.value] || "#ccc";

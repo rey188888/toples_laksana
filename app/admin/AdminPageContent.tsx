@@ -36,7 +36,7 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
   ];
 
   return (
-    <div className="bg-[#F8F9FA] text-text-primary flex min-h-screen font-sans relative selection:bg-primary-500/10">
+    <div className="bg-background text-text-primary flex min-h-screen font-sans relative selection:bg-primary-500/10">
       {/* ── Mobile Sidebar Overlay ── */}
       {isSidebarOpen && (
         <div 
@@ -50,15 +50,9 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
         "fixed inset-y-0 left-0 z-50 w-72 bg-white flex flex-col transition-all duration-300 border-r border-border shadow-xl lg:shadow-none",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
-        <div className="px-8 py-8 flex flex-col">
-          <Link href="/" className="flex items-center gap-3 mb-1">
-            <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
-              <span className="material-symbols-outlined font-black">inventory_2</span>
-            </div>
-            <div>
-              <span className="text-xl font-black text-text-primary tracking-tighter">Laksana<span className="text-primary-500">Admin</span></span>
-              <p className="text-[0.6rem] text-text-muted font-bold tracking-widest uppercase -mt-1">Internal Portal</p>
-            </div>
+        <div className="h-20 lg:h-24 px-8 flex items-center border-b border-border">
+          <Link href="/" className="text-xl font-black text-primary-500 tracking-tight flex items-center gap-2">
+            Toples Laksana
           </Link>
         </div>
 
@@ -92,20 +86,13 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
           ))}
         </nav>
 
-        <div className="p-6 mt-auto border-t border-border bg-secondary-50/30">
-          <div className="flex items-center gap-3 mb-5 p-2 rounded-2xl bg-white border border-border shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-accent-500 text-white flex items-center justify-center font-black text-sm shadow-md">AL</div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-black text-text-primary truncate">Admin Laksana</p>
-              <p className="text-[10px] text-text-muted font-bold tracking-widest uppercase">Super Admin</p>
-            </div>
-          </div>
+        <div className="p-6 mt-auto border-t border-border">
           <Link
             href="/login"
-            className="flex items-center justify-center gap-2 w-full py-3 text-text-secondary hover:text-red-600 hover:bg-red-50 rounded-xl transition-all font-bold text-[0.65rem] uppercase tracking-widest border border-transparent hover:border-red-100"
+            className="flex items-center justify-center gap-2 w-full py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all font-bold text-[0.65rem] uppercase tracking-widest border border-red-100/50 hover:border-red-200"
           >
             <span className="material-symbols-outlined text-lg">logout</span>
-            Keluar Sistem
+            Keluar
           </Link>
         </div>
       </aside>
@@ -123,14 +110,9 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
             </button>
             <div>
               <h2 className="text-lg lg:text-2xl font-black text-text-primary tracking-tight">Katalog Produk</h2>
-              <div className="hidden sm:flex items-center gap-2 text-[0.7rem] text-text-muted font-bold uppercase tracking-widest mt-0.5">
-                <span className="text-primary-500">Admin</span>
-                <span className="material-symbols-outlined text-xs">chevron_right</span>
-                <span>Product Management</span>
-              </div>
             </div>
           </div>
-          <button className="bg-primary-500 text-white px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl font-bold flex items-center gap-2.5 text-xs lg:text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all active:scale-95 group">
+          <button className="bg-primary-500 text-white px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl font-black flex items-center gap-2.5 text-xs lg:text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all active:scale-95 group">
             <span className="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform duration-300">add</span>
             <span className="hidden sm:inline">Tambah Produk Baru</span>
             <span className="sm:hidden">Produk</span>
@@ -141,11 +123,11 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
           {/* Quick Stats */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: "inventory", label: "SKU Aktif", value: activeProducts.toString(), color: "text-primary-600", bg: "bg-primary-50", accent: "border-primary-100" },
-              { icon: "analytics", label: "Interaksi", value: "2.4k", color: "text-accent-600", bg: "bg-accent-50", accent: "border-accent-100" },
-              { icon: "workspace_premium", label: "Produk Premium", value: premiumCount.toString(), color: "text-secondary-600", bg: "bg-secondary-50", accent: "border-secondary-100" },
+              { icon: "inventory", label: "SKU Aktif", value: activeProducts.toString(), color: "text-primary-600", bg: "bg-primary-50", accent: "border-border" },
+              { icon: "analytics", label: "Interaksi", value: "2.4k", color: "text-accent-600", bg: "bg-accent-50", accent: "border-border" },
+              { icon: "workspace_premium", label: "Produk Premium", value: premiumCount.toString(), color: "text-secondary-600", bg: "bg-secondary-50", accent: "border-border" },
             ].map((stat) => (
-              <Card key={stat.label} className={cn("border-none shadow-sm overflow-hidden group hover:shadow-md transition-all duration-300", stat.accent)}>
+              <Card key={stat.label} className={cn("border border-border shadow-sm overflow-hidden group hover:shadow-md transition-all duration-300")}>
                 <CardContent className="p-6 lg:p-8 flex items-center gap-6">
                   <div className={cn("w-14 h-14 lg:w-16 lg:h-16 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300", stat.bg, stat.color)}>
                     <span className="material-symbols-outlined text-2xl lg:text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>{stat.icon}</span>
@@ -160,7 +142,7 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
           </section>
 
           {/* Table Container */}
-          <Card className="border-none shadow-sm overflow-hidden bg-white">
+          <Card className="border border-border shadow-sm overflow-hidden bg-white">
             {/* Toolbar */}
             <div className="px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between border-b border-border bg-white gap-4">
               <div className="relative flex-1 sm:max-w-md group">
@@ -168,14 +150,14 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
                 <input
                   type="text"
                   placeholder="Cari SKU, nama, atau material..."
-                  className="w-full pl-12 pr-6 py-3 bg-[#F9FAFB] border border-border rounded-xl text-sm font-bold text-text-primary focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/5 outline-none transition-all"
+                  className="w-full pl-12 pr-6 py-3 bg-secondary-50/30 border border-border rounded-xl text-sm font-bold text-text-primary focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/5 outline-none transition-all"
                 />
               </div>
               <div className="flex gap-2 lg:gap-3">
-                <button className="flex-1 sm:flex-none px-5 lg:px-6 py-3 text-[0.7rem] font-black bg-white border border-border rounded-xl text-text-secondary flex items-center justify-center gap-2 hover:bg-[#F9FAFB] hover:text-text-primary transition-all shadow-sm uppercase tracking-widest">
+                <button className="flex-1 sm:flex-none px-5 lg:px-6 py-3 text-[0.7rem] font-black bg-white border border-border rounded-xl text-text-secondary flex items-center justify-center gap-2 hover:bg-secondary-50 hover:text-text-primary transition-all shadow-sm uppercase tracking-widest">
                   <span className="material-symbols-outlined text-sm">tune</span> Filter
                 </button>
-                <button className="flex-1 sm:flex-none px-5 lg:px-6 py-3 text-[0.7rem] font-black bg-white border border-border rounded-xl text-text-secondary flex items-center justify-center gap-2 hover:bg-[#F9FAFB] hover:text-text-primary transition-all shadow-sm uppercase tracking-widest">
+                <button className="flex-1 sm:flex-none px-5 lg:px-6 py-3 text-[0.7rem] font-black bg-white border border-border rounded-xl text-text-secondary flex items-center justify-center gap-2 hover:bg-secondary-50 hover:text-text-primary transition-all shadow-sm uppercase tracking-widest">
                   <span className="material-symbols-outlined text-sm">download</span> Ekspor
                 </button>
               </div>
@@ -194,7 +176,7 @@ export default function AdminPageContent({ initialProducts }: { initialProducts:
               ) : (
                 <Table className="min-w-[900px]">
                   <TableHeader>
-                    <TableRow className="bg-[#F9FAFB]/50 hover:bg-[#F9FAFB]/50">
+                    <TableRow className="bg-secondary-50/30 hover:bg-secondary-50/30 border-b border-border">
                       <TableHead className="px-8 py-5 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Info Produk</TableHead>
                       <TableHead className="px-8 py-5 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">SKU & Material</TableHead>
                       <TableHead className="px-8 py-5 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Kategori</TableHead>

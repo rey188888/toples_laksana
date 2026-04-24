@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer id="footer" className="w-full mt-24 bg-white border-t border-border text-sm leading-relaxed relative overflow-hidden">
+    <footer id="footer" className="w-full mt-6 bg-white border-t border-border text-sm leading-relaxed relative overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 px-6 lg:px-12 py-16 lg:py-24 max-w-screen-2xl mx-auto relative z-10">
 
         {/* Brand Column */}

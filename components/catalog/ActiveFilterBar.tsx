@@ -65,7 +65,7 @@ export default function ActiveFilterBar({
   if (pills.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-3 mb-10 pb-6 border-b border-border">
+    <div className="flex flex-wrap items-center gap-3">
       <span className="text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] mr-2">
         Filter Aktif:
       </span>

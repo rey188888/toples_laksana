@@ -44,8 +44,7 @@ export default function HomePage() {
               Distributor Kemasan Premium
             </span>
             <h1 className="text-5xl lg:text-7xl font-extrabold text-text-primary leading-[1.1] tracking-tight mb-6">
-              Kehangatan untuk setiap <br />
-              <span className="text-primary-500">dapur.</span>
+              Pilih Toples <br />Sesuai Kebutuhan
             </h1>
             <p className="text-lg text-text-secondary max-w-xl mb-10 leading-relaxed">
               Tingkatkan nilai produk ritel atau horeka Anda dengan koleksi kemasan organik pilihan kami, dirancang untuk menghadirkan keindahan taktil pada ruang sehari-hari.

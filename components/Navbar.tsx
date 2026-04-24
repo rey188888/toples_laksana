@@ -21,11 +21,8 @@ export default function Navbar() {
 
   // Close mobile menu on route change
   useEffect(() => {
-    if (mobileMenuOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setMobileMenuOpen(false);
-    }
-  }, [pathname, mobileMenuOpen]);
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   const navLinks = [
     { label: "Beranda", href: "/" },
@@ -36,9 +33,9 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-100 transition-all duration-300 ${
-          isScrolled
-            ? "bg-surface/80 backdrop-blur-xl shadow-sm border-b border-border py-3"
+        className={`fixed top-0 w-full z-[110] transition-all duration-300 ${
+          isScrolled || mobileMenuOpen
+            ? "bg-white/90 backdrop-blur-xl shadow-md py-3"
             : "bg-transparent py-5"
         }`}
       >
@@ -56,11 +53,10 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`px-4 py-2 rounded-full transition-all ${
-                    isActive
+                  className={`px-4 py-2 rounded-full transition-all ${isActive
                       ? "bg-primary-50 text-primary-600 font-bold"
                       : "text-text-secondary hover:text-primary-500 hover:bg-secondary-50"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -81,7 +77,7 @@ export default function Navbar() {
             {/* Hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-secondary-50 text-text-secondary hover:bg-border transition-colors"
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-secondary-50 text-primary-500 hover:bg-primary-50 transition-colors"
             >
               <span className="material-symbols-outlined">
                 {mobileMenuOpen ? "close" : "menu"}
@@ -99,7 +95,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed inset-0 z-90 bg-background pt-24 px-6 pb-6 lg:hidden flex flex-col"
+            className="fixed inset-0 z-[100] bg-white pt-24 px-6 pb-6 lg:hidden flex flex-col"
           >
             <div className="flex flex-col gap-2 mb-8">
               {navLinks.map((link) => {
@@ -108,18 +104,17 @@ export default function Navbar() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`px-6 py-4 rounded-xl text-lg transition-all ${
-                      isActive
+                    className={`px-6 py-4 rounded-xl text-lg transition-all ${isActive
                         ? "bg-primary-50 text-primary-600 font-bold"
                         : "text-text-secondary font-semibold hover:bg-secondary-50 hover:text-primary-500"
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </Link>
                 );
               })}
             </div>
-            
+
             <div className="mt-auto border-t border-border pt-6">
               <Link
                 href="/login"

@@ -96,6 +96,7 @@ export const CATEGORY_CONFIG: Record<string, { icon: string; label: string }> = 
   "Jar Kaca": { icon: "liquor", label: "Jar Kaca" },
   "Jar Cylinder": { icon: "inventory_2", label: "Jar Cylinder" },
   "Botol": { icon: "water_bottle", label: "Botol" },
+  "Botol Plastik": { icon: "water_bottle", label: "Botol Plastik" },
 };
 
 /**
