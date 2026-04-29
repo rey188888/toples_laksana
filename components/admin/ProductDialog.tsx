@@ -84,9 +84,6 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
             <h3 className="text-xl font-black text-text-primary tracking-tight">
               {product ? "Edit Produk" : "Tambah Produk Baru"}
             </h3>
-            <p className="text-xs text-text-muted font-bold uppercase tracking-widest mt-1">
-              Format data terbaru
-            </p>
           </div>
           <button onClick={onClose} className="w-10 h-10 rounded-xl hover:bg-secondary-50 text-text-muted transition-colors flex items-center justify-center">
             <span className="material-symbols-outlined">close</span>
@@ -148,15 +145,15 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
             <textarea
               value={formData.description || ""}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-xl font-bold focus:bg-white focus:border-primary-500 outline-none transition-all min-h-28"
+              className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold focus:bg-white focus:border-primary-500 outline-none transition-all min-h-28"
             />
           </div>
 
           <div className="pt-6 sticky bottom-0 bg-white/80 backdrop-blur-md mt-6 flex gap-3">
-            <button type="button" onClick={onClose} className="flex-1 py-4 rounded-2xl bg-secondary-50 text-text-primary font-black uppercase tracking-widest text-xs hover:bg-secondary-100 transition-all">
+            <button type="button" onClick={onClose} className="flex-1 py-4 rounded-xl bg-secondary-50 text-text-primary font-black uppercase tracking-widest text-xs hover:bg-secondary-100 transition-all">
               Batal
             </button>
-            <button type="submit" disabled={loading} className="flex-2 py-4 rounded-2xl bg-primary-500 text-white font-black uppercase tracking-widest text-xs hover:bg-primary-600 shadow-lg shadow-primary-500/20 transition-all disabled:opacity-50">
+            <button type="submit" disabled={loading} className="flex-2 py-4 rounded-xl bg-primary-500 text-white font-black uppercase tracking-widest text-xs hover:bg-primary-600 shadow-lg shadow-primary-500/20 transition-all disabled:opacity-50">
               {loading ? "Menyimpan..." : product ? "Simpan Perubahan" : "Tambah Produk"}
             </button>
           </div>
@@ -184,7 +181,7 @@ function Field({
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-xl font-bold focus:bg-white focus:border-primary-500 outline-none transition-all"
+        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold focus:bg-white focus:border-primary-500 outline-none transition-all"
       />
     </div>
   );
@@ -206,7 +203,7 @@ function NumberField({
         type="number"
         value={value}
         onChange={(e) => onChange(Number.parseFloat(e.target.value) || 0)}
-        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-xl font-bold text-sm focus:bg-white focus:border-primary-500 outline-none"
+        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold text-sm focus:bg-white focus:border-primary-500 outline-none"
       />
     </div>
   );
@@ -230,7 +227,7 @@ function SelectField({
         required
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-xl font-bold focus:bg-white focus:border-primary-500 outline-none transition-all appearance-none"
+        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold focus:bg-white focus:border-primary-500 outline-none transition-all appearance-none"
       >
         {options.map(([optionValue, label]) => (
           <option key={optionValue} value={optionValue}>{label}</option>

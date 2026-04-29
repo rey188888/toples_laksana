@@ -60,11 +60,10 @@ export default function FilterSidebar({
               <button
                 key={cat.value}
                 onClick={() => onToggleArray("category", cat.value)}
-                className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl text-[0.65rem] font-black transition-all border ${
-                  isActive
+                className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl text-[0.65rem] font-black transition-all border ${isActive
                     ? "bg-primary-500 text-white border-primary-500 shadow-lg shadow-primary-500/20"
                     : "bg-white text-text-secondary border-border hover:border-primary-200 hover:text-primary-600"
-                }`}
+                  }`}
               >
                 {config && (
                   <span className="material-symbols-outlined text-lg">
@@ -91,12 +90,12 @@ export default function FilterSidebar({
             <div className="flex justify-between text-xs font-bold text-text-secondary">
               <span>Min: <span className="text-primary-600">{volumeMin}ml</span></span>
             </div>
-            <input 
-              type="range" 
-              min={vRange.min} 
-              max={volumeMax || vRange.max} 
-              step={10} 
-              value={volumeMin} 
+            <input
+              type="range"
+              min={vRange.min}
+              max={volumeMax || vRange.max}
+              step={10}
+              value={volumeMin}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
                 setVolumeMin(val);
@@ -107,7 +106,7 @@ export default function FilterSidebar({
               onTouchEnd={() => {
                 onSetFilters({ volume_min: volumeMin, volume_max: volumeMax });
               }}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-500" 
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-500"
             />
           </div>
 
@@ -116,12 +115,12 @@ export default function FilterSidebar({
             <div className="flex justify-between text-xs font-bold text-text-secondary">
               <span>Max: <span className="text-primary-600">{volumeMax}ml</span></span>
             </div>
-            <input 
-              type="range" 
-              min={Math.max(volumeMin, vRange.min)} 
-              max={vRange.max} 
-              step={10} 
-              value={volumeMax} 
+            <input
+              type="range"
+              min={Math.max(volumeMin, vRange.min)}
+              max={vRange.max}
+              step={10}
+              value={volumeMax}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
                 setVolumeMax(val);
@@ -132,7 +131,7 @@ export default function FilterSidebar({
               onTouchEnd={() => {
                 onSetFilters({ volume_min: volumeMin, volume_max: volumeMax });
               }}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-500" 
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-500"
             />
           </div>
         </div>
@@ -141,16 +140,15 @@ export default function FilterSidebar({
       {/* Advanced Filters Toggle */}
       <button
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="w-full flex items-center justify-between px-5 py-4 bg-white rounded-2xl border border-border hover:border-primary-500/30 transition-all group shadow-sm active:scale-[0.98]"
+        className="w-full flex items-center justify-between px-5 py-4 bg-white rounded-xl border border-border hover:border-primary-500/30 transition-all group shadow-sm active:scale-[0.98]"
       >
         <span className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-primary group-hover:text-primary-600 transition-colors flex items-center gap-3">
           <span className="material-symbols-outlined text-lg">tune</span>
           Filter Lanjutan
         </span>
         <span
-          className={`material-symbols-outlined text-lg text-text-muted transition-transform duration-500 ${
-            showAdvanced ? "rotate-180" : ""
-          }`}
+          className={`material-symbols-outlined text-lg text-text-muted transition-transform duration-500 ${showAdvanced ? "rotate-180" : ""
+            }`}
         >
           expand_more
         </span>
@@ -158,9 +156,8 @@ export default function FilterSidebar({
 
       {/* Advanced Filters Panel */}
       <div
-        className={`space-y-8 overflow-hidden transition-all duration-500 ease-in-out ${
-          showAdvanced ? "max-h-[1000px] opacity-100 mt-6 pb-6" : "max-h-0 opacity-0"
-        }`}
+        className={`space-y-8 overflow-hidden transition-all duration-500 ease-in-out ${showAdvanced ? "max-h-[1000px] opacity-100 mt-6 pb-6" : "max-h-0 opacity-0"
+          }`}
       >
         {/* Material Body */}
         <section>
@@ -231,11 +228,10 @@ export default function FilterSidebar({
               return (
                 <label key={color.value} className="flex items-center gap-3 cursor-pointer group px-3 py-2 rounded-xl hover:bg-secondary-50 transition-colors">
                   <div
-                    className={`relative w-6 h-6 rounded-full border-2 transition-all flex-shrink-0 ${
-                      isActive
+                    className={`relative w-6 h-6 rounded-full border-2 transition-all shrink-0 ${isActive
                         ? "ring-2 ring-primary-500/50 border-primary-500 scale-110"
                         : "border-border"
-                    }`}
+                      }`}
                     style={{ backgroundColor: hex }}
                   >
                     {isActive && (
@@ -262,7 +258,7 @@ export default function FilterSidebar({
       </div>
 
       {/* Trust Badge / Certification */}
-      <div className="p-6 bg-primary-50 rounded-2xl border border-primary-100 shadow-inner">
+      <div className="p-6 bg-primary-50 rounded-xl border border-primary-100 shadow-inner">
         <span className="material-symbols-outlined text-primary-500 mb-3 text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
           verified
         </span>

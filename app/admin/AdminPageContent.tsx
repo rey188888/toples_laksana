@@ -250,7 +250,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
           {/* Dashboard Stats */}
           {activeTab === "products" && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-primary-500 rounded-4xl p-8 text-white shadow-xl shadow-primary-500/20 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+              <div className="bg-primary-500 rounded-2xl p-8 text-white shadow-xl shadow-primary-500/20 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
                 <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all" />
                 <div className="flex items-center gap-4 mb-6 relative">
                   <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-md">
@@ -262,7 +262,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div className="text-[0.65rem] font-bold text-white/60 uppercase tracking-widest">Unit Tersedia</div>
               </div>
 
-              <div className="bg-white rounded-4xl p-8 shadow-sm border border-border relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-border relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
                 <div className="flex items-center gap-4 mb-6 relative">
                   <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center group-hover:bg-primary-50 transition-colors">
                     <span className="material-symbols-outlined text-text-primary group-hover:text-primary-500 transition-colors text-2xl">touch_app</span>
@@ -273,7 +273,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div className="text-[0.65rem] font-bold text-text-muted uppercase tracking-widest">Klik & Dilihat</div>
               </div>
 
-              <div className="bg-white rounded-4xl p-8 shadow-sm border border-border relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-border relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
                 <div className="flex items-center gap-4 mb-6 relative">
                   <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center group-hover:bg-green-50 transition-colors">
                     <span className="material-symbols-outlined text-text-primary group-hover:text-green-600 transition-colors text-2xl">chat</span>
@@ -296,7 +296,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <input
                     type="text"
                     placeholder="Cari SKU, nama, atau material..."
-                    className="w-full pl-12 pr-6 py-3 bg-secondary-50/30 border border-border rounded-xl text-sm font-bold text-text-primary focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/5 outline-none transition-all"
+                    className="w-full pl-12 pr-6 py-3 bg-secondary-50/30 border border-border rounded-lg text-sm font-bold text-text-primary focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/5 outline-none transition-all"
                   />
                 </div>
                 <div className="flex gap-2 lg:gap-3">
@@ -313,7 +313,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               <div className="overflow-x-auto">
                 {products.length === 0 ? (
                   <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center">
-                    <div className="w-24 h-24 bg-secondary-50 rounded-3xl flex items-center justify-center mb-6">
+                    <div className="w-24 h-24 bg-secondary-50 rounded-xl flex items-center justify-center mb-6">
                       <span className="material-symbols-outlined text-5xl opacity-20">inventory_2</span>
                     </div>
                     <p className="text-xl font-black text-text-primary tracking-tight">Katalog masih kosong</p>
@@ -339,7 +339,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                           <TableRow key={p.id} className="hover:bg-primary-50/20 transition-all duration-200 group border-border">
                             <TableCell className="px-8 py-8">
                               <div className="flex items-center gap-5">
-                                <div className="w-14 h-14 rounded-xl bg-[#F9FAFB] flex items-center justify-center p-1.5 border border-border shrink-0 overflow-hidden group-hover:scale-105 group-hover:border-primary-200 transition-all">
+                                <div className="w-14 h-14 rounded-lg bg-[#F9FAFB] flex items-center justify-center p-1.5 border border-border shrink-0 overflow-hidden group-hover:scale-105 group-hover:border-primary-200 transition-all">
                                   {image ? (
                                     <img className="w-full h-full object-cover rounded-lg" alt={p.name} src={image} />
                                   ) : (
@@ -443,7 +443,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID Kategori</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Kategori</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Jml Produk</TableHead>
@@ -483,7 +483,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID Warna</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Preview</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Warna</TableHead>
@@ -525,7 +525,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID Tipe</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Tipe</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] text-right">Aksi</TableHead>
@@ -561,7 +561,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID Satuan</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Satuan</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Simbol</TableHead>
@@ -601,7 +601,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID Tipe</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Deskripsi</TableHead>
@@ -639,7 +639,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Kode</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Promo</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Tipe</TableHead>
@@ -696,7 +696,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Produk</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Tipe</TableHead>
@@ -748,7 +748,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-secondary-50/50 hover:bg-secondary-50/50">
+                  <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Produk</TableHead>
                     <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">User</TableHead>

@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer id="footer" className="w-full mt-6 bg-white border-t border-border text-sm leading-relaxed relative overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 px-6 lg:px-12 py-16 lg:py-24 max-w-screen-2xl mx-auto relative z-10">
+    <footer id="footer" className="w-full mt-0 bg-white border-t border-border text-sm leading-relaxed relative overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 px-6 lg:px-12 py-6 lg:py-12 max-w-screen-2xl mx-auto relative z-10">
 
         {/* Brand Column */}
         <div className="md:col-span-12 lg:col-span-5 pr-0 lg:pr-12">
@@ -61,8 +61,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-border bg-background">
-        <div className="max-w-screen-2xl mx-auto px-6 lg:px-12 py-8 flex flex-col items-center justify-center text-center">
+      <div className="bg-white px-6 lg:px-12">
+        <div className="max-w-screen-2xl mx-auto py-8 flex flex-col items-center justify-center text-center border-t border-border">
           <p className="text-text-muted font-bold text-xs sm:text-sm">
             © {new Date().getFullYear()} Toples Laksana Bandung.
           </p>

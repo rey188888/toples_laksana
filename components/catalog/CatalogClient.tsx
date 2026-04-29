@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CatalogFilters, FacetCounts, PaginatedResponse, Product } from "@/types/product";
+import { CatalogFilters, FacetCounts, PaginatedResponse, Product, getSpecValue, getLowestRetailPrice, getPrimaryImage } from "@/types/product";
+import { formatPrice } from "@/lib/price-calculator";
 
 const SORT_LABELS: Record<string, string> = {
   popular: "Terpopuler",
@@ -42,6 +43,7 @@ function CatalogContent() {
   const [loading, setLoading] = useState(true);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   // Fetch filter facets (categories, tags, etc.) once on component mount
   useEffect(() => {
@@ -76,15 +78,7 @@ function CatalogContent() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
-      <main className="pb-20 max-w-screen-2xl mx-auto px-4 lg:px-8">
-        {/* Breadcrumbs */}
-        <nav className="flex items-center gap-2 py-4 text-sm text-gray-500 font-medium">
-          <Link className="hover:text-primary-500 transition-colors" href="/">
-            Beranda
-          </Link>
-          <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <span className="text-gray-900 font-semibold">Katalog</span>
-        </nav>
+      <main className="pb-12 max-w-screen-2xl mx-auto px-4 lg:px-8 pt-4">
 
         {/* Controls Bar */}
         <div className="flex items-center justify-between gap-4 py-3 mb-4 border-b border-gray-100">
@@ -140,9 +134,27 @@ function CatalogContent() {
             </div>
           </div>
 
-          <span className="text-sm text-gray-400">
-            {pagination.total} produk
-          </span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-2 transition-all ${viewMode === "grid" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
+                title="Grid view"
+              >
+                <span className="material-symbols-outlined text-lg">grid_view</span>
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-2 transition-all ${viewMode === "list" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
+                title="List view"
+              >
+                <span className="material-symbols-outlined text-lg">view_list</span>
+              </button>
+            </div>
+            <span className="text-sm text-gray-400">
+              {pagination.total} produk
+            </span>
+          </div>
         </div>
 
         {activeFilterCount > 0 && (
@@ -158,7 +170,8 @@ function CatalogContent() {
         )}
 
         {/* Main Grid: Sidebar + Products */}
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start">
+
           {/* Desktop Sidebar */}
           <div className="hidden lg:block sticky top-20">
             <FilterSidebar
@@ -213,20 +226,31 @@ function CatalogContent() {
           <div className="min-h-[600px]">
             {loading ? (
               /* Skeleton Grid */
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <div key={i} className="bg-white border border-gray-100 overflow-hidden rounded-lg animate-pulse">
-                    <div className="aspect-square bg-gray-50" />
-                    <div className="p-4 space-y-3">
-                      <div className="h-4 bg-gray-50 w-3/4 rounded" />
-                      <div className="h-4 bg-gray-50 w-1/2 rounded" />
+              <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "flex flex-col gap-3"}>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  viewMode === "grid" ? (
+                    <div key={i} className="bg-white border border-gray-100 overflow-hidden rounded-lg animate-pulse">
+                      <div className="aspect-square bg-gray-50" />
+                      <div className="p-4 space-y-3">
+                        <div className="h-4 bg-gray-50 w-3/4 rounded" />
+                        <div className="h-4 bg-gray-50 w-1/2 rounded" />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div key={i} className="bg-white border border-gray-100 rounded-lg animate-pulse flex gap-4 p-4">
+                      <div className="w-24 h-24 bg-gray-50 rounded-lg shrink-0" />
+                      <div className="flex-1 space-y-3 py-1">
+                        <div className="h-4 bg-gray-50 w-3/4 rounded" />
+                        <div className="h-3 bg-gray-50 w-full rounded" />
+                        <div className="h-4 bg-gray-50 w-1/4 rounded" />
+                      </div>
+                    </div>
+                  )
                 ))}
               </div>
             ) : products.length === 0 ? (
               /* Empty State */
-              <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-border">
+              <div className="text-center py-24 bg-white rounded-xl border border-dashed border-border">
                 <span className="material-symbols-outlined text-7xl text-text-muted/20 mb-6">
                   inventory_2
                 </span>
@@ -245,17 +269,53 @@ function CatalogContent() {
               </div>
             ) : (
               <>
-                {/* Product Cards Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                  {products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onCompareToggle={handleCompareToggle}
-                      isComparing={compareIds.includes(product.id)}
-                    />
-                  ))}
-                </div>
+                {viewMode === "grid" ? (
+                  /* Product Cards Grid */
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {products.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onCompareToggle={handleCompareToggle}
+                        isComparing={compareIds.includes(product.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  /* Product List View */
+                  <div className="flex flex-col gap-3">
+                    {products.map((product) => {
+                      const volume = getSpecValue(product, "volume_ml");
+                      const retailPrice = getLowestRetailPrice(product);
+                      const heroImage = getPrimaryImage(product);
+                      return (
+                        <Link
+                          key={product.id}
+                          href={`/products/${product.id}`}
+                          className="group flex items-center gap-4 bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md transition-all"
+                        >
+                          <div className="w-24 h-24 shrink-0 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
+                            {heroImage ? (
+                              <img src={heroImage} alt={product.name} className="w-full h-full object-contain scale-75 group-hover:scale-90 transition-transform duration-500" />
+                            ) : (
+                              <span className="material-symbols-outlined text-3xl text-gray-200">inventory_2</span>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm font-semibold text-gray-900 group-hover:text-primary-500 transition-colors line-clamp-1">{product.name}</h3>
+                            <p className="text-xs text-gray-400 mt-1 line-clamp-1">
+                              {product.bodyMaterial}{volume ? ` - ${volume}ml` : ""}
+                            </p>
+                            <span className="text-sm font-bold text-gray-900 mt-1 block">
+                              {retailPrice > 0 ? formatPrice(retailPrice) : "Hubungi Kami"}
+                            </span>
+                          </div>
+                          <span className="material-symbols-outlined text-gray-300 group-hover:text-primary-500 transition-colors shrink-0">chevron_right</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {/* Pagination */}
                 {pagination.totalPages > 1 && (

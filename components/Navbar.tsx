@@ -18,7 +18,8 @@ export default function Navbar() {
   const navLinks = [
     { label: "Beranda", href: "/" },
     { label: "Katalog", href: "/catalog" },
-    { label: "Bandingkan", href: "/compare" },
+    { label: "Lokasi", href: "/#lokasi" },
+    { label: "Tentang Kami", href: "/#tentang" },
   ];
 
   return (
@@ -41,8 +42,8 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   className={`px-4 py-2 rounded-full transition-all ${isActive
-                      ? "bg-white/20 text-white font-bold"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
+                    ? "bg-white/20 text-white font-bold"
+                    : "text-white/70 hover:text-white hover:bg-white/10"
                     }`}
                 >
                   {link.label}
@@ -55,10 +56,9 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="hidden lg:flex bg-white text-primary-500 px-5 py-2 rounded-lg text-sm font-bold hover:bg-primary-50 transition-all shadow-sm items-center gap-2"
+              className="hidden lg:flex bg-white text-primary-500 px-4 py-2 rounded-xl text-sm font-bold hover:bg-primary-50 transition-all shadow-sm items-center gap-2"
             >
               <span className="material-symbols-outlined text-[1.1rem]">shield_person</span>
-              Portal Admin
             </Link>
 
             {/* Hamburger */}
@@ -92,8 +92,8 @@ export default function Navbar() {
                     key={link.label}
                     href={link.href}
                     className={`px-6 py-4 rounded-xl text-lg transition-all ${isActive
-                        ? "bg-white/20 text-white font-bold"
-                        : "text-white/70 font-semibold hover:bg-white/10 hover:text-white"
+                      ? "bg-white/20 text-white font-bold"
+                      : "text-white/70 font-semibold hover:bg-white/10 hover:text-white"
                       }`}
                   >
                     {link.label}

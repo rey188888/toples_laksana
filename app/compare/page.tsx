@@ -26,6 +26,15 @@ function getGridCols(count: number) {
   return "grid-cols-4";
 }
 
+function formatLabel(val?: string) {
+  if (!val) return "-";
+  const cleaned = val.replace(/^(mat|type|lid|lid_type)_/i, "");
+  if (cleaned.toUpperCase() === "PET" || cleaned.toUpperCase() === "PP" || cleaned.toUpperCase() === "HDPE") {
+    return cleaned.toUpperCase();
+  }
+  return cleaned.split(/_|-/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+}
+
 export default async function ComparisonPage({ searchParams }: ComparePageProps) {
   const { ids } = await searchParams;
   let products: Product[] = [];
@@ -69,7 +78,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
         </div>
 
         {products.length === 0 ? (
-          <div className="bg-white border border-border rounded-4xl p-20 text-center max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
+          <div className="bg-white border border-border rounded-2xl p-20 text-center max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
             <div className="w-24 h-24 bg-secondary-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
               <span className="material-symbols-outlined text-5xl text-secondary-200">compare</span>
             </div>
@@ -77,7 +86,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
             <p className="text-text-secondary mb-10 font-medium opacity-70">
               Pilih hingga 3 produk dari katalog untuk membandingkan spesifikasinya secara detail di sini.
             </p>
-            <Link href="/catalog" className="bg-primary-500 text-white px-10 py-4.5 rounded-2xl font-black uppercase tracking-widest hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/25 inline-flex text-[0.7rem] active:scale-95">
+            <Link href="/catalog" className="bg-primary-500 text-white px-10 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/25 inline-flex text-[0.7rem] active:scale-95">
               Lihat Katalog Produk
             </Link>
           </div>
@@ -85,15 +94,10 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
           <div className="overflow-x-auto no-scrollbar pb-8">
             {/* Product Cards Header */}
             <div className={`grid ${gridCols} items-stretch gap-6 mb-8 min-w-[700px]`}>
-              <div className="flex flex-col justify-end pb-8">
-                <h3 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-primary-500 mb-1">Spesifikasi</h3>
-                <p className="text-[0.65rem] font-bold text-text-muted">Detail Kemasan</p>
-              </div>
-
               {products.map((product) => {
                 const image = getPrimaryImage(product);
                 return (
-                  <div key={product.id} className="bg-white/70 backdrop-blur-md p-6 flex flex-col items-center text-center shadow-sm border border-white rounded-4xl relative group hover:shadow-xl hover:shadow-secondary-900/5 transition-all duration-500">
+                  <div key={product.id} className="bg-white/70 backdrop-blur-md p-6 flex flex-col items-center text-center border border-white rounded-xl relative group transition-all duration-500">
                     <Link href={`/compare?ids=${ids?.split(",").filter((id) => id !== product.id).join(",")}`} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary-50 hover:bg-red-50 text-text-muted hover:text-red-500 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100">
                       <span className="material-symbols-outlined text-base">close</span>
                     </Link>
@@ -119,20 +123,20 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
             </div>
 
             {/* Spec Comparison Table */}
-            <div className="flex flex-col border border-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-secondary-900/5 bg-white/40 backdrop-blur-xl min-w-[700px]">
+            <div className="flex flex-col rounded-xl overflow-hidden bg-white/40 backdrop-blur-xl min-w-[700px]">
               {[
                 { label: "Volume Kapasitas", getter: (p: Product) => `${getSpecValue(p, "volume_ml") || "-"} ml` },
                 { label: "Tinggi Total", getter: (p: Product) => `${getSpecValue(p, "tinggi_cm") || "-"} cm` },
                 { label: "Diameter Badan", getter: (p: Product) => `${getSpecValue(p, "diameter_badan_cm") || "-"} cm` },
-                { label: "Bahan Badan", getter: (p: Product) => p.bodyMaterial },
-                { label: "Bahan Tutup", getter: (p: Product) => p.lidMaterial },
-                { label: "Tipe Tutup", getter: (p: Product) => p.lidType },
+                { label: "Bahan Badan", getter: (p: Product) => formatLabel(p.bodyMaterial) },
+                { label: "Bahan Tutup", getter: (p: Product) => formatLabel(p.lidMaterial) },
+                { label: "Tipe Tutup", getter: (p: Product) => formatLabel(p.lidType) },
                 { label: "Kategori", getter: (p: Product) => getCategoryLabel(p.categoryId) },
               ].map((row, idx) => (
-                <div key={row.label} className={`grid ${gridCols} items-stretch ${idx % 2 === 0 ? "bg-white/50" : "bg-transparent"} hover:bg-primary-50/30 transition-colors border-b border-white last:border-b-0`}>
-                  <div className="px-8 py-5 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] border-r border-white flex items-center">{row.label}</div>
+                <div key={row.label} className={`grid ${gridCols} items-stretch ${idx % 2 === 0 ? "bg-white/50" : "bg-transparent"} hover:bg-primary-50/30 transition-colors`}>
+                  <div className="px-8 py-5 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] flex items-center">{row.label}</div>
                   {products.map((p) => (
-                    <div key={`${p.id}-${row.label}`} className="px-8 py-5 text-sm text-center text-text-primary font-black border-r border-white last:border-r-0 flex items-center justify-center tracking-tight">
+                    <div key={`${p.id}-${row.label}`} className="px-8 py-5 text-sm text-center text-text-primary font-black flex items-center justify-center tracking-tight">
                       {row.getter(p)}
                     </div>
                   ))}
@@ -141,13 +145,13 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
 
               {/* Price Row */}
               <div className={`grid ${gridCols} items-stretch bg-primary-50/50 backdrop-blur-md`}>
-                <div className="px-8 py-8 text-[0.65rem] font-black text-primary-600 uppercase tracking-[0.25em] border-r border-primary-100/30 flex items-center">
+                <div className="px-8 py-8 text-[0.65rem] font-black text-primary-600 uppercase tracking-[0.25em] flex items-center">
                   Harga Ecer Terendah
                 </div>
                 {products.map((p) => {
                   const price = getLowestRetailPrice(p);
                   return (
-                    <div key={`${p.id}-price`} className="px-8 py-8 text-center border-r border-primary-100/30 last:border-r-0 flex flex-col items-center justify-center bg-primary-500/5">
+                    <div key={`${p.id}-price`} className="px-8 py-8 text-center flex flex-col items-center justify-center bg-primary-500/5">
                       <span className="text-2xl font-black text-primary-600 tracking-tighter">
                         {price > 0 ? formatPrice(price) : "Hubungi Kami"}
                       </span>
@@ -162,7 +166,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
             <div className={`grid ${gridCols} items-center mt-8 gap-6 min-w-[700px]`}>
               <div />
               {products.map((p) => (
-                <a key={`${p.id}-cta`} href={buildInquiryUrl(p)} target="_blank" rel="noopener noreferrer" className="w-full bg-white border-2 border-primary-500/10 text-primary-600 py-4 px-6 rounded-2xl font-black text-[0.7rem] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-xl shadow-primary-500/5 active:scale-95 group">
+                <a key={`${p.id}-cta`} href={buildInquiryUrl(p)} target="_blank" rel="noopener noreferrer" className="w-full bg-white border-2 border-primary-500/10 text-primary-600 py-3 px-6 rounded-xl font-black text-[0.7rem] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-xl shadow-primary-500/5 active:scale-95 group">
                   <span className="material-symbols-outlined text-xl group-hover:rotate-12 transition-transform">chat</span>
                   Tanya Kami
                 </a>

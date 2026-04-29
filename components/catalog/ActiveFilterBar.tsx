@@ -91,7 +91,7 @@ export default function ActiveFilterBar({
               onRemove(pill.key, pill.value || undefined);
             }
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 border border-primary-200 rounded-xl text-xs font-bold hover:bg-primary-100 transition-all group shadow-sm"
+          className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-50 text-primary-700 border border-primary-200 rounded-lg text-xs font-bold hover:bg-primary-100 transition-all group shadow-sm"
         >
           {pill.label}
           <span className="material-symbols-outlined text-[0.8rem] opacity-40 group-hover:opacity-100 transition-opacity">
@@ -107,7 +107,7 @@ export default function ActiveFilterBar({
         Hapus Semua
       </button>
 
-      <span className="ml-auto text-xs font-bold text-text-secondary bg-secondary-50 px-4 py-2 rounded-xl border border-border">
+      <span className="ml-auto text-xs font-bold text-text-secondary bg-secondary-50 px-3 py-1.5 rounded-lg border border-border">
         Ditemukan <span className="text-text-primary font-black">{totalResults}</span> produk
       </span>
     </div>
