@@ -152,6 +152,7 @@ function CatalogContent() {
               totalResults={pagination.total}
               onRemove={removeFilter}
               onClearAll={clearAll}
+              facets={facets}
             />
           </div>
         )}

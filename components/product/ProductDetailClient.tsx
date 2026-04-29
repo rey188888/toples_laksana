@@ -63,8 +63,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const height = getSpecValue(product, "tinggi_cm");
   const diameter = getSpecValue(product, "diameter_badan_cm");
   const weight = getSpecValue(product, "berat_total_gr");
-  const category = getCategoryLabel(product.categoryId);
-  const selectedColor = getLidColorLabel(activePrice?.lidColorId);
+  const category = product.categoryName || getCategoryLabel(product.categoryId);
+  const selectedColor = activePrice?.lidColorName || getLidColorLabel(activePrice?.lidColorId);
+  const selectedColorHex = activePrice?.lidColorHex || COLOR_SWATCHES[activePrice?.lidColorId || ""] || "#ccc";
 
   return (
     <main className="pb-20 pt-12 max-w-full mx-auto px-4 sm:px-8 lg:px-16 xl:px-24">
@@ -184,27 +185,27 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {priceOptions.length > 1 && (
             <div className="mb-6">
               <p className="text-sm text-gray-600 mb-3 flex items-center gap-2">
-                Color: <span className="font-semibold text-gray-900">{selectedColor}</span>
-                <span
-                  className="w-4 h-4 rounded-full border border-border inline-block shadow-sm"
-                  style={{ backgroundColor: COLOR_SWATCHES[activePrice?.lidColorId] || "#ccc" }}
-                />
+                Color: <span className="font-semibold text-gray-900">{selectedColor} <span className="text-xs text-gray-400 font-normal uppercase ml-1">{selectedColorHex}</span></span>
               </p>
               <div className="flex flex-wrap gap-2">
                 {priceOptions.map((price, i) => {
-                  const colorLabel = getLidColorLabel(price.lidColorId);
-                  const hex = COLOR_SWATCHES[price.lidColorId] || "#ccc";
+                  const colorLabel = price.lidColorName || getLidColorLabel(price.lidColorId);
+                  const hex = price.lidColorHex || COLOR_SWATCHES[price.lidColorId] || "#ccc";
+                  const isSelected = i === selectedPriceIdx;
                   return (
                     <button
                       key={`${price.lidColorId}-${price.priceTypeId}`}
                       onClick={() => { setSelectedPriceIdx(i); setQuantity(1); }}
-                      className={`w-8 h-8 rounded-full border-2 transition-all ${i === selectedPriceIdx
-                          ? "ring-2 ring-primary-500 ring-offset-2 border-primary-500"
-                          : "border-gray-200 hover:border-gray-400"
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${isSelected
+                          ? "border-primary-500 bg-primary-50 text-primary-700 font-semibold ring-1 ring-primary-500"
+                          : "border-gray-200 hover:border-gray-300 text-gray-600 bg-white"
                         }`}
-                      style={{ backgroundColor: hex }}
                       title={colorLabel}
-                    />
+                    >
+                      <span className="w-4 h-4 rounded-full border border-border shadow-sm" style={{ backgroundColor: hex }} />
+                      <span className="text-sm">{colorLabel}</span>
+                      <span className="text-xs opacity-50 uppercase">{hex}</span>
+                    </button>
                   );
                 })}
               </div>
@@ -302,15 +303,15 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       {/* Bottom Tabs: Dimensions / Packaging / Specs */}
       <div className="mt-16">
-        <SpecTabs 
-          product={product} 
-          volume={volume} 
-          height={height} 
-          diameter={diameter} 
-          weight={weight} 
+        <SpecTabs
+          product={product}
+          volume={volume}
+          height={height}
+          diameter={diameter}
+          weight={weight}
           category={category}
           selectedColor={selectedColor}
-          activeColorId={activePrice?.lidColorId}
+          selectedColorHex={selectedColorHex}
         />
       </div>
     </main>
@@ -318,15 +319,15 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 }
 
 // Separated tab component to keep main component cleaner
-function SpecTabs({ product, volume, height, diameter, weight, category, selectedColor, activeColorId }: {
-  product: Product; 
-  volume?: number; 
-  height?: number; 
-  diameter?: number; 
-  weight?: number; 
+function SpecTabs({ product, volume, height, diameter, weight, category, selectedColor, selectedColorHex }: {
+  product: Product;
+  volume?: number;
+  height?: number;
+  diameter?: number;
+  weight?: number;
   category: string;
   selectedColor: string;
-  activeColorId?: string;
+  selectedColorHex: string;
 }) {
   const [activeTab, setActiveTab] = useState<"dimensions" | "packaging" | "specs">("dimensions");
 
@@ -397,14 +398,15 @@ function SpecTabs({ product, volume, height, diameter, weight, category, selecte
             { label: "Material Tutup", value: product.lidMaterial },
             { label: "Varian Tutup", value: product.lidVariant },
             { label: "Tipe Tutup", value: product.lidType },
-            { 
-              label: "Warna Tutup", 
+            {
+              label: "Warna Tutup",
               value: (
                 <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full border border-border shadow-sm" style={{ backgroundColor: selectedColorHex }} />
                   <span>{selectedColor}</span>
-                  <div className="w-4 h-4 rounded-full border border-border shadow-sm" style={{ backgroundColor: COLOR_SWATCHES[activeColorId || ""] || "#ccc" }} />
+                  <span className="text-xs text-gray-400 uppercase">{selectedColorHex}</span>
                 </div>
-              ) 
+              )
             },
           ].map((row, i) => (
             <div key={row.label} className={`grid grid-cols-2 text-sm ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Product from "@/models/Product";
 import Category from "@/models/Category";
+import LidColor from "@/models/LidColor";
 import { getCategoryLabel, getLidColorLabel } from "@/types/product";
 
 export async function GET() {
@@ -18,6 +19,7 @@ export async function GET() {
       colors,
       volumeRange,
       priceRange,
+      lidColorDocs,
     ] = await Promise.all([
       Product.aggregate([
         { $match: activeFilter },
@@ -66,21 +68,29 @@ export async function GET() {
         },
         { $project: { _id: 0 } },
       ]),
+      LidColor.find().select("id color colorCode").lean(),
     ]);
 
     const categoryNames = new Map(categoryDocs.map((category) => [category.id, category.name]));
+    const lidColorMap = new Map(lidColorDocs.map((lc) => [lc.id, lc]));
 
     return NextResponse.json({
       categories: categories.map((category) => ({
         value: category._id,
         count: category.count,
+        name: categoryNames.get(category._id) || category._id,
       })),
       materials: materials.filter((item) => item.value),
       lid_types: lidTypes.filter((item) => item.value),
-      colors: colors.map((color) => ({
-        value: color._id,
-        count: color.count,
-      })),
+      colors: colors.map((color) => {
+        const doc = lidColorMap.get(color._id);
+        return {
+          value: color._id,
+          count: color.count,
+          name: doc?.color,
+          hex: doc?.colorCode,
+        };
+      }),
       volume_range: volumeRange[0] || { min: 0, max: 1500 },
       price_range: priceRange[0] || { min: 0, max: 50000 },
     });

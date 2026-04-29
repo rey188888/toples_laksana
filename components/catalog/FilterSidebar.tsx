@@ -71,7 +71,7 @@ export default function FilterSidebar({
                     {config.icon}
                   </span>
                 )}
-                <span>{getCategoryLabel(cat.value)}</span>
+                <span>{cat.name || getCategoryLabel(cat.value)}</span>
               </button>
             );
           })}
@@ -85,36 +85,56 @@ export default function FilterSidebar({
           Volume / Ukuran
         </h3>
 
-        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-2 gap-2">
-          {[
-            { label: "150ml", value: 150 },
-            { label: "250ml", value: 250 },
-            { label: "500ml", value: 500 },
-            { label: "750ml", value: 750 },
-            { label: "1000ml", value: 1000 },
-            { label: "1500ml", value: 1500 },
-          ].map((chip) => {
-            const isActive = filters.volume_min === chip.value && filters.volume_max === chip.value;
-            return (
-              <button
-                key={chip.label}
-                onClick={() => {
-                  if (isActive) {
-                    onSetFilters({ volume_min: undefined, volume_max: undefined });
-                  } else {
-                    onSetFilters({ volume_min: chip.value, volume_max: chip.value });
-                  }
-                }}
-                className={`px-3 py-2.5 rounded-xl text-[0.65rem] font-black transition-all border ${
-                  isActive
-                    ? "bg-primary-500 text-white border-primary-500 shadow-md shadow-primary-500/20"
-                    : "bg-white text-text-secondary border-border hover:border-primary-200"
-                }`}
-              >
-                {chip.label}
-              </button>
-            );
-          })}
+        <div className="space-y-6 px-2">
+          {/* Min Volume Slider */}
+          <div className="space-y-3">
+            <div className="flex justify-between text-xs font-bold text-text-secondary">
+              <span>Min: <span className="text-primary-600">{volumeMin}ml</span></span>
+            </div>
+            <input 
+              type="range" 
+              min={vRange.min} 
+              max={volumeMax || vRange.max} 
+              step={10} 
+              value={volumeMin} 
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                setVolumeMin(val);
+              }}
+              onMouseUp={() => {
+                onSetFilters({ volume_min: volumeMin, volume_max: volumeMax });
+              }}
+              onTouchEnd={() => {
+                onSetFilters({ volume_min: volumeMin, volume_max: volumeMax });
+              }}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-500" 
+            />
+          </div>
+
+          {/* Max Volume Slider */}
+          <div className="space-y-3">
+            <div className="flex justify-between text-xs font-bold text-text-secondary">
+              <span>Max: <span className="text-primary-600">{volumeMax}ml</span></span>
+            </div>
+            <input 
+              type="range" 
+              min={Math.max(volumeMin, vRange.min)} 
+              max={vRange.max} 
+              step={10} 
+              value={volumeMax} 
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                setVolumeMax(val);
+              }}
+              onMouseUp={() => {
+                onSetFilters({ volume_min: volumeMin, volume_max: volumeMax });
+              }}
+              onTouchEnd={() => {
+                onSetFilters({ volume_min: volumeMin, volume_max: volumeMax });
+              }}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-500" 
+            />
+          </div>
         </div>
       </section>
 
@@ -203,28 +223,38 @@ export default function FilterSidebar({
             <span className="material-symbols-outlined text-base">palette</span>
             Warna Tutup
           </h3>
-          <div className="flex flex-wrap gap-x-3 gap-y-5 p-1.5">
+          <div className="space-y-1">
             {(facets?.colors || []).map((color) => {
               const isActive = !!filters.colors?.includes(color.value);
-              const hex = COLOR_SWATCHES[color.value] || "#ccc";
+              const hex = color.hex || COLOR_SWATCHES[color.value] || "#ccc";
+              const colorName = color.name || getLidColorLabel(color.value);
               return (
-                <button
-                  key={color.value}
-                  onClick={() => onToggleArray("colors", color.value)}
-                  className={`relative w-9 h-9 rounded-full border-2 transition-all ${
-                    isActive
-                      ? "ring-4 ring-primary-500/20 border-primary-500 scale-110"
-                      : "border-border hover:border-primary-300"
-                  }`}
-                  style={{ backgroundColor: hex }}
-                  title={`${getLidColorLabel(color.value)} (${color.count})`}
-                >
-                  {isActive && (
-                    <span className="material-symbols-outlined absolute inset-0 flex items-center justify-center text-xs font-black" style={{ color: hex === "#FFFFFF" || hex === "#F5F5F5" ? "#16479D" : "#fff" }}>
-                      check
-                    </span>
-                  )}
-                </button>
+                <label key={color.value} className="flex items-center gap-3 cursor-pointer group px-3 py-2 rounded-xl hover:bg-secondary-50 transition-colors">
+                  <div
+                    className={`relative w-6 h-6 rounded-full border-2 transition-all flex-shrink-0 ${
+                      isActive
+                        ? "ring-2 ring-primary-500/50 border-primary-500 scale-110"
+                        : "border-border"
+                    }`}
+                    style={{ backgroundColor: hex }}
+                  >
+                    {isActive && (
+                      <span className="material-symbols-outlined absolute inset-0 flex items-center justify-center text-[10px] font-black" style={{ color: hex === "#FFFFFF" || hex === "#F5F5F5" ? "#16479D" : "#fff" }}>
+                        check
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    className="hidden"
+                    type="checkbox"
+                    checked={isActive || false}
+                    onChange={() => onToggleArray("colors", color.value)}
+                  />
+                  <span className={`text-xs font-bold flex-1 ${isActive ? "text-primary-700" : "text-text-secondary"} group-hover:text-primary-600 transition-colors`}>
+                    {colorName} <span className="text-[0.6rem] text-text-muted ml-1 uppercase font-normal">{hex}</span>
+                  </span>
+                  <span className="text-[0.6rem] font-black text-text-muted">{color.count}</span>
+                </label>
               );
             })}
           </div>

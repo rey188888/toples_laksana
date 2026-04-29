@@ -14,6 +14,8 @@ export interface ProductPrice {
   price: number;
   validFrom?: string;
   validUntil?: string;
+  lidColorName?: string;
+  lidColorHex?: string;
 }
 
 export interface ProductImage {
@@ -44,6 +46,7 @@ export interface Product {
   sku: string;
   name: string;
   categoryId: string;
+  categoryName?: string;
   productTypeId?: string;
   unitId: string;
   lidMaterial: string;
@@ -195,10 +198,10 @@ export interface PaginatedResponse<T> {
 }
 
 export interface FacetCounts {
-  categories: { value: string; count: number }[];
+  categories: { value: string; count: number; name?: string }[];
   materials: { value: string; count: number }[];
   lid_types: { value: string; count: number }[];
-  colors: { value: string; count: number }[];
+  colors: { value: string; count: number; name?: string; hex?: string }[];
   volume_range: { min: number; max: number };
   price_range: { min: number; max: number };
 }

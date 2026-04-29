@@ -1,25 +1,39 @@
 "use client";
 
-import { CATEGORY_CONFIG, MATERIAL_LABELS, LID_TYPE_LABELS } from "@/lib/use-case-config";
-import { CatalogFilters, getCategoryLabel, getLidColorLabel } from "@/types/product";
+import { ReactNode } from "react";
+import { CATEGORY_CONFIG, MATERIAL_LABELS, LID_TYPE_LABELS, COLOR_SWATCHES } from "@/lib/use-case-config";
+import { CatalogFilters, FacetCounts, getCategoryLabel, getLidColorLabel } from "@/types/product";
 
 interface ActiveFilterBarProps {
   filters: CatalogFilters;
   totalResults: number;
   onRemove: (key: keyof CatalogFilters, value?: string) => void;
   onClearAll: () => void;
+  facets: FacetCounts | null;
 }
 
-function getFilterLabel(key: string, value: string): string {
+function getFilterLabel(key: string, value: string, facets: FacetCounts | null): ReactNode {
   switch (key) {
-    case "category":
-      return getCategoryLabel(value);
+    case "category": {
+      const facetCat = facets?.categories.find((c) => c.value === value);
+      return facetCat?.name || getCategoryLabel(value);
+    }
     case "material_body":
       return MATERIAL_LABELS[value]?.label || value;
     case "lid_type":
       return LID_TYPE_LABELS[value]?.label || value;
-    case "colors":
-      return getLidColorLabel(value);
+    case "colors": {
+      const facetColor = facets?.colors?.find((c) => c.value === value);
+      const hex = facetColor?.hex || COLOR_SWATCHES[value] || "#ccc";
+      const name = facetColor?.name || getLidColorLabel(value);
+      return (
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-full border border-border" style={{ backgroundColor: hex }} />
+          <span>{name}</span>
+          <span className="uppercase text-[10px] opacity-70 font-normal">{hex}</span>
+        </span>
+      );
+    }
     default:
       return value;
   }
@@ -30,15 +44,16 @@ export default function ActiveFilterBar({
   totalResults,
   onRemove,
   onClearAll,
+  facets,
 }: ActiveFilterBarProps) {
   // Collect all active filter pills
-  const pills: { key: keyof CatalogFilters; value: string; label: string }[] = [];
+  const pills: { key: keyof CatalogFilters; value: string; label: ReactNode }[] = [];
 
   if (filters.search) {
     pills.push({ key: "search", value: filters.search, label: `"${filters.search}"` });
   }
   filters.category?.forEach((v) =>
-    pills.push({ key: "category", value: v, label: getFilterLabel("category", v) })
+    pills.push({ key: "category", value: v, label: getFilterLabel("category", v, facets) })
   );
   if (filters.volume_min || filters.volume_max) {
     pills.push({
@@ -48,13 +63,13 @@ export default function ActiveFilterBar({
     });
   }
   filters.material_body?.forEach((v) =>
-    pills.push({ key: "material_body", value: v, label: getFilterLabel("material_body", v) })
+    pills.push({ key: "material_body", value: v, label: getFilterLabel("material_body", v, facets) })
   );
   filters.lid_type?.forEach((v) =>
-    pills.push({ key: "lid_type", value: v, label: getFilterLabel("lid_type", v) })
+    pills.push({ key: "lid_type", value: v, label: getFilterLabel("lid_type", v, facets) })
   );
   filters.colors?.forEach((v) =>
-    pills.push({ key: "colors", value: v, label: getFilterLabel("colors", v) })
+    pills.push({ key: "colors", value: v, label: getFilterLabel("colors", v, facets) })
   );
 
   if (pills.length === 0) return null;

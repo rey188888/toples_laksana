@@ -10,6 +10,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+import CategoryModel from "@/models/Category";
+import LidColorModel from "@/models/LidColor";
+
 async function getProduct(id: string): Promise<Product | null> {
   await connectDB();
 
@@ -20,7 +23,28 @@ async function getProduct(id: string): Promise<Product | null> {
 
   if (!product) return null;
 
-  return JSON.parse(JSON.stringify(product));
+  const category = await CategoryModel.findOne({ id: product.categoryId }).select("name").lean();
+
+  const colorIds = [...new Set((product.prices || []).map((p: { lidColorId: any; }) => p.lidColorId))];
+  const lidColors = await LidColorModel.find({ id: { $in: colorIds } }).select("id color colorCode").lean();
+  const colorMap = new Map(lidColors.map((lc) => [lc.id, lc]));
+
+  const parsedProduct = JSON.parse(JSON.stringify(product));
+  if (category) {
+    parsedProduct.categoryName = category.name;
+  }
+  if (parsedProduct.prices) {
+    parsedProduct.prices = parsedProduct.prices.map((p: any) => {
+      const doc = colorMap.get(p.lidColorId);
+      if (doc) {
+        p.lidColorName = doc.color;
+        p.lidColorHex = doc.colorCode;
+      }
+      return p;
+    });
+  }
+
+  return parsedProduct;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -29,7 +53,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!product) return { title: "Produk Tidak Ditemukan" };
 
   const volume = getSpecValue(product, "volume_ml");
-  const category = getCategoryLabel(product.categoryId);
+  const category = product.categoryName || getCategoryLabel(product.categoryId);
 
   return {
     title: `${product.name}${volume ? ` ${volume}ml` : ""} - Toples Laksana`,
