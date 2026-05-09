@@ -11,19 +11,105 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { AppIcon } from "@/components/ui/app-icon";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import MasterDataDialog, { MasterDataField } from "@/components/admin/MasterDataDialog";
+import ConfirmModal from "@/components/ui/ConfirmModal";
+import { IProductType } from "@/models/ProductType";
 
 interface ProductTypesPageContentProps {
-  initialTypes: any[];
+  initialProductTypes: IProductType[];
 }
 
-export default function ProductTypesPageContent({ initialTypes }: ProductTypesPageContentProps) {
-  const [types] = useState(initialTypes);
-  const [searchQuery, setSearchQuery] = useState("");
+const PRODUCT_TYPE_FIELDS: MasterDataField[] = [
+  { name: "id", label: "ID Tipe Produk", type: "text", placeholder: "misal: toples-jar", required: true },
+  { name: "name", label: "Nama Tipe Produk", type: "text", placeholder: "misal: Toples Jar", required: true },
+];
 
-  const filteredTypes = types.filter(type => 
-    type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    type.id.toLowerCase().includes(searchQuery.toLowerCase())
+export default function ProductTypesPageContent({ initialProductTypes }: ProductTypesPageContentProps) {
+  const [productTypes, setProductTypes] = useState(initialProductTypes);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [editingProductType, setEditingProductType] = useState<IProductType | null>(null);
+  const [productTypeToDelete, setProductTypeToDelete] = useState<string | null>(null);
+  
+  const router = useRouter();
+
+  const filteredProductTypes = productTypes.filter(pt => 
+    pt.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    pt.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleSave = async (data: any) => {
+    const isEditing = !!editingProductType;
+    const url = isEditing ? `/api/product-types/${editingProductType.id}` : "/api/product-types";
+    const method = isEditing ? "PATCH" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menyimpan tipe produk");
+      }
+
+      toast.success(isEditing ? "Tipe produk berhasil diperbarui" : "Tipe produk berhasil ditambahkan");
+      
+      const saved = await response.json();
+      if (isEditing) {
+        setProductTypes(productTypes.map(p => p.id === editingProductType.id ? saved.data : p));
+      } else {
+        setProductTypes([saved.data, ...productTypes]);
+      }
+      
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!productTypeToDelete) return;
+
+    try {
+      const response = await fetch(`/api/product-types/${productTypeToDelete}`, { method: "DELETE" });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menghapus tipe produk");
+      }
+
+      setProductTypes(productTypes.filter(p => p.id !== productTypeToDelete));
+      toast.success("Tipe produk berhasil dihapus");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsConfirmOpen(false);
+      setProductTypeToDelete(null);
+    }
+  };
+
+  const openAddDialog = () => {
+    setEditingProductType(null);
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (pt: IProductType) => {
+    setEditingProductType(pt);
+    setIsDialogOpen(true);
+  };
+
+  const openDeleteConfirm = (id: string) => {
+    setProductTypeToDelete(id);
+    setIsConfirmOpen(true);
+  };
 
   return (
     <>
@@ -32,14 +118,20 @@ export default function ProductTypesPageContent({ initialTypes }: ProductTypesPa
         <div>
           <h2 className="text-[1.6rem] font-black text-text-primary tracking-tight">Tipe Produk</h2>
         </div>
-        <button className="bg-primary-50 text-primary-600 px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-100 transition-all active:scale-95 group cursor-pointer border border-primary-100">
+        <button 
+          onClick={openAddDialog}
+          className="bg-primary-500 text-white px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-600 transition-all active:scale-95 group cursor-pointer shadow-lg shadow-primary-500/20"
+        >
           <AppIcon name="add" className="text-lg" />
-          Tambah Tipe
+          Tambah Tipe Produk
         </button>
       </header>
 
       {/* Floating Action Button for Mobile */}
-      <button className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all">
+      <button 
+        onClick={openAddDialog}
+        className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all shadow-xl shadow-primary-500/30"
+      >
         <AppIcon name="add" className="text-2xl" />
       </button>
 
@@ -72,36 +164,42 @@ export default function ProductTypesPageContent({ initialTypes }: ProductTypesPa
               <TableHeader>
                 <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
                   <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">ID Tipe</TableHead>
-                  <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Tipe</TableHead>
+                  <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Nama Tipe Produk</TableHead>
                   <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredTypes.length === 0 ? (
+                {filteredProductTypes.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={3} className="p-20 text-center">
                       <div className="flex flex-col items-center justify-center text-text-muted">
-                        <AppIcon name="grade" className="text-6xl opacity-10 mb-4" />
-                        <p className="text-lg font-black text-text-primary">Tipe tidak ditemukan</p>
+                        <AppIcon name="inventory_2" className="text-6xl opacity-10 mb-4" />
+                        <p className="text-lg font-black text-text-primary">Tipe produk tidak ditemukan</p>
                         <p className="text-sm font-medium">Coba gunakan kata kunci pencarian lain.</p>
                       </div>
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredTypes.map((type) => (
-                    <TableRow key={type.id} className="transition-all duration-200 group border-border">
+                  filteredProductTypes.map((pt) => (
+                    <TableRow key={pt.id} className="transition-all duration-200 group border-border">
                       <TableCell className="px-8 py-5">
-                        <span className="text-xs font-black text-text-muted font-mono tracking-tighter">{type.id}</span>
+                        <span className="text-xs font-black text-text-muted font-mono tracking-tighter">{pt.id}</span>
                       </TableCell>
                       <TableCell className="px-8 py-5">
-                        <p className="text-sm font-black text-text-primary group-hover:text-primary-600 transition-colors tracking-tight">{type.name}</p>
+                        <p className="text-sm font-black text-text-primary group-hover:text-primary-600 transition-colors tracking-tight">{pt.name}</p>
                       </TableCell>
                       <TableCell className="px-8 py-5 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openEditDialog(pt)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="edit" className="text-lg" />
                           </button>
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openDeleteConfirm(pt.id)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="delete" className="text-lg" />
                           </button>
                         </div>
@@ -114,6 +212,25 @@ export default function ProductTypesPageContent({ initialTypes }: ProductTypesPa
           </div>
         </Card>
       </div>
+
+      <MasterDataDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onSave={handleSave}
+        title={editingProductType ? "Edit Tipe Produk" : "Tambah Tipe Produk"}
+        fields={PRODUCT_TYPE_FIELDS}
+        initialData={editingProductType}
+      />
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="Hapus Tipe Produk?"
+        message="Tindakan ini tidak dapat dibatalkan. Tipe produk akan dihapus secara permanen."
+        confirmLabel="Hapus Sekarang"
+        variant="danger"
+      />
     </>
   );
 }
