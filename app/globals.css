@@ -1,19 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F7F9FC;
+  --background: #FFFFFF;
   --foreground: #1A1A2E;
   --surface: #FFFFFF;
-  --border: #D4DCE8;
-  --divider: #C5CFDD;
+  --border: #E2E8F0;
+  --divider: #F1F5F9;
   --card: #FFFFFF;
   --card-foreground: #1A1A2E;
   --popover: #FFFFFF;
   --popover-foreground: #1A1A2E;
-  --muted: #F0F3F8;
+  --muted: #F8FAFC;
   --muted-foreground: #5A6478;
   --input: #D4DCE8;
-  --ring: #16479D;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
 
@@ -82,7 +81,6 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-input: var(--input);
-  --color-ring: var(--ring);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
 
@@ -142,9 +140,9 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
-  --radius-xl: 0.625rem;
-  --radius-2xl: 0.75rem;
-  --radius-3xl: 1rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
 }
 
 @layer base {

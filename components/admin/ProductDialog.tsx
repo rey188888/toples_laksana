@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import type { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import {
@@ -159,7 +160,7 @@ export default function ProductDialog({ isOpen, onClose, product, onSave, master
       onClose();
     } catch (error) {
       console.error("Failed to save product:", error);
-      alert(error instanceof Error ? error.message : "Gagal menyimpan produk.");
+      toast.error(error instanceof Error ? error.message : "Gagal menyimpan produk.");
     } finally {
       setLoading(false);
     }

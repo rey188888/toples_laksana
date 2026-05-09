@@ -124,8 +124,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <button
                   key={`${image.imageUrl}-${i}`}
                   onClick={() => setMainImage(i)}
-                  className={`w-16 h-16 bg-white border rounded-lg p-1 overflow-hidden transition-all cursor-pointer ${i === mainImage ? "border-primary-500 ring-1 ring-primary-500" : "border-gray-200 hover:border-gray-300"
-                    }`}
+                  className={`w-16 h-16 bg-white border rounded-lg p-1 overflow-hidden transition-all cursor-pointer ${i === mainImage ? "border-primary-500 border-2" : "border-gray-200 hover:border-gray-300"}`}
                 >
                   <img alt={`${product.name} ${i + 1}`} className="w-full h-full object-contain scale-75" src={image.imageUrl} />
                 </button>
@@ -196,7 +195,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       key={`${price.lidColorId}-${price.priceTypeId}`}
                       onClick={() => { setSelectedPriceIdx(i); setQuantity(1); }}
                       className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all cursor-pointer ${isSelected
-                          ? "border-primary-500 bg-primary-50 text-primary-700 font-semibold ring-1 ring-primary-500"
+                          ? "border-2 border-primary-500 scale-110 bg-primary-50 text-primary-700 font-semibold"
                           : "border-gray-200 hover:border-gray-300 text-gray-600 bg-white"
                         }`}
                       title={colorLabel}
@@ -237,7 +236,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 min={1}
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, Number.parseInt(e.target.value, 10) || 1))}
-                className="w-24 px-3 py-2.5 text-sm font-semibold bg-white border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                className="w-24 px-3 py-2.5 text-sm font-semibold bg-white border border-gray-200 rounded-lg outline-none focus:border-primary-500 transition-all"
               />
             </div>
             {pricingMode === "wholesale" && (

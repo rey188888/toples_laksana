@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/price-calculator";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -58,7 +59,9 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
       body: JSON.stringify(productData),
     });
 
-    if (!response.ok) throw new Error("Failed to save product");
+    if (!response.ok) throw new Error("Gagal menyimpan produk");
+
+    toast.success(isEditing ? "Produk berhasil diperbarui" : "Produk berhasil ditambahkan");
 
     router.refresh();
     setIsDialogOpen(false);
@@ -78,8 +81,9 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
     const response = await fetch(`/api/products/${productToDelete}`, { method: "DELETE" });
     if (response.ok) {
       setProducts(products.filter(p => p.id !== productToDelete));
+      toast.success("Produk berhasil dihapus");
     } else {
-      alert("Gagal menghapus produk");
+      toast.error("Gagal menghapus produk");
     }
     setProductToDelete(null);
   };

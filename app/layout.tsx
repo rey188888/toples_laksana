@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: "Penyedia kemasan industri berkualitas tinggi di Bandung.",
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,6 +33,7 @@ export default function RootLayout({
         <LayoutShell>
           {children}
         </LayoutShell>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

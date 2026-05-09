@@ -5,10 +5,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "bioplast.co.id",
-      },
-      {
-        protocol: "https",
         hostname: "utfs.io",
       },
       {
