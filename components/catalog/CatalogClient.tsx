@@ -321,7 +321,7 @@ function CatalogContent() {
                     <button
                       disabled={!pagination.hasPrev}
                       onClick={() => setPage(pagination.page - 1)}
-                      className="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-text-secondary hover:bg-primary-500 hover:text-white transition-all border border-border shadow-sm disabled:opacity-30 disabled:pointer-events-none active:scale-90"
+                      className="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-text-secondary hover:bg-primary-500 hover:text-white transition-all border border-border disabled:opacity-30 disabled:pointer-events-none active:scale-90"
                     >
                       <AppIcon name="chevron_left" />
                     </button>
@@ -341,7 +341,7 @@ function CatalogContent() {
                               <button
                                 onClick={() => setPage(p)}
                                 className={`w-12 h-12 flex items-center justify-center rounded-xl font-bold text-sm transition-all border ${p === pagination.page
-                                  ? "bg-primary-500 text-white border-primary-500 shadow-lg shadow-primary-500/20"
+                                  ? "bg-primary-500 text-white border-primary-500"
                                   : "bg-white border-border text-text-secondary hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200"
                                   }`}
                               >
@@ -354,7 +354,7 @@ function CatalogContent() {
                     <button
                       disabled={!pagination.hasNext}
                       onClick={() => setPage(pagination.page + 1)}
-                      className="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-text-secondary hover:bg-primary-500 hover:text-white transition-all border border-border shadow-sm disabled:opacity-30 disabled:pointer-events-none active:scale-90"
+                      className="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-text-secondary hover:bg-primary-500 hover:text-white transition-all border border-border disabled:opacity-30 disabled:pointer-events-none active:scale-90"
                     >
                       <AppIcon name="chevron_right" />
                     </button>

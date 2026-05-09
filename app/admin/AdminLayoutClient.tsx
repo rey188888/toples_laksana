@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AppIcon } from "@/components/ui/app-icon";
 import { Badge } from "@/components/ui/badge";
+import { ChevronDown } from "lucide-react";
 
 interface AdminLayoutClientProps {
   children: React.ReactNode;
@@ -20,18 +21,28 @@ export default function AdminLayoutClient({
   interactionCount,
   waLogsCount,
 }: AdminLayoutClientProps) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(pathname.startsWith("/admin/products") || pathname.includes("categories") || pathname.includes("lid-colors") || pathname.includes("product-types") || pathname.includes("units") || pathname.includes("price-types"));
 
-  const NAV_ITEMS = [
+  const MAIN_NAV = [
     { label: "Dashboard", icon: "dashboard", href: "/admin", active: pathname === "/admin" },
-    { label: "Produk", icon: "inventory_2", href: "/admin/products", active: pathname === "/admin/products", count: productCount },
-    { label: "Kategori", icon: "category", href: "/admin/categories", active: pathname === "/admin/categories" },
-    { label: "Warna Tutup", icon: "palette", href: "/admin/lid-colors", active: pathname === "/admin/lid-colors" },
-    { label: "Tipe Produk", icon: "grade", href: "/admin/product-types", active: pathname === "/admin/product-types" },
-    { label: "Satuan", icon: "straighten", href: "/admin/units", active: pathname === "/admin/units" },
-    { label: "Tipe Harga", icon: "sell", href: "/admin/price-types", active: pathname === "/admin/price-types" },
+    { 
+      label: "Produk", 
+      icon: "inventory_2", 
+      href: "/admin/products", 
+      active: pathname === "/admin/products", 
+      count: productCount,
+      hasSub: true,
+      subItems: [
+        { label: "Kategori", icon: "category", href: "/admin/categories", active: pathname === "/admin/categories" },
+        { label: "Warna Tutup", icon: "palette", href: "/admin/lid-colors", active: pathname === "/admin/lid-colors" },
+        { label: "Tipe Produk", icon: "grade", href: "/admin/product-types", active: pathname === "/admin/product-types" },
+        { label: "Satuan", icon: "straighten", href: "/admin/units", active: pathname === "/admin/units" },
+        { label: "Tipe Harga", icon: "sell", href: "/admin/price-types", active: pathname === "/admin/price-types" },
+      ]
+    },
     { label: "Interaksi", icon: "touch_app", href: "/admin/interactions", active: pathname === "/admin/interactions", count: interactionCount },
     { label: "WhatsApp Log", icon: "chat", href: "/admin/wa-logs", active: pathname === "/admin/wa-logs", count: waLogsCount },
   ];
@@ -48,7 +59,7 @@ export default function AdminLayoutClient({
 
       {/* Sidebar Navigation */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-72 bg-white flex flex-col transition-all duration-300 border-r border-border shadow-xl lg:shadow-none",
+        "fixed inset-y-0 left-0 z-50 w-72 bg-white flex flex-col transition-all duration-300 border-r border-border",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
         <div className="h-20 lg:h-24 px-8 flex items-center border-b border-border">
@@ -58,34 +69,86 @@ export default function AdminLayoutClient({
         </div>
 
         <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto no-scrollbar">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setIsSidebarOpen(false)}
-              className={cn(
-                "group w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-bold text-sm cursor-pointer",
-                item.active
-                  ? "bg-primary-500 text-white shadow-lg shadow-primary-500/20"
-                  : "text-text-secondary hover:bg-secondary-50 hover:text-text-primary"
-              )}
-            >
-              <div className="flex items-center gap-3.5">
-                <AppIcon name={item.icon} className={cn(
-                  "text-xl transition-colors",
-                  item.active ? "text-white" : "text-text-muted group-hover:text-text-primary"
-                )} />
-                {item.label}
+          {MAIN_NAV.map((item) => (
+            <div key={item.href} className="space-y-1">
+              <div
+                className={cn(
+                  "group w-full flex items-center justify-between rounded-xl transition-all duration-200 font-bold text-sm",
+                  item.active
+                    ? "bg-primary-500 text-white"
+                    : "text-text-secondary hover:bg-secondary-50 hover:text-text-primary"
+                )}
+              >
+                <Link
+                  href={item.href}
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="flex-1 flex items-center gap-3.5 px-4 py-3.5 cursor-pointer"
+                >
+                  <AppIcon name={item.icon} className={cn(
+                    "text-xl transition-colors",
+                    item.active ? "text-white" : "text-text-muted group-hover:text-text-primary"
+                  )} />
+                  {item.label}
+                </Link>
+
+                {item.hasSub && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsProductsOpen(!isProductsOpen);
+                    }}
+                    className={cn(
+                      "flex items-center justify-center w-14 py-3.5 transition-all cursor-pointer",
+                      item.active ? "text-white" : "text-text-muted group-hover:text-text-primary"
+                    )}
+                  >
+                    <ChevronDown 
+                      size={18}
+                      className={cn(
+                        "transition-transform duration-200",
+                        isProductsOpen && "rotate-180",
+                        item.active ? "text-white" : "text-text-muted"
+                      )} 
+                    />
+                  </button>
+                )}
+
+                {!item.hasSub && item.count !== undefined && (
+                  <div className="px-4">
+                    <Badge variant={item.active ? "outline" : "secondary"} className={cn(
+                      "rounded-lg px-1.5 py-0.5 text-[0.6rem] font-black",
+                      item.active ? "border-white/40 text-white" : "text-white bg-primary-500"
+                    )}>
+                      {item.count}
+                    </Badge>
+                  </div>
+                )}
               </div>
-              {item.count !== undefined && (
-                <Badge variant={item.active ? "outline" : "secondary"} className={cn(
-                  "rounded-lg px-1.5 py-0.5 text-[0.6rem] font-black",
-                  item.active ? "border-white/40 text-white" : "text-white bg-primary-500"
-                )}>
-                  {item.count}
-                </Badge>
+
+              {item.hasSub && isProductsOpen && (
+                <div className="ml-8 space-y-1 mt-1 border-l-2 border-divider pl-2 transition-all">
+                  {item.subItems?.map((sub) => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      onClick={() => setIsSidebarOpen(false)}
+                      className={cn(
+                        "group w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 font-bold text-[0.8rem] cursor-pointer",
+                        sub.active
+                          ? "bg-secondary-100 text-primary-600"
+                          : "text-text-secondary hover:bg-secondary-50 hover:text-text-primary"
+                      )}
+                    >
+                      <AppIcon name={sub.icon} className={cn(
+                        "text-lg transition-colors",
+                        sub.active ? "text-primary-500" : "text-text-muted group-hover:text-text-primary"
+                      )} />
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
               )}
-            </Link>
+            </div>
           ))}
         </nav>
 
@@ -116,7 +179,7 @@ export default function AdminLayoutClient({
               <AppIcon name="menu" />
             </button>
             <h2 className="text-lg font-black text-text-primary tracking-tight">
-              {NAV_ITEMS.find(n => n.active)?.label || "Admin"}
+              {MAIN_NAV.map(n => [n, ...(n.subItems || [])]).flat().find(n => n.active)?.label || "Admin"}
             </h2>
           </div>
         </header>

@@ -164,7 +164,7 @@ export default function ProductsPageContent({ initialProducts, masterData }: Pro
                       <TableRow key={p.id} className="transition-all duration-200 group border-border">
                         <TableCell className="px-8 py-8">
                           <div className="flex items-center gap-5">
-                            <div className="w-14 h-14 rounded-lg bg-[#F9FAFB] flex items-center justify-center p-1.5 border border-border shrink-0 overflow-hidden group-hover:scale-105 group-hover:border-primary-200 transition-all">
+                            <div className="w-14 h-14 rounded-lg bg-[#F9FAFB] flex items-center justify-center p-1.5 border border-border shrink-0 overflow-hidden transition-all">
                               {image ? (
                                 <img className="w-full h-full object-cover rounded-lg" alt={p.name} src={image} />
                               ) : (
