@@ -28,8 +28,8 @@ export async function POST(
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
-    console.error("Interaction Tracking Error:", error);
-    const message = error instanceof Error ? error.message : "Internal Server Error";
+    console.error("[API] POST /api/products/[id]/interact error:", error);
+    const message = error instanceof Error ? error.message : "Failed to track interaction";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

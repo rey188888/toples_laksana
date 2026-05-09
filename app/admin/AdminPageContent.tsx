@@ -36,14 +36,10 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
   const [activeTab, setActiveTab] = useState<"products" | "categories" | "lidColors" | "productTypes" | "units" | "priceTypes" | "promos" | "interactions" | "waLogs">("products");
   const router = useRouter();
 
-  // Filter interactions by type
   const waLogs = initialInteractions.filter(i => i.interactionType === "whatsapp_share");
   const allInteractions = initialInteractions;
 
-  /**
-   * handleSave
-   * Handles creating or updating a product via the API.
-   */
+  // Create or update a product via the API
   const handleSave = async (productData: Partial<Product>) => {
     const isEditing = !!editingProduct;
     const url = isEditing ? `/api/products/${editingProduct.id}` : "/api/products";
@@ -57,11 +53,9 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
 
     if (!response.ok) throw new Error("Failed to save product");
 
-    // Refresh the list (in a real app, you might just update the local state)
     router.refresh();
     setIsDialogOpen(false);
 
-    // Manual state update for immediate feedback
     const saved = await response.json();
     if (isEditing) {
       setProducts(products.map(p => p.id === editingProduct.id ? saved.data : p));
@@ -70,10 +64,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
     }
   };
 
-  /**
-   * handleDelete
-   * Removes a product from the database.
-   */
+  // Soft-delete a product
   const handleDelete = async () => {
     if (!productToDelete) return;
 
@@ -86,10 +77,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
     setProductToDelete(null);
   };
 
-  /**
-   * handleEdit
-   * Opens the dialog with the product's existing data.
-   */
+  // Open dialog with existing product data
   const handleEdit = (product: Product) => {
     setEditingProduct(product);
     setIsDialogOpen(true);
@@ -156,7 +144,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
 
   return (
     <div className="bg-background text-text-primary flex min-h-screen font-sans relative selection:bg-primary-500/10">
-      {/* ── Mobile Sidebar Overlay ── */}
+      {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300"
@@ -164,7 +152,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
         />
       )}
 
-      {/* ── Sidebar Navigation ── */}
+      {/* Sidebar Navigation */}
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-72 bg-white flex flex-col transition-all duration-300 border-r border-border shadow-xl lg:shadow-none",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -207,17 +195,21 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
         </nav>
 
         <div className="p-6 mt-auto border-t border-border">
-          <Link
-            href="/login"
+          <button
+            onClick={async () => {
+              await fetch("/api/auth/logout", { method: "POST" });
+              router.push("/login");
+              router.refresh();
+            }}
             className="flex items-center justify-center gap-2 w-full py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all font-bold text-[0.65rem] uppercase tracking-widest border border-border hover:border-red-200"
           >
             <AppIcon name="logout" className="text-lg" />
             Keluar
-          </Link>
+          </button>
         </div>
       </aside>
 
-      {/* ── Main Canvas ── */}
+      {/* Main Content */}
       <main className="flex-1 lg:ml-72 flex flex-col min-h-screen w-full relative">
         {/* Topbar */}
         <header className="h-20 lg:h-24 bg-white/80 backdrop-blur-xl border-b border-border flex items-center justify-between px-6 lg:px-10 sticky top-0 z-40">

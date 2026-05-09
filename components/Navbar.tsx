@@ -22,8 +22,8 @@ export default function Navbar() {
   const navLinks = [
     { label: "Beranda", href: "/" },
     { label: "Katalog", href: "/catalog" },
-    { label: "Lokasi", href: "/#lokasi" },
-    { label: "Tentang Kami", href: "/#tentang" },
+    { label: "Lokasi", href: "/lokasi" },
+    { label: "Tentang Kami", href: "/tentang" },
   ];
 
   return (

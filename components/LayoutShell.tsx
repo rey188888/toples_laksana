@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Pages that should NOT have the global public navbar/footer
+  // Skip navbar/footer on login and admin pages
   const isDedicatedPage = pathname === '/login' || pathname.startsWith('/admin');
 
   if (isDedicatedPage) {

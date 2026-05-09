@@ -1,6 +1,4 @@
-// ============================================================
-// Product Types — Matching MongoDB Schema (new structure)
-// ============================================================
+// --- Interfaces ---
 
 export interface ProductSpecification {
   key: string;
@@ -64,9 +62,7 @@ export interface Product {
   updatedAt?: string;
 }
 
-// ============================================================
-// Lookup Tables
-// ============================================================
+// --- Lookup Tables ---
 
 export const CATEGORY_LABELS: Record<string, string> = {
   cat_tin: "Tin Kaleng",
@@ -97,30 +93,24 @@ const PRODUCT_TYPE_LABELS: Record<string, string> = {
   type_premium: "Premium",
 };
 
-// ============================================================
-// Helper Functions
-// ============================================================
+// --- Helper Functions ---
 
-/** Get human-readable category label from categoryId */
 export function getCategoryLabel(categoryId: string): string {
   return CATEGORY_LABELS[categoryId] || categoryId || "-";
 }
 
-/** Get human-readable lid color label from lidColorId */
 export function getLidColorLabel(lidColorId?: string): string {
   if (!lidColorId) return "-";
   return LID_COLOR_LABELS[lidColorId] || lidColorId;
 }
 
-/** Get human-readable product type label from productTypeId */
 export function getProductTypeLabel(productTypeId?: string): string {
   if (!productTypeId) return "Reguler";
   return PRODUCT_TYPE_LABELS[productTypeId] || productTypeId;
 }
 
-/** Extract a spec value from dimension or specifications array */
+// Extract a spec value from dimension object or specifications array
 export function getSpecValue(product: Product, key: string): number | undefined {
-  // Try dimension object first
   if (product.dimension) {
     const dimMap: Record<string, number | undefined> = {
       volume_ml: product.dimension.volumeMl,
@@ -130,29 +120,26 @@ export function getSpecValue(product: Product, key: string): number | undefined 
     };
     if (dimMap[key] !== undefined) return dimMap[key];
   }
-  // Fallback to specifications array
   return product.specifications?.find((s) => s.key === key)?.value;
 }
 
-/** Get the primary image URL from a product */
 export function getPrimaryImage(product: Product): string {
   return "/toples.png";
 }
 
-/** Get the lowest retail (withLid) price across all color variants */
+// Get the lowest retail (withLid) price across all color variants
 export function getLowestRetailPrice(product: Product): number {
   const retail = (product.prices || []).filter(
     (p) => p.priceTypeId === PRICE_TYPE_IDS.withLid
   );
   if (retail.length === 0) {
-    // Fallback: use all prices
     const all = product.prices || [];
     return all.length > 0 ? Math.min(...all.map((p) => p.price)) : 0;
   }
   return Math.min(...retail.map((p) => p.price));
 }
 
-/** Get the lowest wholesale (perBal) price across all color variants */
+// Get the lowest wholesale (perBal) price across all color variants
 export function getLowestWholesalePrice(product: Product): number {
   const wholesale = (product.prices || []).filter(
     (p) => p.priceTypeId === PRICE_TYPE_IDS.perBal
@@ -161,14 +148,11 @@ export function getLowestWholesalePrice(product: Product): number {
   return Math.min(...wholesale.map((p) => p.price));
 }
 
-/** Get prices filtered by priceTypeId */
 export function getPricesByType(product: Product, priceTypeId: string): ProductPrice[] {
   return (product.prices || []).filter((p) => p.priceTypeId === priceTypeId);
 }
 
-// ============================================================
-// Filter & Pagination Types
-// ============================================================
+// --- Filter & Pagination Types ---
 
 export interface CatalogFilters {
   search?: string;

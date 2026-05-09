@@ -1,11 +1,4 @@
-/**
- * UI Configuration for catalog filters.
- * Maps database field values to display labels, icons, and tooltips.
- */
-
-/**
- * Category display config for catalog filter UI.
- */
+// Category display config for catalog filter UI
 export const CATEGORY_CONFIG: Record<string, { icon: string; label: string }> = {
   cat_tin: { icon: "deployed_code", label: "Tin Kaleng" },
   cat_jar_plastik: { icon: "layers", label: "Jar Plastik" },
@@ -15,11 +8,9 @@ export const CATEGORY_CONFIG: Record<string, { icon: string; label: string }> = 
   cat_botol_plastik: { icon: "water_bottle", label: "Botol Plastik" },
 };
 
-/**
- * Labels and tooltips for body material types.
- */
+// Body material labels and tooltips
 export const MATERIAL_LABELS: Record<string, { label: string; tooltip: string }> = {
-  "Polyethylene Terephthalate (PET) no.1": {
+  "Polyethylene Terephthalate (PET)": {
     label: "PET Plastic",
     tooltip: "Bening, ringan, dan aman untuk makanan.",
   },
@@ -37,9 +28,7 @@ export const MATERIAL_LABELS: Record<string, { label: string; tooltip: string }>
   },
 };
 
-/**
- * Labels and tooltips for lid/closure types.
- */
+// Lid/closure type labels and tooltips
 export const LID_TYPE_LABELS: Record<string, { label: string; tooltip: string }> = {
   "tutup ulir": {
     label: "Tutup Ulir",
@@ -55,10 +44,7 @@ export const LID_TYPE_LABELS: Record<string, { label: string; tooltip: string }>
   },
 };
 
-/**
- * Color swatch hex values for lid color selection.
- * Keys must match lowercase labels from LID_COLOR_LABELS.
- */
+// Lid color hex swatches. Keys match IDs from LID_COLOR_LABELS.
 export const COLOR_SWATCHES: Record<string, string> = {
   color_bening: "#FFFFFF",
   color_putih: "#F5F5F5",

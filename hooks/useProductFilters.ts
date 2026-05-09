@@ -4,44 +4,42 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import type { CatalogFilters } from "@/types/product";
 
-/**
- * Hook for managing catalog filter state via URL searchParams.
- * All filter state is stored in the URL — shareable, bookmarkable, SSR-friendly.
- */
+// Manages catalog filter state via URL searchParams.
+// All filter state is stored in the URL for shareability and SSR compatibility.
 export function useProductFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // ---- Read current filters from URL ----
+  // Read current filters from URL
   const filters: CatalogFilters = useMemo(() => {
     return {
       search: searchParams.get("search") || undefined,
       category: searchParams.getAll("category"),
       volume_min: searchParams.get("volume_min")
-        ? parseInt(searchParams.get("volume_min")!)
+        ? Number.parseInt(searchParams.get("volume_min")!)
         : undefined,
       volume_max: searchParams.get("volume_max")
-        ? parseInt(searchParams.get("volume_max")!)
+        ? Number.parseInt(searchParams.get("volume_max")!)
         : undefined,
       price_min: searchParams.get("price_min")
-        ? parseInt(searchParams.get("price_min")!)
+        ? Number.parseInt(searchParams.get("price_min")!)
         : undefined,
       price_max: searchParams.get("price_max")
-        ? parseInt(searchParams.get("price_max")!)
+        ? Number.parseInt(searchParams.get("price_max")!)
         : undefined,
       material_body: searchParams.getAll("material_body"),
       lid_type: searchParams.getAll("lid_type"),
       colors: searchParams.getAll("colors"),
       sort: (searchParams.get("sort") as CatalogFilters["sort"]) || "popular",
       page: searchParams.get("page")
-        ? parseInt(searchParams.get("page")!)
+        ? Number.parseInt(searchParams.get("page")!)
         : 1,
       limit: 10,
     };
   }, [searchParams]);
 
-  // ---- Build query string from filters ----
+  // Build query string from filter object
   const buildQueryString = useCallback(
     (newFilters: Partial<CatalogFilters>) => {
       const merged = { ...filters, ...newFilters };
@@ -64,7 +62,7 @@ export function useProductFilters() {
     [filters]
   );
 
-  // ---- Update filters (replaces URL, resets page to 1) ----
+  // Update filters and reset page to 1
   const setFilters = useCallback(
     (newFilters: Partial<CatalogFilters>) => {
       const qs = buildQueryString({ ...newFilters, page: 1 });
@@ -73,7 +71,7 @@ export function useProductFilters() {
     [router, pathname, buildQueryString]
   );
 
-  // ---- Toggle a value in an array filter ----
+  // Toggle a value in an array filter
   const toggleArrayFilter = useCallback(
     (key: "category" | "material_body" | "lid_type" | "colors", value: string) => {
       const current = filters[key] || [];
@@ -85,7 +83,6 @@ export function useProductFilters() {
     [filters, setFilters]
   );
 
-  // ---- Set page ----
   const setPage = useCallback(
     (page: number) => {
       const qs = buildQueryString({ page });
@@ -94,12 +91,11 @@ export function useProductFilters() {
     [router, pathname, buildQueryString]
   );
 
-  // ---- Clear all filters ----
   const clearAll = useCallback(() => {
     router.push(pathname, { scroll: false });
   }, [router, pathname]);
 
-  // ---- Remove a specific filter ----
+  // Remove a specific filter key or a value from an array filter
   const removeFilter = useCallback(
     (key: keyof CatalogFilters, value?: string) => {
       if (value && Array.isArray(filters[key])) {
@@ -112,7 +108,7 @@ export function useProductFilters() {
     [filters, setFilters]
   );
 
-  // ---- Count active filters ----
+  // Count active filters
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (filters.search) count++;
@@ -125,7 +121,7 @@ export function useProductFilters() {
     return count;
   }, [filters]);
 
-  // ---- Build API URL ----
+  // Build API URL from current filters
   const apiUrl = useMemo(() => {
     const qs = buildQueryString(filters);
     return `/api/products${qs ? `?${qs}` : ""}`;

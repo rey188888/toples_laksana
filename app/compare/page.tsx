@@ -15,12 +15,7 @@ interface ComparePageProps {
   searchParams: Promise<{ ids?: string }>;
 }
 
-/**
- * Dynamic grid class based on product count.
- * 1 product  -> 2 cols (label + 1 product)
- * 2 products -> 3 cols
- * 3 products -> 4 cols
- */
+// Grid columns based on product count (+1 for label column)
 function getGridCols(count: number) {
   if (count === 1) return "grid-cols-2";
   if (count === 2) return "grid-cols-3";

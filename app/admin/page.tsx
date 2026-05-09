@@ -15,11 +15,11 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboard() {
   await connectDB();
 
-  // Fetch all products from real DB
+
   const rawProducts = await ProductModel.find({ deletedAt: null }).sort({ createdAt: -1 }).lean();
   const products: Product[] = JSON.parse(JSON.stringify(rawProducts));
 
-  // Fetch recent interactions (last 100)
+
   const rawInteractions = await InteractionModel.find()
     .sort({ createdAt: -1 })
     .limit(100)

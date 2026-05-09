@@ -33,7 +33,7 @@ const CATEGORIES = [
 export default function HomePage() {
   return (
     <main className="bg-background">
-      {/* ═══════════ HERO ═══════════ */}
+      {/* Hero */}
       <section className="relative min-h-screen flex items-center pt-20 pb-12 px-6 lg:px-12 max-w-screen-2xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
           <div className="lg:col-span-7">
@@ -80,7 +80,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════ CATEGORIES ═══════════ */}
+      {/* Categories */}
       <section className="py-24 px-6 lg:px-12 max-w-screen-2xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
           <div>
@@ -114,7 +114,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════ TRENDING / POPULAR ═══════════ */}
+      {/* Trending */}
       <section className="py-24 bg-secondary-50 px-6 lg:px-12">
         <div className="max-w-screen-2xl mx-auto text-center mb-16">
           <span className="text-primary-500 font-black tracking-widest text-xs uppercase mb-4 block">Paling Banyak Diminati</span>
@@ -150,7 +150,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════ FINAL CTA ═══════════ */}
+      {/* CTA */}
       <section className="py-16 px-6 lg:px-12 text-center max-w-7xl mx-auto">
         <h2 className="text-4xl lg:text-6xl font-extrabold text-text-primary tracking-tight mb-8">
           Siap meningkatkan estetika <br />

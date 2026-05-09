@@ -85,7 +85,7 @@ export default function FilterSidebar({
         </div>
       </section>
 
-      {/* ── Primary Filter 3: Volume Range ── */}
+      {/* Volume Range */}
       <section>
         <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-primary-600 mb-5 flex items-center gap-2">
           <RulerIcon className="size-4" />
@@ -105,7 +105,7 @@ export default function FilterSidebar({
               step={10}
               value={volumeMin}
               onChange={(e) => {
-                const val = parseInt(e.target.value, 10);
+                const val = Number.parseInt(e.target.value, 10);
                 setVolumeMin(val);
               }}
               onMouseUp={() => {
@@ -130,7 +130,7 @@ export default function FilterSidebar({
               step={10}
               value={volumeMax}
               onChange={(e) => {
-                const val = parseInt(e.target.value, 10);
+                const val = Number.parseInt(e.target.value, 10);
                 setVolumeMax(val);
               }}
               onMouseUp={() => {
