@@ -51,7 +51,7 @@ const icons = {
   delete: Trash2Icon,
   download: DownloadIcon,
   edit: EditIcon,
-  edit_note: FilePenLineIcon,
+  edit_note: EditIcon,
   grade: SparklesIcon,
   grid_view: Grid2X2Icon,
   inventory_2: PackageIcon,

@@ -202,7 +202,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
       {/* Main Content */}
       <main className="flex-1 lg:ml-72 flex flex-col min-h-screen w-full relative">
         {/* Topbar */}
-        <header className="h-20 lg:h-24 bg-white/80 backdrop-blur-xl border-b border-border flex items-center justify-between px-6 lg:px-10 sticky top-0 z-40">
+        <header className="h-20 lg:h-24 bg-white border-b border-border flex items-center justify-between px-6 lg:px-10 sticky top-0 z-40">
           <div className="flex items-center gap-4">
             <button
               className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-secondary-50 text-text-secondary border border-border hover:bg-white transition-all cursor-pointer"
@@ -294,8 +294,8 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
               <div className="overflow-x-auto">
                 {products.length === 0 ? (
                   <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center">
-                    <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
-                      <AppIcon name="inventory_2" className="text-5xl opacity-20" />
+                    <div className="flex items-center justify-center mb-6">
+                      <AppIcon name="inventory_2" className="text-6xl opacity-20" />
                     </div>
                     <p className="text-xl font-black text-text-primary tracking-tight">Katalog masih kosong</p>
                     <p className="text-sm mt-2 max-w-xs text-text-secondary font-medium">Mulai kembangkan bisnis Anda dengan menambahkan produk pertama.</p>
@@ -317,7 +317,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                         const image = getPrimaryImage(p);
 
                         return (
-                          <TableRow key={p.id} className="hover:bg-primary-50/20 transition-all duration-200 group border-border">
+                          <TableRow key={p.id} className="transition-all duration-200 group border-border">
                             <TableCell className="px-8 py-8">
                               <div className="flex items-center gap-5">
                                 <div className="w-14 h-14 rounded-lg bg-[#F9FAFB] flex items-center justify-center p-1.5 border border-border shrink-0 overflow-hidden group-hover:scale-105 group-hover:border-primary-200 transition-all">
@@ -354,8 +354,8 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                             <TableCell className="px-8 py-8">
                               {!p.deletedAt ? (
                                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
-                                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                                  <span className="text-[0.6rem] font-black uppercase tracking-widest">Terbit</span>
+                                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                                  <span className="text-[0.6rem] font-black uppercase tracking-widest">Aktif</span>
                                 </div>
                               ) : (
                                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200">
@@ -365,19 +365,19 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                               )}
                             </TableCell>
                             <TableCell className="px-8 py-8 text-right">
-                              <div className="flex items-center justify-end gap-1.5">
+                              <div className="flex items-center justify-end gap-1">
                                 <button
                                   onClick={() => handleEdit(p)}
-                                  className="w-9 h-9 rounded-xl hover:bg-white hover:text-primary-600 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border cursor-pointer"
+                                  className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
                                 >
-                                  <AppIcon name="edit_note" className="text-lg" />
+                                  <AppIcon name="edit" className="text-lg" />
                                 </button>
                                 <button
                                   onClick={() => {
                                     setProductToDelete(p.id);
                                     setIsConfirmOpen(true);
                                   }}
-                                  className="w-9 h-9 rounded-xl hover:bg-white hover:text-red-500 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border cursor-pointer"
+                                  className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
                                 >
                                   <AppIcon name="delete" className="text-lg" />
                                 </button>
@@ -433,7 +433,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                 </TableHeader>
                 <TableBody>
                   {CATEGORIES.map(cat => (
-                    <TableRow key={cat.id} className="hover:bg-primary-50/20 transition-all border-border">
+                    <TableRow key={cat.id} className="transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{cat.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{cat.name}</TableCell>
                       <TableCell className="px-8 py-8">
@@ -473,7 +473,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                 </TableHeader>
                 <TableBody>
                   {COLORS.map(color => (
-                    <TableRow key={color.id} className="hover:bg-primary-50/20 transition-all border-border">
+                    <TableRow key={color.id} className="transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{color.id}</TableCell>
                       <TableCell className="px-8 py-8">
                         <div className="w-8 h-8 rounded-full border border-border shadow-sm flex items-center justify-center bg-gray-50 overflow-hidden" style={{ backgroundColor: color.hex }}>
@@ -514,7 +514,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                 </TableHeader>
                 <TableBody>
                   {masterData.productTypes.map(type => (
-                    <TableRow key={type.id} className="hover:bg-primary-50/20 transition-all border-border">
+                    <TableRow key={type.id} className="transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{type.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{type.name}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
@@ -551,7 +551,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                 </TableHeader>
                 <TableBody>
                   {masterData.units.map(unit => (
-                    <TableRow key={unit.id} className="hover:bg-primary-50/20 transition-all border-border">
+                    <TableRow key={unit.id} className="transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{unit.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{unit.name}</TableCell>
                       <TableCell className="px-8 py-8">
@@ -591,7 +591,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                 </TableHeader>
                 <TableBody>
                   {masterData.priceTypes.map(pt => (
-                    <TableRow key={pt.id} className="hover:bg-primary-50/20 transition-all border-border">
+                    <TableRow key={pt.id} className="transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{pt.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{pt.name}</TableCell>
                       <TableCell className="px-8 py-8 text-sm text-text-secondary">{pt.description}</TableCell>
@@ -631,7 +631,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                 </TableHeader>
                 <TableBody>
                   {MOCK_PROMOS.map(promo => (
-                    <TableRow key={promo.id} className="hover:bg-primary-50/20 transition-all border-border">
+                    <TableRow key={promo.id} className="transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-primary-600">{promo.code}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{promo.name}</TableCell>
                       <TableCell className="px-8 py-8">
@@ -690,8 +690,8 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                     <TableRow>
                       <TableCell colSpan={5} className="p-20 text-center text-text-muted">
                         <div className="flex flex-col items-center justify-center">
-                          <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
-                            <AppIcon name="touch_app" className="text-5xl opacity-20" />
+                          <div className="flex items-center justify-center mb-6">
+                            <AppIcon name="touch_app" className="text-6xl opacity-20" />
                           </div>
                           <p className="text-xl font-black text-text-primary tracking-tight">Belum ada data interaksi</p>
                           <p className="text-sm mt-2 max-w-xs text-text-secondary font-medium">Data interaksi user akan muncul di sini.</p>
@@ -701,7 +701,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                   ) : allInteractions.map(interaction => {
                     const product = products.find(p => p.id === interaction.productId);
                     return (
-                      <TableRow key={interaction.id} className="hover:bg-primary-50/20 transition-all border-border">
+                      <TableRow key={interaction.id} className="transition-all border-border">
                         <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{interaction.id}</TableCell>
                         <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{product?.name || interaction.productId}</TableCell>
                         <TableCell className="px-8 py-8">
@@ -748,8 +748,8 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                     <TableRow>
                       <TableCell colSpan={4} className="p-20 text-center text-text-muted">
                         <div className="flex flex-col items-center justify-center">
-                          <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
-                            <AppIcon name="chat" className="text-5xl opacity-20" />
+                          <div className="flex items-center justify-center mb-6">
+                            <AppIcon name="chat" className="text-6xl opacity-20" />
                           </div>
                           <p className="text-xl font-black text-text-primary tracking-tight">Belum ada log WhatsApp</p>
                           <p className="text-sm mt-2 max-w-xs text-text-secondary font-medium">Log pesan WhatsApp akan muncul di sini.</p>
@@ -759,7 +759,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions,
                   ) : waLogs.map(log => {
                     const product = products.find(p => p.id === log.productId);
                     return (
-                      <TableRow key={log.id} className="hover:bg-primary-50/20 transition-all border-border">
+                      <TableRow key={log.id} className="transition-all border-border">
                         <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{log.id}</TableCell>
                         <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{product?.name || log.productId}</TableCell>
                         <TableCell className="px-8 py-8 text-sm text-text-secondary">

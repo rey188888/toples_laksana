@@ -251,8 +251,8 @@ function CatalogContent() {
             ) : products.length === 0 ? (
               /* Empty State */
               <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center bg-white rounded-xl border border-dashed border-border">
-                <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
-                  <AppIcon name="inventory_2" className="text-5xl opacity-20" />
+                <div className="flex items-center justify-center mb-6">
+                  <AppIcon name="inventory_2" className="text-6xl opacity-20" />
                 </div>
                 <p className="text-xl font-black text-text-primary tracking-tight">Produk tidak ditemukan</p>
                 <p className="text-sm mt-2 mb-8 max-w-md text-text-secondary font-medium">

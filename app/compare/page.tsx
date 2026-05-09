@@ -74,8 +74,8 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
 
         {products.length === 0 ? (
           <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center bg-white border border-border rounded-2xl max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
-            <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
-              <AppIcon name="compare" className="text-5xl opacity-20" />
+            <div className="flex items-center justify-center mb-6">
+              <AppIcon name="compare_arrows" className="text-6xl opacity-20" />
             </div>
             <p className="text-xl font-black text-text-primary tracking-tight">Belum ada produk yang dipilih</p>
             <p className="text-sm mt-2 mb-10 max-w-md text-text-secondary font-medium opacity-70">

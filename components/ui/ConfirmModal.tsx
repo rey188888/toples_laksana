@@ -39,46 +39,37 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-sm p-0 overflow-hidden" showCloseButton={false}>
-        <DialogHeader className="p-8 text-center">
-          <div className={cn(
-            "flex size-16 items-center justify-center rounded-2xl mx-auto mb-4 shadow-inner",
-            variant === "danger" ? "bg-destructive/10 text-destructive" : "bg-primary-50 text-primary"
-          )}>
-            {variant === "danger" ? (
-              <AlertTriangleIcon className="size-7" />
-            ) : (
-              <HelpCircleIcon className="size-7" />
-            )}
-          </div>
-
-          <DialogTitle className="text-xl font-black text-text-primary">
+      <DialogContent className="max-w-sm rounded-2xl p-0 overflow-hidden border-none shadow-2xl bg-white">
+        <DialogHeader className="p-8 text-center pb-2">
+          <DialogTitle className="text-xl font-black text-text-primary tracking-tight">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-sm font-medium leading-relaxed text-text-secondary">
+          <DialogDescription className="text-sm font-medium leading-relaxed text-text-secondary mt-2">
             {message}
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="grid grid-cols-2 gap-0 border-t border-border sm:flex-none">
+        <DialogFooter className="p-6 pt-4 flex flex-row gap-3">
           <Button
             type="button"
             variant="ghost"
             onClick={onClose}
-            className="h-14 rounded-none border-r border-border text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted"
+            className="flex-1 rounded-xl font-bold h-12 bg-secondary-100/50 text-text-secondary hover:bg-secondary-100 hover:text-text-secondary border-none transition-all cursor-pointer"
           >
             {cancelLabel}
           </Button>
           <Button
             type="button"
-            variant={variant === "danger" ? "destructive" : "ghost"}
+            variant="ghost"
             onClick={() => {
               onConfirm();
               onClose();
             }}
             className={cn(
-              "h-14 rounded-none text-[0.65rem] font-black uppercase tracking-[0.2em]",
-              variant === "primary" && "text-primary hover:bg-primary-50"
+              "flex-1 rounded-xl font-black h-12 border-none cursor-pointer transition-all",
+              variant === "danger" 
+                ? "bg-red-100/50 text-red-600 hover:bg-red-100 hover:text-red-600! shadow-sm shadow-red-500/5" 
+                : "bg-primary-100/50 text-primary-600 hover:bg-primary-100 hover:text-primary-600! shadow-sm shadow-primary-500/5"
             )}
           >
             {confirmLabel}
