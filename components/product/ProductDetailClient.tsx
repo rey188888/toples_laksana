@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Product, ProductPrice } from "@/types/product";
 import {
@@ -58,8 +58,37 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     [wholesalePrice, selectedPrice, quantityPerPack]
   );
 
-  const images = [{ imageUrl: "/toples.png", isPrimary: true, order: 0 }];
-  const heroImage = "/toples.png";
+  const images = useMemo(() => {
+    if (!product.images || product.images.length === 0) {
+      return [{ imageUrl: "/toples.png", isPrimary: true, order: 0 }];
+    }
+    return [...product.images].sort((a, b) => a.order - b.order);
+  }, [product.images]);
+
+  const heroImage = images[mainImage]?.imageUrl || "/toples.png";
+
+  useEffect(() => {
+    // Log view interaction on mount
+    fetch("/api/interactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId: product.id,
+        interactionType: "view",
+      }),
+    }).catch(console.error);
+  }, [product.id]);
+
+  const handleWhatsAppClick = () => {
+    fetch("/api/interactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId: product.id,
+        interactionType: "whatsapp_share",
+      }),
+    }).catch(console.error);
+  };
   const volume = getSpecValue(product, "volume_ml");
   const height = getSpecValue(product, "tinggi_cm");
   const diameter = getSpecValue(product, "diameter_badan_cm");
@@ -260,6 +289,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               href={buildWhatsAppUrl(product, safeActivePrice, calcResult)}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleWhatsAppClick}
               className="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-primary-600 transition-all text-sm"
             >
               <AppIcon name="chat" className="text-xl" />

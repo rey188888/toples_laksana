@@ -25,7 +25,7 @@ export default function WaLogsPageContent({ initialLogs, products }: WaLogsPageC
   const filteredLogs = logs.filter(log => {
     const productName = productMap[log.productId] || log.productId;
     return productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-           log.userId.toLowerCase().includes(searchQuery.toLowerCase());
+      log.userId.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
@@ -88,12 +88,12 @@ export default function WaLogsPageContent({ initialLogs, products }: WaLogsPageC
                     <TableRow key={log.id} className="transition-all duration-200 group border-border">
                       <TableCell className="px-8 py-5">
                         <p className="text-sm font-black text-text-primary tracking-tight">
-                          {new Date(log.createdAt).toLocaleString("id-ID", { 
-                            day: "2-digit", 
-                            month: "short", 
-                            year: "numeric", 
-                            hour: "2-digit", 
-                            minute: "2-digit" 
+                          {new Date(log.createdAt).toLocaleString("id-ID", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
                           })}
                         </p>
                       </TableCell>
