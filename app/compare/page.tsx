@@ -73,12 +73,12 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
         </div>
 
         {products.length === 0 ? (
-          <div className="bg-white border border-border rounded-2xl p-20 text-center max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
-            <div className="w-24 h-24 bg-secondary-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
-              <AppIcon name="compare" className="text-5xl text-secondary-200" />
+          <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center bg-white border border-border rounded-2xl max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
+            <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
+              <AppIcon name="compare" className="text-5xl opacity-20" />
             </div>
-            <h2 className="text-2xl font-black text-text-primary mb-3 tracking-tight">Belum ada produk yang dipilih</h2>
-            <p className="text-text-secondary mb-10 font-medium opacity-70">
+            <p className="text-xl font-black text-text-primary tracking-tight">Belum ada produk yang dipilih</p>
+            <p className="text-sm mt-2 mb-10 max-w-md text-text-secondary font-medium opacity-70">
               Pilih hingga 3 produk dari katalog untuk membandingkan spesifikasinya secara detail di sini.
             </p>
             <Link href="/catalog" className="bg-primary-500 text-white px-10 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/25 inline-flex text-[0.7rem] active:scale-95">

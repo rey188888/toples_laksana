@@ -92,14 +92,15 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto p-0">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-hidden flex flex-col p-0">
         <DialogHeader className="sticky top-0 z-10 border-b border-border bg-white/90 px-8 py-6 backdrop-blur-md">
           <DialogTitle className="text-xl font-black text-text-primary">
             {product ? "Edit Produk" : "Tambah Produk Baru"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 p-8">
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-8 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Field label="ID Produk" value={formData.id || ""} onChange={(value) => setFormData({ ...formData, id: value })} required />
             <Field label="SKU" value={formData.sku || ""} onChange={(value) => setFormData({ ...formData, sku: value })} required />
@@ -157,13 +158,16 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
             />
           </div>
 
-          <div className="sticky bottom-0 mt-6 flex gap-3 border-t border-border bg-white/90 pt-6 backdrop-blur-md">
-            <Button type="button" variant="secondary" size="lg" onClick={onClose} className="flex-1 font-black uppercase tracking-widest">
-              Batal
-            </Button>
-            <Button type="submit" disabled={loading} size="lg" className="flex-2 font-black uppercase tracking-widest shadow-lg shadow-primary-500/20">
-              {loading ? "Menyimpan..." : product ? "Simpan Perubahan" : "Tambah Produk"}
-            </Button>
+          </div>
+          <div className="flex-none border-t border-border bg-white/95 px-8 py-6 backdrop-blur-md">
+            <div className="flex gap-3">
+              <Button type="button" variant="secondary" size="lg" onClick={onClose} className="flex-1 h-14 font-black uppercase tracking-widest">
+                Batal
+              </Button>
+              <Button type="submit" disabled={loading} size="lg" className="flex-2 h-14 font-black uppercase tracking-widest shadow-lg shadow-primary-500/20">
+                {loading ? "Menyimpan..." : product ? "Simpan Perubahan" : "Tambah Produk"}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>

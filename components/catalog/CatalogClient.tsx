@@ -249,12 +249,12 @@ function CatalogContent() {
               </div>
             ) : products.length === 0 ? (
               /* Empty State */
-              <div className="text-center py-24 bg-white rounded-xl border border-dashed border-border">
-                <AppIcon name="inventory_2" className="mb-6 text-7xl text-text-muted/20" />
-                <h3 className="text-2xl font-bold text-text-primary mb-3">
-                  Produk tidak ditemukan
-                </h3>
-                <p className="text-text-secondary mb-8 max-w-md mx-auto">
+              <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center bg-white rounded-xl border border-dashed border-border">
+                <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
+                  <AppIcon name="inventory_2" className="text-5xl opacity-20" />
+                </div>
+                <p className="text-xl font-black text-text-primary tracking-tight">Produk tidak ditemukan</p>
+                <p className="text-sm mt-2 mb-8 max-w-md text-text-secondary font-medium">
                   Coba sesuaikan filter atau kata kunci pencarian Anda untuk menemukan produk yang Anda cari.
                 </p>
                 <button

@@ -73,7 +73,7 @@ export default function HomePage() {
               <img
                 src="/toples.png"
                 alt="Koleksi Jar Premium"
-                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 scale-75"
+                className="w-full h-full object-contain group-hover:scale-[0.82] transition-transform duration-700 scale-75"
               />
             </div>
           </div>
@@ -102,10 +102,10 @@ export default function HomePage() {
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  className="w-full h-full object-contain scale-75 group-hover:scale-90 transition-transform duration-700"
+                  className="w-full h-full object-contain scale-75 group-hover:scale-[0.82] transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-lg font-bold text-text-primary group-hover:text-primary-50 transition-colors">
+              <h3 className="text-lg font-bold text-text-primary transition-colors">
                 {cat.name}
               </h3>
               <p className="text-sm text-text-secondary line-clamp-2 mt-1">{cat.desc}</p>

@@ -304,7 +304,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               <div className="overflow-x-auto">
                 {products.length === 0 ? (
                   <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center">
-                    <div className="w-24 h-24 bg-secondary-50 rounded-xl flex items-center justify-center mb-6">
+                    <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
                       <AppIcon name="inventory_2" className="text-5xl opacity-20" />
                     </div>
                     <p className="text-xl font-black text-text-primary tracking-tight">Katalog masih kosong</p>
@@ -698,9 +698,14 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <TableBody>
                   {allInteractions.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="px-8 py-16 text-center text-text-muted">
-                        <AppIcon name="touch_app" className="mx-auto mb-2 block text-4xl opacity-20" />
-                        <p className="font-bold">Belum ada data interaksi</p>
+                      <TableCell colSpan={5} className="p-20 text-center text-text-muted">
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
+                            <AppIcon name="touch_app" className="text-5xl opacity-20" />
+                          </div>
+                          <p className="text-xl font-black text-text-primary tracking-tight">Belum ada data interaksi</p>
+                          <p className="text-sm mt-2 max-w-xs text-text-secondary font-medium">Data interaksi user akan muncul di sini.</p>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ) : allInteractions.map(interaction => {
@@ -749,9 +754,14 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <TableBody>
                   {waLogs.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="px-8 py-16 text-center text-text-muted">
-                        <AppIcon name="chat" className="mx-auto mb-2 block text-4xl opacity-20" />
-                        <p className="font-bold">Belum ada log WhatsApp</p>
+                      <TableCell colSpan={4} className="p-20 text-center text-text-muted">
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="w-24 h-24 bg-secondary-50 rounded-full flex items-center justify-center mb-6">
+                            <AppIcon name="chat" className="text-5xl opacity-20" />
+                          </div>
+                          <p className="text-xl font-black text-text-primary tracking-tight">Belum ada log WhatsApp</p>
+                          <p className="text-sm mt-2 max-w-xs text-text-secondary font-medium">Log pesan WhatsApp akan muncul di sini.</p>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ) : waLogs.map(log => {
