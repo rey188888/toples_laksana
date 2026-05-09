@@ -91,7 +91,7 @@ export default function ActiveFilterBar({
               onRemove(pill.key, pill.value || undefined);
             }
           }}
-          className="group inline-flex items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-1.5 text-xs font-bold text-primary-700 shadow-sm transition-all hover:bg-primary-100"
+          className="group inline-flex items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-1.5 text-xs font-bold text-primary-700 shadow-sm transition-all hover:bg-primary-100 cursor-pointer"
         >
           {pill.label}
           <AppIcon name="close" className="text-[0.8rem] opacity-40 transition-opacity group-hover:opacity-100" />
@@ -100,7 +100,7 @@ export default function ActiveFilterBar({
 
       <button
         onClick={onClearAll}
-        className="ml-2 text-xs font-black uppercase tracking-widest text-red-500 transition-colors hover:text-red-600"
+        className="ml-2 text-xs font-black uppercase tracking-widest text-red-500 transition-colors hover:text-red-600 cursor-pointer"
       >
         Hapus Semua
       </button>

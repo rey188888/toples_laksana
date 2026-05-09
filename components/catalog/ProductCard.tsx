@@ -43,7 +43,7 @@ export default function ProductCard({
       <Link
         href={productHref}
         onClick={handleInteraction}
-        className="relative block aspect-square overflow-hidden bg-white p-6"
+        className="relative block aspect-square overflow-hidden bg-white p-6 cursor-pointer"
       >
         {heroImage ? (
           <div className="relative w-full h-full transform transition-transform duration-500 scale-75 group-hover:scale-90">
@@ -65,7 +65,7 @@ export default function ProductCard({
       {/* Info Section */}
       <div className="px-4 pb-4 pt-2 border-t border-gray-50">
         {/* Product Name */}
-        <Link href={productHref} onClick={handleInteraction} className="block mb-2">
+        <Link href={productHref} onClick={handleInteraction} className="block mb-2 cursor-pointer">
           <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 group-hover:text-primary-500 transition-colors">
             {product.name}
           </h3>

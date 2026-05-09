@@ -101,34 +101,37 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
 
   // Reference data for admin tables
   const MOCK_CATEGORIES = [
-    { id: "cat_tin", name: "Tin Kaleng", count: products.filter(p => p.categoryId === "cat_tin").length },
-    { id: "cat_jar_plastik", name: "Jar Plastik", count: products.filter(p => p.categoryId === "cat_jar_plastik").length },
-    { id: "cat_jar_kaca", name: "Jar Kaca", count: products.filter(p => p.categoryId === "cat_jar_kaca").length },
-    { id: "cat_jar_cylinder", name: "Jar Cylinder", count: products.filter(p => p.categoryId === "cat_jar_cylinder").length },
-    { id: "cat_botol", name: "Botol", count: products.filter(p => p.categoryId === "cat_botol").length },
+    { id: "cat_001", name: "Jar Cylinder", count: products.filter(p => p.categoryId === "cat_001").length },
+    { id: "cat_002", name: "Jar Kaca", count: products.filter(p => p.categoryId === "cat_002").length },
+    { id: "cat_003", name: "Jar Plastik", count: products.filter(p => p.categoryId === "cat_003").length },
+    { id: "cat_004", name: "Botol Plastik", count: products.filter(p => p.categoryId === "cat_004").length },
+    { id: "cat_005", name: "Tin Kaleng", count: products.filter(p => p.categoryId === "cat_005").length },
   ];
 
   const MOCK_COLORS = [
-    { id: "color_bening", name: "Bening", hex: "#ffffff" },
-    { id: "color_putih", name: "Putih", hex: "#f0f0f0" },
-    { id: "color_cling", name: "Cling", hex: "#e0e0e0" },
-    { id: "color_silver", name: "Silver", hex: "#c0c0c0" },
-    { id: "color_emas", name: "Emas", hex: "#ffd700" },
-    { id: "color_rose", name: "Rose", hex: "#ff007f" },
-    { id: "color_hitam", name: "Hitam", hex: "#000000" },
+    { id: "lc_001", name: "Bening", hex: "#ffffff" },
+    { id: "lc_002", name: "Putih", hex: "#f0f0f0" },
+    { id: "lc_003", name: "Cling", hex: "#e0e0e0" },
+    { id: "lc_004", name: "Silver", hex: "#c0c0c0" },
+    { id: "lc_005", name: "Emas", hex: "#ffd700" },
+    { id: "lc_006", name: "Rose", hex: "#ff007f" },
+    { id: "lc_007", name: "Hitam", hex: "#000000" },
   ];
 
   const MOCK_TYPES = [
-    { id: "type_reguler", name: "Reguler" },
-    { id: "type_premium", name: "Premium" },
+    { id: "pt_001", name: "Premium" },
+    { id: "pt_002", name: "Economis" },
+    { id: "pt_003", name: "Standard" },
   ];
 
   const MOCK_UNITS = [
-    { id: "unit_pcs", name: "Pcs", symbol: "pcs" },
-    { id: "unit_bal", name: "Bal", symbol: "bal" },
-    { id: "unit_dus", name: "Dus", symbol: "dus" },
-    { id: "unit_lusin", name: "Lusin", symbol: "lsn" },
-    { id: "unit_kg", name: "Kilogram", symbol: "kg" },
+    { id: "unit_001", name: "Centimeter", symbol: "cm" },
+    { id: "unit_002", name: "Mililiter", symbol: "ml" },
+    { id: "unit_003", name: "Gram", symbol: "gr" },
+    { id: "unit_004", name: "Pcs", symbol: "pcs" },
+    { id: "unit_005", name: "Lusin", symbol: "lsn" },
+    { id: "unit_006", name: "Bal", symbol: "bal" },
+    { id: "unit_007", name: "Dus", symbol: "dus" },
   ];
 
   const MOCK_PRICE_TYPES = [
@@ -147,7 +150,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300"
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300 cursor-pointer"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -169,7 +172,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               key={item.id}
               onClick={() => { setActiveTab(item.id); setIsSidebarOpen(false); }}
               className={cn(
-                "group w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-bold text-sm",
+                "group w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-bold text-sm cursor-pointer",
                 item.active
                   ? "bg-primary-500 text-white shadow-lg shadow-primary-500/20"
                   : "text-text-secondary hover:bg-secondary-50 hover:text-text-primary"
@@ -201,7 +204,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               router.push("/login");
               router.refresh();
             }}
-            className="flex items-center justify-center gap-2 w-full py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all font-bold text-[0.65rem] uppercase tracking-widest border border-border hover:border-red-200"
+            className="flex items-center justify-center gap-2 w-full py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all font-bold text-[0.65rem] uppercase tracking-widest border border-border hover:border-red-200 cursor-pointer"
           >
             <AppIcon name="logout" className="text-lg" />
             Keluar
@@ -215,7 +218,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
         <header className="h-20 lg:h-24 bg-white/80 backdrop-blur-xl border-b border-border flex items-center justify-between px-6 lg:px-10 sticky top-0 z-40">
           <div className="flex items-center gap-4">
             <button
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-secondary-50 text-text-secondary border border-border hover:bg-white transition-all"
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-secondary-50 text-text-secondary border border-border hover:bg-white transition-all cursor-pointer"
               onClick={() => setIsSidebarOpen(true)}
             >
               <AppIcon name="menu" />
@@ -228,7 +231,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
           </div>
           <button
             onClick={() => { setEditingProduct(null); setIsDialogOpen(true); }}
-            className="bg-primary-500 text-white px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl font-black flex items-center gap-2.5 text-xs lg:text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all active:scale-95 group"
+            className="bg-primary-500 text-white px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl font-black flex items-center gap-2.5 text-xs lg:text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all active:scale-95 group cursor-pointer"
           >
             <AppIcon name="add" className="text-lg transition-transform duration-300 group-hover:rotate-90" />
             <span className="hidden sm:inline">Tambah Produk Baru</span>
@@ -378,7 +381,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
                                   onClick={() => handleEdit(p)}
-                                  className="w-9 h-9 rounded-xl hover:bg-white hover:text-primary-600 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border"
+                                  className="w-9 h-9 rounded-xl hover:bg-white hover:text-primary-600 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border cursor-pointer"
                                 >
                                   <AppIcon name="edit_note" className="text-lg" />
                                 </button>
@@ -387,7 +390,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                                     setProductToDelete(p.id);
                                     setIsConfirmOpen(true);
                                   }}
-                                  className="w-9 h-9 rounded-xl hover:bg-white hover:text-red-500 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border"
+                                  className="w-9 h-9 rounded-xl hover:bg-white hover:text-red-500 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border cursor-pointer"
                                 >
                                   <AppIcon name="delete" className="text-lg" />
                                 </button>
@@ -411,8 +414,8 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                     <button className="w-9 h-9 rounded-xl bg-white border border-border flex items-center justify-center text-text-muted opacity-50 cursor-not-allowed shadow-sm transition-all">
                       <AppIcon name="chevron_left" className="text-lg" />
                     </button>
-                    <button className="w-9 h-9 rounded-xl bg-primary-500 text-white font-black text-[0.65rem] shadow-lg shadow-primary-500/20">1</button>
-                    <button className="w-9 h-9 rounded-xl bg-white border border-border hover:bg-secondary-50 flex items-center justify-center text-text-primary transition-all shadow-sm">
+                    <button className="w-9 h-9 rounded-xl bg-primary-500 text-white font-black text-[0.65rem] shadow-lg shadow-primary-500/20 cursor-pointer">1</button>
+                    <button className="w-9 h-9 rounded-xl bg-white border border-border hover:bg-secondary-50 flex items-center justify-center text-text-primary transition-all shadow-sm cursor-pointer">
                       <AppIcon name="chevron_right" className="text-lg" />
                     </button>
                   </div>
@@ -428,7 +431,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div>
                   <h3 className="font-black text-text-primary text-lg">Kategori Produk</h3>
                 </div>
-                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
+                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest cursor-pointer">
                   <AppIcon name="add" className="text-sm" /> Tambah Kategori
                 </button>
               </div>
@@ -450,7 +453,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                         <Badge variant="secondary" className="bg-secondary-50 text-secondary-600 border-none font-bold">{cat.count}</Badge>
                       </TableCell>
                       <TableCell className="px-8 py-8 text-right">
-                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
+                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
@@ -468,7 +471,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div>
                   <h3 className="font-black text-text-primary text-lg">Warna Tutup</h3>
                 </div>
-                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
+                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest cursor-pointer">
                   <AppIcon name="add" className="text-sm" /> Tambah Warna
                 </button>
               </div>
@@ -492,7 +495,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       </TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{color.name}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
-                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
+                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
@@ -510,7 +513,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div>
                   <h3 className="font-black text-text-primary text-lg">Tipe Produk</h3>
                 </div>
-                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
+                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest cursor-pointer">
                   <AppIcon name="add" className="text-sm" /> Tambah Tipe
                 </button>
               </div>
@@ -528,7 +531,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{ptype.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{ptype.name}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
-                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
+                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
@@ -546,7 +549,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div>
                   <h3 className="font-black text-text-primary text-lg">Satuan</h3>
                 </div>
-                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
+                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest cursor-pointer">
                   <AppIcon name="add" className="text-sm" /> Tambah Satuan
                 </button>
               </div>
@@ -568,7 +571,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                         <Badge variant="outline" className="font-mono font-bold text-xs">{unit.symbol}</Badge>
                       </TableCell>
                       <TableCell className="px-8 py-8 text-right">
-                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
+                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
@@ -586,7 +589,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div>
                   <h3 className="font-black text-text-primary text-lg">Tipe Harga</h3>
                 </div>
-                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
+                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest cursor-pointer">
                   <AppIcon name="add" className="text-sm" /> Tambah Tipe Harga
                 </button>
               </div>
@@ -606,7 +609,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{pt.name}</TableCell>
                       <TableCell className="px-8 py-8 text-sm text-text-secondary">{pt.description}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
-                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
+                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
@@ -624,7 +627,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div>
                   <h3 className="font-black text-text-primary text-lg">Promosi</h3>
                 </div>
-                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
+                <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest cursor-pointer">
                   <AppIcon name="add" className="text-sm" /> Tambah Promo
                 </button>
               </div>
@@ -666,7 +669,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                         )}
                       </TableCell>
                       <TableCell className="px-8 py-8 text-right">
-                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
+                        <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
@@ -722,7 +725,9 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                             {interaction.interactionType === "promo_click" && "Klik Promo"}
                           </Badge>
                         </TableCell>
-                        <TableCell className="px-8 py-8 text-sm text-text-secondary">{interaction.userId}</TableCell>
+                        <TableCell className="px-8 py-8 text-sm text-text-secondary">
+                          {interaction.userId.startsWith("user_admin") ? "Admin" : "Pengunjung"}
+                        </TableCell>
                         <TableCell className="px-8 py-8 text-sm text-text-muted">
                           {interaction.createdAt ? new Date(interaction.createdAt).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-"}
                         </TableCell>
@@ -770,7 +775,9 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       <TableRow key={log.id} className="hover:bg-primary-50/20 transition-all border-border">
                         <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{log.id}</TableCell>
                         <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{product?.name || log.productId}</TableCell>
-                        <TableCell className="px-8 py-8 text-sm text-text-secondary">{log.userId}</TableCell>
+                        <TableCell className="px-8 py-8 text-sm text-text-secondary">
+                          {log.userId.startsWith("user_admin") ? "Admin" : "Pengunjung"}
+                        </TableCell>
                         <TableCell className="px-8 py-8 text-sm text-text-muted">
                           {log.createdAt ? new Date(log.createdAt).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-"}
                         </TableCell>

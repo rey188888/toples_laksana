@@ -51,7 +51,7 @@ export default function HomePage() {
                 href="/catalog"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-primary-500 text-white rounded-xl font-bold transition-all hover:bg-primary-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/20 gap-2 h-12 px-7"
+                  "bg-primary-500 text-white rounded-xl font-bold transition-all hover:bg-primary-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/20 gap-2 h-12 px-7 cursor-pointer"
                 )}
               >
                 Jelajahi Katalog
@@ -61,7 +61,7 @@ export default function HomePage() {
                 href="/catalog?category=Jar+Cylinder"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "bg-white text-text-primary border-border rounded-xl font-bold transition-all hover:bg-secondary-50 gap-2 h-12 px-7"
+                  "bg-white text-text-primary border-border rounded-xl font-bold transition-all hover:bg-secondary-50 gap-2 h-12 px-7 cursor-pointer"
                 )}
               >
                 Lihat Koleksi
@@ -87,7 +87,7 @@ export default function HomePage() {
             <h2 className="text-3xl font-extrabold text-text-primary tracking-tight">Koleksi Pilihan</h2>
             <p className="text-text-secondary mt-2">Dikurasi untuk pembeli profesional dan studio desain.</p>
           </div>
-          <Link href="/catalog" className="text-primary-500 font-bold hover:underline flex items-center gap-1">
+          <Link href="/catalog" className="text-primary-500 font-bold hover:underline flex items-center gap-1 cursor-pointer">
             Lihat Semua Kategori <AppIcon name="arrow_forward" className="text-sm" />
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default function HomePage() {
             <Link
               key={cat.name}
               href={`/catalog?category=${encodeURIComponent(cat.name)}`}
-              className="group flex flex-col"
+              className="group flex flex-col cursor-pointer"
             >
               <div className="aspect-square rounded-xl bg-white border border-border overflow-hidden mb-4 relative transition-all group-hover:shadow-lg group-hover:-translate-y-1">
                 <img
@@ -171,7 +171,7 @@ export default function HomePage() {
             href="https://wa.me/6281234567890"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
-              "bg-white text-text-primary border-2 border-primary-500 rounded-xl font-bold text-lg hover:bg-primary-50 transition-all gap-3 h-14 px-10"
+              "bg-white text-text-primary border-2 border-primary-500 rounded-xl font-bold text-lg hover:bg-primary-50 transition-all gap-3 h-14 px-10 cursor-pointer"
             )}
           >
             Hubungi Kami

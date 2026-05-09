@@ -77,102 +77,103 @@ function CatalogContent() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
-      <main className="pb-12 max-w-screen-2xl mx-auto px-4 lg:px-8 pt-4">
+      <main className="pb-12 max-w-screen-2xl mx-auto px-4 lg:px-8">
 
-        {/* Controls Bar */}
-        <div className="flex items-center justify-between gap-4 py-3 mb-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            {/* Mobile/Tablet filter button */}
-            <button
-              onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-gray-200 text-sm font-medium hover:border-primary-500/30 transition-all"
-            >
-              <AppIcon name="tune" className="text-lg" />
-              Filter
-              {activeFilterCount > 0 && (
-                <span className="bg-primary-500 text-white text-[0.65rem] font-bold px-1.5 py-0.5 rounded-full">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
+        {/* Sticky Header: Controls Bar + Active Filters */}
+        <div className="sticky top-[68px] z-30 bg-background/95 backdrop-blur-md -mx-4 px-4 lg:-mx-8 lg:px-8 border-b border-gray-100 mb-6">
+          <div className="flex items-center justify-between gap-4 py-5">
+            <div className="flex items-center gap-3">
+              {/* Mobile/Tablet filter button */}
+              <button
+                onClick={() => setMobileFilterOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-gray-200 text-sm font-medium hover:border-primary-500/30 transition-all cursor-pointer"
+              >
+                <AppIcon name="tune" className="text-lg" />
+                Filter
+                {activeFilterCount > 0 && (
+                  <span className="bg-primary-500 text-white text-[0.65rem] font-bold px-1.5 py-0.5 rounded-full">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
 
-            {/* Sort Tabs */}
-            <div className="hidden sm:flex items-center gap-1">
-              {Object.entries(SORT_LABELS).map(([val, label]) => (
-                <button
-                  key={val}
-                  onClick={() => setFilters({ sort: val as CatalogFilters["sort"] })}
-                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                    (filters.sort || "popular") === val
-                      ? "bg-primary-500 text-white"
-                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
-                  }`}
+              {/* Sort Tabs */}
+              <div className="hidden sm:flex items-center gap-1">
+                {Object.entries(SORT_LABELS).map(([val, label]) => (
+                  <button
+                    key={val}
+                    onClick={() => setFilters({ sort: val as CatalogFilters["sort"] })}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
+                      (filters.sort || "popular") === val
+                        ? "bg-primary-500 text-white"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Mobile Sort */}
+              <div className="sm:hidden">
+                <Select
+                  value={filters.sort || "popular"}
+                  onValueChange={(val) => setFilters({ sort: val as CatalogFilters["sort"] })}
                 >
-                  {label}
+                  <SelectTrigger className="w-[130px] border border-gray-200 rounded-lg text-sm h-auto py-2 px-3 bg-white cursor-pointer">
+                    <SelectValue>{SORT_LABELS[filters.sort || "popular"]}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(SORT_LABELS).map(([val, label]) => (
+                      <SelectItem key={val} value={val}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 transition-all cursor-pointer ${viewMode === "grid" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
+                  title="Grid view"
+                >
+                  <AppIcon name="grid_view" className="text-lg" />
                 </button>
-              ))}
-            </div>
-
-            {/* Mobile Sort */}
-            <div className="sm:hidden">
-              <Select
-                value={filters.sort || "popular"}
-                onValueChange={(val) => setFilters({ sort: val as CatalogFilters["sort"] })}
-              >
-                <SelectTrigger className="w-[130px] border border-gray-200 rounded-lg text-sm h-auto py-2 px-3 bg-white">
-                  <SelectValue>{SORT_LABELS[filters.sort || "popular"]}</SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(SORT_LABELS).map(([val, label]) => (
-                    <SelectItem key={val} value={val}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 transition-all cursor-pointer ${viewMode === "list" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
+                  title="List view"
+                >
+                  <AppIcon name="view_list" className="text-lg" />
+                </button>
+              </div>
+              <span className="text-sm text-gray-400 hidden xs:inline">
+                {pagination.total} produk
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`p-2 transition-all ${viewMode === "grid" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
-                title="Grid view"
-              >
-                <AppIcon name="grid_view" className="text-lg" />
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`p-2 transition-all ${viewMode === "list" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
-                title="List view"
-              >
-                <AppIcon name="view_list" className="text-lg" />
-              </button>
+          {activeFilterCount > 0 && (
+            <div className="pb-4">
+              <ActiveFilterBar
+                filters={filters}
+                totalResults={pagination.total}
+                onRemove={removeFilter}
+                onClearAll={clearAll}
+                facets={facets}
+              />
             </div>
-            <span className="text-sm text-gray-400">
-              {pagination.total} produk
-            </span>
-          </div>
+          )}
         </div>
 
-        {activeFilterCount > 0 && (
-          <div className="mb-4">
-            <ActiveFilterBar
-              filters={filters}
-              totalResults={pagination.total}
-              onRemove={removeFilter}
-              onClearAll={clearAll}
-              facets={facets}
-            />
-          </div>
-        )}
-
-        {/* Main Grid: Sidebar + Products */}
-        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12 items-start">
 
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block sticky top-20">
+          <div className="hidden lg:block h-[calc(100vh-150px)] overflow-y-auto no-scrollbar pr-2 pb-10 sticky top-[132px]">
             <FilterSidebar
               filters={filters}
               facets={facets}
@@ -222,7 +223,7 @@ function CatalogContent() {
           )}
 
           {/* Product Grid */}
-          <div className="min-h-[600px]">
+          <div className="min-h-[600px] h-[calc(100vh-150px)] overflow-y-auto no-scrollbar pb-10 lg:pr-2">
             {loading ? (
               /* Skeleton Grid */
               <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "flex flex-col gap-3"}>

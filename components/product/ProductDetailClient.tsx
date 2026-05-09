@@ -103,13 +103,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <>
                 <button
                   onClick={() => setMainImage(Math.max(0, mainImage - 1))}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   <AppIcon name="chevron_left" className="text-lg" />
                 </button>
                 <button
                   onClick={() => setMainImage(Math.min(images.length - 1, mainImage + 1))}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   <AppIcon name="chevron_right" className="text-lg" />
                 </button>
@@ -124,7 +124,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <button
                   key={`${image.imageUrl}-${i}`}
                   onClick={() => setMainImage(i)}
-                  className={`w-16 h-16 bg-white border rounded-lg p-1 overflow-hidden transition-all ${i === mainImage ? "border-primary-500 ring-1 ring-primary-500" : "border-gray-200 hover:border-gray-300"
+                  className={`w-16 h-16 bg-white border rounded-lg p-1 overflow-hidden transition-all cursor-pointer ${i === mainImage ? "border-primary-500 ring-1 ring-primary-500" : "border-gray-200 hover:border-gray-300"
                     }`}
                 >
                   <img alt={`${product.name} ${i + 1}`} className="w-full h-full object-contain scale-75" src={image.imageUrl} />
@@ -156,7 +156,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <div className="flex border border-gray-200 rounded-xl overflow-hidden mb-6 w-fit">
             <button
               onClick={() => { setPricingMode("retail"); setQuantity(1); }}
-              className={`px-5 py-2 text-sm font-medium transition-all ${pricingMode === "retail" ? "bg-primary-500 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
+              className={`px-5 py-2 text-sm font-medium transition-all cursor-pointer ${pricingMode === "retail" ? "bg-primary-500 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
             >
               Ecer
@@ -164,7 +164,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <button
               disabled={!wholesalePrice}
               onClick={() => { setPricingMode("wholesale"); setQuantity(1); }}
-              className={`px-5 py-2 text-sm font-medium transition-all disabled:opacity-40 ${pricingMode === "wholesale" ? "bg-primary-500 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
+              className={`px-5 py-2 text-sm font-medium transition-all disabled:opacity-40 cursor-pointer ${pricingMode === "wholesale" ? "bg-primary-500 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
             >
               Per Bal
@@ -195,7 +195,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       key={`${price.lidColorId}-${price.priceTypeId}`}
                       onClick={() => { setSelectedPriceIdx(i); setQuantity(1); }}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${isSelected
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all cursor-pointer ${isSelected
                           ? "border-primary-500 bg-primary-50 text-primary-700 font-semibold ring-1 ring-primary-500"
                           : "border-gray-200 hover:border-gray-300 text-gray-600 bg-white"
                         }`}

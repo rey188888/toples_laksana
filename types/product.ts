@@ -65,32 +65,32 @@ export interface Product {
 // --- Lookup Tables ---
 
 export const CATEGORY_LABELS: Record<string, string> = {
-  cat_tin: "Tin Kaleng",
-  cat_jar_plastik: "Jar Plastik",
-  cat_jar_kaca: "Jar Kaca",
-  cat_jar_cylinder: "Jar Cylinder",
-  cat_botol: "Botol",
-  cat_botol_plastik: "Botol Plastik",
+  cat_001: "Jar Cylinder",
+  cat_002: "Jar Kaca",
+  cat_003: "Jar Plastik",
+  cat_004: "Botol Plastik",
+  cat_005: "Tin Kaleng",
 };
 
 export const LID_COLOR_LABELS: Record<string, string> = {
-  color_bening: "Bening",
-  color_putih: "Putih",
-  color_cling: "Cling",
-  color_silver: "Silver",
-  color_emas: "Emas",
-  color_rose: "Rose",
-  color_hitam: "Hitam",
+  lc_001: "Bening",
+  lc_002: "Putih",
+  lc_003: "Cling",
+  lc_004: "Silver",
+  lc_005: "Emas",
+  lc_006: "Rose",
+  lc_007: "Hitam",
 };
 
 export const PRICE_TYPE_IDS = {
-  withLid: "price_with_lid",
-  perBal: "price_per_bal",
+  withLid: "ptype_001",
+  perBal: "ptype_004",
 } as const;
 
 const PRODUCT_TYPE_LABELS: Record<string, string> = {
-  type_reguler: "Reguler",
-  type_premium: "Premium",
+  pt_001: "Premium",
+  pt_002: "Economis",
+  pt_003: "Standard",
 };
 
 // --- Helper Functions ---
