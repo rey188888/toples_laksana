@@ -124,7 +124,9 @@ export function getSpecValue(product: Product, key: string): number | undefined 
 }
 
 export function getPrimaryImage(product: Product): string {
-  return "/toples.png";
+  if (!product.images || product.images.length === 0) return "/toples.png";
+  const primary = product.images.find(img => img.isPrimary);
+  return primary?.imageUrl || product.images[0].imageUrl || "/toples.png";
 }
 
 // Get the lowest retail (withLid) price across all color variants

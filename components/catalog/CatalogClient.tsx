@@ -173,7 +173,7 @@ function CatalogContent() {
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12 items-start">
 
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block h-[calc(100vh-150px)] overflow-y-auto no-scrollbar pr-2 pb-10 sticky top-[132px]">
+          <div className="hidden lg:block h-[calc(100vh-150px)] overflow-y-auto no-scrollbar px-6 py-8 border border-border/50 rounded-2xl bg-secondary-50/10 sticky top-[132px]">
             <FilterSidebar
               filters={filters}
               facets={facets}
@@ -223,7 +223,7 @@ function CatalogContent() {
           )}
 
           {/* Product Grid */}
-          <div className="min-h-[600px] h-[calc(100vh-150px)] overflow-y-auto no-scrollbar pb-10 lg:pr-2">
+          <div className="min-h-[600px] h-[calc(100vh-150px)] overflow-y-auto no-scrollbar px-6 py-8 border border-border/50 rounded-2xl bg-white/50 shadow-sm shadow-black/2">
             {loading ? (
               /* Skeleton Grid */
               <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "flex flex-col gap-3"}>

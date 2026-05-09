@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types/product";
@@ -22,8 +22,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useUploadThing } from "@/lib/uploadthing";
+import { Loader2, ImagePlus, X } from "lucide-react";
 import { AppIcon } from "../ui/app-icon";
-import { UploadDropzone } from "@/lib/uploadthing";
 
 interface ProductDialogProps {
   isOpen: boolean;
@@ -66,6 +67,9 @@ const emptyProduct: Partial<Product> = {
 export default function ProductDialog({ isOpen, onClose, product, onSave, masterData }: ProductDialogProps) {
   const [formData, setFormData] = useState<Partial<Product>>(emptyProduct);
   const [loading, setLoading] = useState(false);
+  const [pendingFiles, setPendingFiles] = useState<{ id: string; file: File; preview: string; isPrimary: boolean }[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { startUpload } = useUploadThing("productImage");
 
   useEffect(() => {
     if (isOpen) {
@@ -86,15 +90,76 @@ export default function ProductDialog({ isOpen, onClose, product, onSave, master
     }));
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    addFiles(files);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files || []);
+    addFiles(files);
+  };
+
+  const addFiles = (files: File[]) => {
+    const newPending = files
+      .filter(f => f.type.startsWith("image/"))
+      .map(f => ({
+        id: Math.random().toString(36).substr(2, 9),
+        file: f,
+        preview: URL.createObjectURL(f),
+        isPrimary: (formData.images?.length || 0) === 0 && pendingFiles.length === 0
+      }));
+    setPendingFiles(prev => [...prev, ...newPending]);
+  };
+
+  const removePending = (id: string) => {
+    setPendingFiles(prev => {
+      const filtered = prev.filter(f => f.id !== id);
+      // Revoke URL to avoid memory leak
+      const removed = prev.find(f => f.id === id);
+      if (removed) URL.revokeObjectURL(removed.preview);
+      return filtered;
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await onSave(formData);
+      let finalImages = [...(formData.images || [])];
+
+      // 1. Upload pending files if any
+      if (pendingFiles.length > 0) {
+        const uploadResult = await startUpload(pendingFiles.map(pf => pf.file));
+        if (!uploadResult) throw new Error("Gagal mengunggah gambar");
+
+        const uploadedImages = uploadResult.map((res, i) => ({
+          imageUrl: res.url,
+          order: finalImages.length + i,
+          isPrimary: pendingFiles[i].isPrimary
+        }));
+        finalImages = [...finalImages, ...uploadedImages];
+      }
+
+      // 2. Ensure only one image is primary
+      const primaryCount = finalImages.filter(img => img.isPrimary).length;
+      if (primaryCount === 0 && finalImages.length > 0) {
+        finalImages[0].isPrimary = true;
+      } else if (primaryCount > 1) {
+        const firstPrimaryIndex = finalImages.findIndex(img => img.isPrimary);
+        finalImages = finalImages.map((img, i) => ({ ...img, isPrimary: i === firstPrimaryIndex }));
+      }
+
+      await onSave({ ...formData, images: finalImages });
+      
+      // Cleanup
+      pendingFiles.forEach(f => URL.revokeObjectURL(f.preview));
+      setPendingFiles([]);
       onClose();
     } catch (error) {
       console.error("Failed to save product:", error);
-      alert("Gagal menyimpan produk. Periksa kembali data Anda.");
+      alert(error instanceof Error ? error.message : "Gagal menyimpan produk.");
     } finally {
       setLoading(false);
     }
@@ -164,77 +229,136 @@ export default function ProductDialog({ isOpen, onClose, product, onSave, master
               />
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-border">
-              <div className="flex items-center justify-between">
-                <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Gambar Produk</h4>
-              </div>
-              <div className="bg-secondary-50/30 rounded-2xl border-2 border-dashed border-border p-6 flex flex-col items-center justify-center min-h-[160px] w-full">
-                <UploadDropzone
-                  endpoint="productImage"
-                  onClientUploadComplete={(res) => {
-                    if (res) {
-                      const newImages = res.map((file: any, i: number) => ({
-                        imageUrl: file.serverData?.url || file.ufsUrl || file.url || (file as any).appUrl,
-                        order: (formData.images?.length || 0) + i,
-                        isPrimary: (formData.images?.length || 0) === 0 && i === 0
-                      }));
-                      setFormData(prev => ({
-                        ...prev,
-                        images: [...(prev.images || []), ...newImages]
-                      }));
-                    }
-                  }}
-                  onUploadError={(error: Error) => {
-                    alert(`Gagal mengupload: ${error.message}`);
-                  }}
-                  className="ut-label:text-primary-500 ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-400 border-none bg-transparent w-full"
-                />
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {(formData.images || []).map((img, index) => (
-                  <div key={index} className={cn(
-                    "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all group",
-                    img.isPrimary ? "border-primary-500 shadow-lg shadow-primary-500/10" : "border-border hover:border-primary-200"
-                  )}>
-                    <img src={img.imageUrl} alt="Preview" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFormData(prev => ({
-                            ...prev,
-                            images: (prev.images || []).filter((_, i) => i !== index)
-                          }));
-                        }}
-                        className="self-end w-7 h-7 rounded-lg bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors cursor-pointer shadow-lg"
-                      >
-                        <AppIcon name="delete" className="text-sm" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFormData(prev => ({
-                            ...prev,
-                            images: (prev.images || []).map((im, i) => ({ ...im, isPrimary: i === index }))
-                          }));
-                        }}
-                        className={cn(
-                          "w-full py-1.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all cursor-pointer",
-                          img.isPrimary ? "bg-primary-500 text-white" : "bg-white/90 text-text-primary hover:bg-white"
-                        )}
-                      >
-                        {img.isPrimary ? "Utama" : "Set Utama"}
-                      </button>
-                    </div>
-                    {img.isPrimary && (
-                      <div className="absolute top-2 left-2 px-2 py-0.5 bg-primary-500 text-white text-[0.5rem] font-black uppercase tracking-widest rounded-md shadow-lg">
-                        Utama
-                      </div>
-                    )}
+              <div className="space-y-4 pt-4 border-t border-border">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Gambar Produk</h4>
+                  <span className="text-[0.6rem] text-text-muted font-bold">Maks. 4MB per file</span>
+                </div>
+
+                {/* Dropzone Container */}
+                <div 
+                  onDragOver={(e) => e.preventDefault()} 
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-secondary-50/30 rounded-2xl border-2 border-dashed border-border p-8 flex flex-col items-center justify-center min-h-[160px] w-full transition-all hover:bg-secondary-50/50 hover:border-primary-300 cursor-pointer group"
+                >
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleFileSelect} 
+                    multiple 
+                    accept="image/*" 
+                    className="hidden" 
+                  />
+                  <div className="w-12 h-12 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <ImagePlus className="text-primary-500 w-8 h-8" />
                   </div>
-                ))}
+                  <p className="text-sm font-black text-text-primary">Klik atau lepas gambar di sini</p>
+                  <p className="text-xs font-bold text-text-muted mt-1">Mendukung format JPG, PNG, WEBP</p>
+                </div>
+
+                {/* Images Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {/* Existing Images */}
+                  {(formData.images || []).map((img, index) => (
+                    <div key={`existing-${index}`} className={cn(
+                      "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all group",
+                      img.isPrimary ? "border-primary-500 shadow-lg shadow-primary-500/10" : "border-border hover:border-primary-200"
+                    )}>
+                      <img src={img.imageUrl} alt="Product" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFormData(prev => ({
+                              ...prev,
+                              images: (prev.images || []).filter((_, i) => i !== index)
+                            }));
+                          }}
+                          className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-red-500/90 text-white flex items-center justify-center hover:bg-red-600 transition-colors cursor-pointer shadow-lg backdrop-blur-sm"
+                        >
+                          <X size={14} strokeWidth={3} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFormData(prev => ({
+                              ...prev,
+                              images: (prev.images || []).map((im, i) => ({ ...im, isPrimary: i === index }))
+                            }));
+                            // Ensure pending files are not primary if an existing one is set
+                            setPendingFiles(prev => prev.map(f => ({ ...f, isPrimary: false })));
+                          }}
+                          className={cn(
+                            "w-full py-1.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all cursor-pointer",
+                            img.isPrimary ? "bg-primary-500 text-white" : "bg-white/90 text-text-primary hover:bg-white"
+                          )}
+                        >
+                          {img.isPrimary ? "Utama" : "Set Utama"}
+                        </button>
+                      </div>
+                      {img.isPrimary && (
+                        <div className="absolute top-2 left-2 px-2 py-0.5 bg-primary-500 text-white text-[0.5rem] font-black uppercase tracking-widest rounded-md shadow-lg">
+                          Utama
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Pending Images */}
+                  {pendingFiles.map((pf) => (
+                    <div key={pf.id} className={cn(
+                      "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all group",
+                      pf.isPrimary ? "border-primary-500 shadow-lg shadow-primary-500/10" : "border-border border-dashed hover:border-primary-200"
+                    )}>
+                      <img src={pf.preview} alt="Pending" className="w-full h-full object-cover opacity-70" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removePending(pf.id);
+                          }}
+                          className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-red-500/90 text-white flex items-center justify-center hover:bg-red-600 transition-colors cursor-pointer shadow-lg backdrop-blur-sm"
+                        >
+                          <X size={14} strokeWidth={3} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPendingFiles(prev => prev.map(f => ({ ...f, isPrimary: f.id === pf.id })));
+                            // Clear primary status from existing images
+                            setFormData(prev => ({
+                              ...prev,
+                              images: (prev.images || []).map(img => ({ ...img, isPrimary: false }))
+                            }));
+                          }}
+                          className={cn(
+                            "w-full py-1.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all cursor-pointer",
+                            pf.isPrimary ? "bg-primary-500 text-white" : "bg-white/90 text-text-primary hover:bg-white"
+                          )}
+                        >
+                          {pf.isPrimary ? "Utama" : "Set Utama"}
+                        </button>
+                      </div>
+                      <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-white/90 text-text-muted text-[0.45rem] font-black uppercase rounded shadow-sm border border-border">
+                        Baru
+                      </div>
+                      {pf.isPrimary && (
+                        <div className={cn(
+                          "absolute left-2 px-2 py-0.5 bg-primary-500 text-white text-[0.5rem] font-black uppercase tracking-widest rounded-md shadow-lg transition-all",
+                          "top-8" // Offset from top since "Baru" is at top-2
+                        )}>
+                          Utama
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
             <div className="space-y-4 pt-4 border-t border-border">
               <div className="flex items-center justify-between">
