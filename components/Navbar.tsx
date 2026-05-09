@@ -60,7 +60,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-            className={cn(buttonVariants({ variant: "secondary" }), "hidden text-primary-500 shadow-sm lg:flex cursor-pointer")}
+            className={cn(buttonVariants({ variant: "secondary" }), "hidden text-primary-500 lg:flex cursor-pointer border border-primary-100")}
             >
               <ShieldUserIcon className="size-4" />
             </Link>

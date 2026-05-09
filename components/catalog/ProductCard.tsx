@@ -38,7 +38,7 @@ export default function ProductCard({
   };
 
   return (
-    <Card className="group relative overflow-hidden rounded-lg border-border bg-card py-0 transition-all duration-300 hover:shadow-md">
+    <Card className="group relative overflow-hidden rounded-lg border border-border bg-card py-0 transition-all duration-300">
       {/* Image Section */}
       <Link
         href={productHref}

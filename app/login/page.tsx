@@ -58,7 +58,7 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <Card className="w-full max-w-[440px] overflow-hidden border-border bg-white/90 py-0 shadow-2xl shadow-primary-500/5 backdrop-blur-2xl transition-all duration-500">
+        <Card className="w-full max-w-[440px] overflow-hidden border border-border bg-white/90 py-0 backdrop-blur-2xl transition-all duration-500">
           <div className="px-10 pb-6 pt-12 text-center">
             <Link href="/" className="mb-6 inline-block text-2xl font-extrabold tracking-tight text-primary-500">
               Toples Laksana
@@ -83,7 +83,7 @@ export default function LoginPage() {
                 </div>
                 <Input
                   autoFocus
-                  className="h-12 bg-white pl-12 pr-4 font-bold shadow-sm"
+                  className="h-12 bg-white pl-12 pr-4 font-bold"
                   id="email"
                   name="email"
                   placeholder="admin@topleslaksana.com"
@@ -105,7 +105,7 @@ export default function LoginPage() {
                   <LockIcon className="size-4" />
                 </div>
                 <Input
-                  className="h-12 bg-white pl-12 pr-12 font-bold shadow-sm"
+                  className="h-12 bg-white pl-12 pr-12 font-bold"
                   id="password"
                   name="password"
                   placeholder="********"
@@ -120,7 +120,7 @@ export default function LoginPage() {
 
             <div className="pt-2">
               <Button
-                className="group h-12 w-full font-bold uppercase tracking-widest shadow-xl shadow-primary-500/20"
+                className="group h-12 w-full font-bold uppercase tracking-widest"
                 type="submit"
                 disabled={loading}
               >

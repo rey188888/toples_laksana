@@ -189,7 +189,7 @@ function CatalogContent() {
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={() => setMobileFilterOpen(false)}
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-background rounded-t-2xl max-h-[92vh] overflow-y-auto p-5 sm:p-8 pb-32 shadow-2xl">
+              <div className="absolute bottom-0 left-0 right-0 bg-background rounded-t-2xl max-h-[92vh] overflow-y-auto p-5 sm:p-8 pb-32 border-t border-border">
                 <div className="flex items-center justify-between mb-8">
                   <h2 className="text-xl font-bold text-text-primary">Filter Produk</h2>
                   <button
@@ -212,7 +212,7 @@ function CatalogContent() {
                 <div className="mt-auto absolute bottom-0 left-0 right-0 bg-white p-6 border-t border-border rounded-b-2xl">
                   <button
                     onClick={() => setMobileFilterOpen(false)}
-                    className="w-full py-4 bg-primary-900 text-white font-black uppercase tracking-widest rounded-xl text-xs shadow-2xl shadow-primary-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-primary-900 text-white font-black uppercase tracking-widest rounded-xl text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                   >
                     Tampilkan {pagination.total} Produk
                     <AppIcon name="arrow_forward" className="text-base" />
@@ -223,7 +223,7 @@ function CatalogContent() {
           )}
 
           {/* Product Grid */}
-          <div className="min-h-[600px] h-[calc(100vh-150px)] overflow-y-auto no-scrollbar px-6 py-8 border border-border/50 rounded-2xl bg-white/50 shadow-sm shadow-black/2">
+          <div className="min-h-[600px] h-[calc(100vh-150px)] overflow-y-auto no-scrollbar px-6 py-8 border border-border/50 rounded-2xl bg-white/50">
             {loading ? (
               /* Skeleton Grid */
               <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "flex flex-col gap-3"}>
@@ -260,7 +260,7 @@ function CatalogContent() {
                 </p>
                 <button
                   onClick={clearAll}
-                  className="px-8 py-3 bg-primary-500 text-white rounded-xl font-bold hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/10"
+                  className="px-8 py-3 bg-primary-500 text-white rounded-xl font-bold hover:bg-primary-600 transition-all border border-primary-600"
                 >
                   Hapus Semua Filter
                 </button>
@@ -290,7 +290,7 @@ function CatalogContent() {
                         <Link
                           key={product.id}
                           href={`/products/${product.id}`}
-                          className="group flex items-center gap-4 bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md transition-all"
+                          className="group flex items-center gap-4 bg-white border border-gray-100 rounded-xl p-4 transition-all"
                         >
                           <div className="w-24 h-24 shrink-0 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
                             {heroImage ? (
@@ -369,7 +369,7 @@ function CatalogContent() {
       {/* Floating Comparison Bar */}
       {compareIds.length > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-60 w-full max-w-2xl px-4 sm:px-6">
-          <div className="bg-primary-900 text-white rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-primary-800/50 backdrop-blur-xl">
+          <div className="bg-primary-900 text-white rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border border-primary-800/50 backdrop-blur-xl">
             <div className="flex items-center gap-3 sm:gap-4 pl-1 sm:pl-2">
               <div className="flex -space-x-3">
                 {compareIds.slice(0, 3).map((_, i) => (
@@ -399,7 +399,7 @@ function CatalogContent() {
               </button>
               <Link
                 href={`/compare?ids=${compareIds.join(",")}`}
-                className="flex-1 sm:flex-none bg-primary-500 text-white px-4 sm:px-8 py-2.5 sm:py-3 rounded-xl text-[0.65rem] sm:text-xs font-black uppercase tracking-widest hover:bg-primary-600 transition-all flex items-center justify-center gap-2 shadow-xl shadow-primary-500/20 active:scale-95"
+                className="flex-1 sm:flex-none bg-primary-500 text-white px-4 sm:px-8 py-2.5 sm:py-3 rounded-xl text-[0.65rem] sm:text-xs font-black uppercase tracking-widest hover:bg-primary-600 transition-all flex items-center justify-center gap-2 active:scale-95"
               >
                 Bandingkan
                 <AppIcon name="compare_arrows" className="text-sm" />

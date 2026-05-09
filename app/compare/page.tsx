@@ -73,7 +73,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
         </div>
 
         {products.length === 0 ? (
-          <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center bg-white border border-border rounded-2xl max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
+          <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center bg-white border border-border rounded-2xl max-w-2xl mx-auto">
             <div className="flex items-center justify-center mb-6">
               <AppIcon name="compare_arrows" className="text-6xl opacity-20" />
             </div>
@@ -81,7 +81,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
             <p className="text-sm mt-2 mb-10 max-w-md text-text-secondary font-medium opacity-70">
               Pilih hingga 3 produk dari katalog untuk membandingkan spesifikasinya secara detail di sini.
             </p>
-            <Link href="/catalog" className="bg-primary-500 text-white px-10 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-primary-600 transition-all shadow-xl shadow-primary-500/25 inline-flex text-[0.7rem] active:scale-95">
+            <Link href="/catalog" className="bg-primary-500 text-white px-10 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-primary-600 transition-all inline-flex text-[0.7rem] active:scale-95">
               Lihat Katalog Produk
             </Link>
           </div>
@@ -161,7 +161,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
             <div className={`grid ${gridCols} items-center mt-8 gap-6 min-w-[700px]`}>
               <div />
               {products.map((p) => (
-                <a key={`${p.id}-cta`} href={buildInquiryUrl(p)} target="_blank" rel="noopener noreferrer" className="w-full bg-white border-2 border-primary-500/10 text-primary-600 py-3 px-6 rounded-xl font-black text-[0.7rem] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-xl shadow-primary-500/5 active:scale-95 group">
+                <a key={`${p.id}-cta`} href={buildInquiryUrl(p)} target="_blank" rel="noopener noreferrer" className="w-full bg-white border-2 border-primary-500/10 text-primary-600 py-3 px-6 rounded-xl font-black text-[0.7rem] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all active:scale-95 group">
                   <AppIcon name="chat" className="text-xl transition-transform group-hover:rotate-12" />
                   Tanya Kami
                 </a>

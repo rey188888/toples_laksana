@@ -48,7 +48,7 @@ export default function FilterSidebar({
           <Input
             type="text"
             placeholder="Cari produk..."
-            className="h-11 bg-white pl-11 pr-6 font-bold shadow-sm"
+            className="h-11 bg-white pl-11 pr-6 font-bold"
             defaultValue={filters.search || ""}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -150,7 +150,7 @@ export default function FilterSidebar({
         type="button"
         variant="outline"
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="h-12 w-full justify-between px-5 font-black uppercase tracking-[0.2em] shadow-sm"
+        className="h-12 w-full justify-between px-5 font-black uppercase tracking-[0.2em]"
       >
         <span className="flex items-center gap-3 text-[0.65rem]">
           <SlidersHorizontalIcon className="size-4" />
@@ -256,7 +256,7 @@ export default function FilterSidebar({
       </div>
 
       {/* Trust Badge / Certification */}
-      <div className="p-6 bg-primary-50 rounded-xl border border-primary-100 shadow-inner">
+      <div className="p-6 bg-primary-50 rounded-xl border border-primary-100">
         <BadgeCheckIcon className="mb-3 size-8 text-primary-500" />
         <h4 className="text-xs font-black text-primary-700 mb-2 uppercase tracking-tight">
           Standar Food Grade

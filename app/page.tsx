@@ -51,7 +51,7 @@ export default function HomePage() {
                 href="/catalog"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-primary-500 text-white rounded-xl font-bold transition-all hover:bg-primary-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/20 gap-2 h-12 px-7 cursor-pointer"
+                  "bg-primary-500 text-white rounded-xl font-bold transition-all hover:bg-primary-600 gap-2 h-12 px-7 cursor-pointer"
                 )}
               >
                 Jelajahi Katalog
@@ -69,7 +69,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div className="aspect-4/5 w-full max-w-[450px] max-h-[75vh] rounded-2xl overflow-hidden shadow-2xl relative group">
+            <div className="aspect-4/5 w-full max-w-[450px] max-h-[75vh] rounded-2xl overflow-hidden relative group">
               <img
                 src="/toples.png"
                 alt="Koleksi Jar Premium"
@@ -98,7 +98,7 @@ export default function HomePage() {
               href={`/catalog?category=${encodeURIComponent(cat.name)}`}
               className="group flex flex-col cursor-pointer"
             >
-              <div className="aspect-square rounded-xl bg-white border border-border overflow-hidden mb-4 relative transition-all group-hover:shadow-lg group-hover:-translate-y-1">
+              <div className="aspect-square rounded-xl bg-white border border-border overflow-hidden mb-4 relative transition-all">
                 <img
                   src={cat.image}
                   alt={cat.name}
@@ -130,7 +130,7 @@ export default function HomePage() {
             { name: "Ribbed Ceramic Canister", price: "Rp 32.000", img: "/toples.png" },
             { name: "Olive Wood Board", price: "Rp 85.000", img: "/toples.png" },
           ].map((item) => (
-            <Card key={item.name} className="overflow-hidden border-border hover:shadow-xl transition-all group rounded-xl bg-white p-0">
+            <Card key={item.name} className="overflow-hidden border border-border transition-all group rounded-xl bg-white p-0">
               <CardContent className="p-4">
                 <div className="aspect-square rounded-lg bg-secondary-50 overflow-hidden mb-4 flex items-center justify-center">
                   <img src={item.img} alt={item.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 scale-75" />
@@ -161,7 +161,7 @@ export default function HomePage() {
             href="/catalog"
             className={cn(
               buttonVariants({ size: "lg" }),
-              "bg-primary-500 text-white rounded-xl font-bold text-lg hover:bg-primary-600 transition-all hover:shadow-2xl hover:shadow-primary-500/30 gap-3 h-14 px-10"
+              "bg-primary-500 text-white rounded-xl font-bold text-lg hover:bg-primary-600 transition-all gap-3 h-14 px-10"
             )}
           >
             Buka Katalog

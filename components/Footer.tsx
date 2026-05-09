@@ -73,7 +73,7 @@ export default function Footer() {
       </div>
 
       <a
-        className={cn(buttonVariants({ size: "icon-lg" }), "fixed bottom-6 right-6 z-45 size-14 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-105 hover:bg-[#1EBE53]")}
+        className={cn(buttonVariants({ size: "icon-lg" }), "fixed bottom-6 right-6 z-45 size-14 rounded-full bg-[#25D366] text-white hover:scale-105 hover:bg-[#1EBE53] border-4 border-white/20")}
         href="https://wa.me/6281234567890?text=Halo%20Admin%20Toples%20Laksana"
         target="_blank"
         rel="noopener noreferrer"

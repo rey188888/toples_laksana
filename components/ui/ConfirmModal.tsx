@@ -39,7 +39,7 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-sm rounded-2xl p-0 overflow-hidden border-none shadow-2xl bg-white">
+      <DialogContent className="max-w-sm rounded-2xl p-0 overflow-hidden border border-border bg-white">
         <DialogHeader className="p-8 text-center pb-2">
           <DialogTitle className="text-xl font-black text-text-primary tracking-tight">
             {title}
@@ -68,8 +68,8 @@ export default function ConfirmModal({
             className={cn(
               "flex-1 rounded-xl font-black h-12 border-none cursor-pointer transition-all",
               variant === "danger" 
-                ? "bg-red-100/50 text-red-600 hover:bg-red-100 hover:text-red-600! shadow-sm shadow-red-500/5" 
-                : "bg-primary-100/50 text-primary-600 hover:bg-primary-100 hover:text-primary-600! shadow-sm shadow-primary-500/5"
+                ? "bg-red-100/50 text-red-600 hover:bg-red-100 hover:text-red-600!" 
+                : "bg-primary-100/50 text-primary-600 hover:bg-primary-100 hover:text-primary-600!"
             )}
           >
             {confirmLabel}
