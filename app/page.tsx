@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AppIcon } from "@/components/ui/app-icon";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -54,7 +55,7 @@ export default function HomePage() {
                 )}
               >
                 Jelajahi Katalog
-                <span className="material-symbols-outlined">arrow_forward</span>
+                <AppIcon name="arrow_forward" />
               </Link>
               <Link
                 href="/catalog?category=Jar+Cylinder"
@@ -87,7 +88,7 @@ export default function HomePage() {
             <p className="text-text-secondary mt-2">Dikurasi untuk pembeli profesional dan studio desain.</p>
           </div>
           <Link href="/catalog" className="text-primary-500 font-bold hover:underline flex items-center gap-1">
-            Lihat Semua Kategori <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            Lihat Semua Kategori <AppIcon name="arrow_forward" className="text-sm" />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -140,7 +141,7 @@ export default function HomePage() {
                     <p className="text-primary-500 font-bold mt-1 text-sm">{item.price}</p>
                   </div>
                   <div className="bg-primary-50 text-primary-500 p-2 rounded-lg shrink-0">
-                    <span className="material-symbols-outlined text-sm">trending_up</span>
+                    <AppIcon name="trending_up" className="text-sm" />
                   </div>
                 </div>
               </CardContent>
@@ -164,7 +165,7 @@ export default function HomePage() {
             )}
           >
             Buka Katalog
-            <span className="material-symbols-outlined">shopping_bag</span>
+            <AppIcon name="shopping_bag" />
           </Link>
           <a
             href="https://wa.me/6281234567890"
@@ -174,7 +175,7 @@ export default function HomePage() {
             )}
           >
             Hubungi Kami
-            <span className="material-symbols-outlined">chat</span>
+            <AppIcon name="chat" />
           </a>
         </div>
       </section>

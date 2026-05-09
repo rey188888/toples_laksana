@@ -3,6 +3,21 @@
 import { useState } from "react";
 import { CATEGORY_CONFIG, MATERIAL_LABELS, LID_TYPE_LABELS, COLOR_SWATCHES } from "@/lib/use-case-config";
 import { CatalogFilters, FacetCounts, getCategoryLabel, getLidColorLabel } from "@/types/product";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import {
+  BadgeCheckIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  FlaskConicalIcon,
+  PackageIcon,
+  PaletteIcon,
+  RulerIcon,
+  SearchIcon,
+  SettingsIcon,
+  SlidersHorizontalIcon,
+} from "lucide-react";
 
 interface FilterSidebarProps {
   filters: CatalogFilters;
@@ -29,13 +44,11 @@ export default function FilterSidebar({
       {/* Search Input */}
       <section>
         <div className="relative">
-          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl">
-            search
-          </span>
-          <input
+          <SearchIcon className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+          <Input
             type="text"
             placeholder="Cari produk..."
-            className="w-full pl-12 pr-6 py-3.5 bg-white border border-border rounded-xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all shadow-sm"
+            className="h-11 bg-white pl-11 pr-6 font-bold shadow-sm"
             defaultValue={filters.search || ""}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -49,7 +62,7 @@ export default function FilterSidebar({
       {/* Primary Filter: Packaging Type (Category) */}
       <section>
         <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-primary-600 mb-5 flex items-center gap-2">
-          <span className="material-symbols-outlined text-base">category</span>
+          <PackageIcon className="size-4" />
           Jenis Kemasan
         </h3>
         <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-2 gap-2">
@@ -57,21 +70,16 @@ export default function FilterSidebar({
             const isActive = !!filters.category?.includes(cat.value);
             const config = CATEGORY_CONFIG[cat.value];
             return (
-              <button
+              <Button
+                type="button"
+                variant={isActive ? "default" : "outline"}
                 key={cat.value}
                 onClick={() => onToggleArray("category", cat.value)}
-                className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl text-[0.65rem] font-black transition-all border ${isActive
-                    ? "bg-primary-500 text-white border-primary-500 shadow-lg shadow-primary-500/20"
-                    : "bg-white text-text-secondary border-border hover:border-primary-200 hover:text-primary-600"
-                  }`}
+                className="h-auto min-h-20 flex-col gap-2 p-3 text-center text-[0.65rem] font-black"
               >
-                {config && (
-                  <span className="material-symbols-outlined text-lg">
-                    {config.icon}
-                  </span>
-                )}
+                {config && <PackageIcon className="size-4" />}
                 <span>{cat.name || getCategoryLabel(cat.value)}</span>
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -80,7 +88,7 @@ export default function FilterSidebar({
       {/* ── Primary Filter 3: Volume Range ── */}
       <section>
         <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-primary-600 mb-5 flex items-center gap-2">
-          <span className="material-symbols-outlined text-base">straighten</span>
+          <RulerIcon className="size-4" />
           Volume / Ukuran
         </h3>
 
@@ -138,21 +146,18 @@ export default function FilterSidebar({
       </section>
 
       {/* Advanced Filters Toggle */}
-      <button
+      <Button
+        type="button"
+        variant="outline"
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="w-full flex items-center justify-between px-5 py-4 bg-white rounded-xl border border-border hover:border-primary-500/30 transition-all group shadow-sm active:scale-[0.98]"
+        className="h-12 w-full justify-between px-5 font-black uppercase tracking-[0.2em] shadow-sm"
       >
-        <span className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-primary group-hover:text-primary-600 transition-colors flex items-center gap-3">
-          <span className="material-symbols-outlined text-lg">tune</span>
+        <span className="flex items-center gap-3 text-[0.65rem]">
+          <SlidersHorizontalIcon className="size-4" />
           Filter Lanjutan
         </span>
-        <span
-          className={`material-symbols-outlined text-lg text-text-muted transition-transform duration-500 ${showAdvanced ? "rotate-180" : ""
-            }`}
-        >
-          expand_more
-        </span>
-      </button>
+        <ChevronDownIcon className={`size-4 text-text-muted transition-transform duration-500 ${showAdvanced ? "rotate-180" : ""}`} />
+      </Button>
 
       {/* Advanced Filters Panel */}
       <div
@@ -162,7 +167,7 @@ export default function FilterSidebar({
         {/* Material Body */}
         <section>
           <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-base">science</span>
+            <FlaskConicalIcon className="size-4" />
             Material Badan
           </h3>
           <div className="space-y-1">
@@ -170,11 +175,9 @@ export default function FilterSidebar({
               const isActive = !!filters.material_body?.includes(mat.value);
               return (
                 <label key={mat.value} className="flex items-center gap-3 cursor-pointer group px-3 py-2 rounded-xl hover:bg-secondary-50 transition-colors">
-                  <input
-                    className="w-4 h-4 rounded-md border-border text-primary-500 focus:ring-primary-500 cursor-pointer accent-primary-500"
-                    type="checkbox"
+                  <Checkbox
                     checked={isActive || false}
-                    onChange={() => onToggleArray("material_body", mat.value)}
+                    onCheckedChange={() => onToggleArray("material_body", mat.value)}
                   />
                   <span className={`text-xs font-bold flex-1 ${isActive ? "text-primary-700" : "text-text-secondary"} group-hover:text-primary-600 transition-colors`}>
                     {MATERIAL_LABELS[mat.value]?.label || mat.value}
@@ -189,7 +192,7 @@ export default function FilterSidebar({
         {/* Lid Type */}
         <section>
           <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-base">settings</span>
+            <SettingsIcon className="size-4" />
             Tipe Tutup
           </h3>
           <div className="space-y-1">
@@ -198,11 +201,9 @@ export default function FilterSidebar({
               const label = LID_TYPE_LABELS[lid.value];
               return (
                 <label key={lid.value} className="flex items-center gap-3 cursor-pointer group px-3 py-2 rounded-xl hover:bg-secondary-50 transition-colors">
-                  <input
-                    className="w-4 h-4 rounded-md border-border text-primary-500 focus:ring-primary-500 cursor-pointer accent-primary-500"
-                    type="checkbox"
+                  <Checkbox
                     checked={isActive || false}
-                    onChange={() => onToggleArray("lid_type", lid.value)}
+                    onCheckedChange={() => onToggleArray("lid_type", lid.value)}
                   />
                   <span className={`text-xs font-bold flex-1 ${isActive ? "text-primary-700" : "text-text-secondary"} group-hover:text-primary-600 transition-colors`}>
                     {label?.label || lid.value}
@@ -217,7 +218,7 @@ export default function FilterSidebar({
         {/* Color Swatches */}
         <section>
           <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-base">palette</span>
+            <PaletteIcon className="size-4" />
             Warna Tutup
           </h3>
           <div className="space-y-1">
@@ -235,16 +236,13 @@ export default function FilterSidebar({
                     style={{ backgroundColor: hex }}
                   >
                     {isActive && (
-                      <span className="material-symbols-outlined absolute inset-0 flex items-center justify-center text-[10px] font-black" style={{ color: hex === "#FFFFFF" || hex === "#F5F5F5" ? "#16479D" : "#fff" }}>
-                        check
-                      </span>
+                      <CheckIcon className="absolute inset-0 m-auto size-3" style={{ color: hex === "#FFFFFF" || hex === "#F5F5F5" ? "#16479D" : "#fff" }} />
                     )}
                   </div>
-                  <input
-                    className="hidden"
-                    type="checkbox"
+                  <Checkbox
+                    className="sr-only"
                     checked={isActive || false}
-                    onChange={() => onToggleArray("colors", color.value)}
+                    onCheckedChange={() => onToggleArray("colors", color.value)}
                   />
                   <span className={`text-xs font-bold flex-1 ${isActive ? "text-primary-700" : "text-text-secondary"} group-hover:text-primary-600 transition-colors`}>
                     {colorName} <span className="text-[0.6rem] text-text-muted ml-1 uppercase font-normal">{hex}</span>
@@ -259,9 +257,7 @@ export default function FilterSidebar({
 
       {/* Trust Badge / Certification */}
       <div className="p-6 bg-primary-50 rounded-xl border border-primary-100 shadow-inner">
-        <span className="material-symbols-outlined text-primary-500 mb-3 text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-          verified
-        </span>
+        <BadgeCheckIcon className="mb-3 size-8 text-primary-500" />
         <h4 className="text-xs font-black text-primary-700 mb-2 uppercase tracking-tight">
           Standar Food Grade
         </h4>

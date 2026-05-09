@@ -2,6 +2,24 @@
 
 import { useEffect, useState } from "react";
 import type { Product } from "@/types/product";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ProductDialogProps {
   isOpen: boolean;
@@ -45,8 +63,6 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
     });
   }, [product, isOpen]);
 
-  if (!isOpen) return null;
-
   const updateDimension = (key: keyof NonNullable<Product["dimension"]>, value: number) => {
     setFormData({
       ...formData,
@@ -75,22 +91,15 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
   };
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto p-0">
+        <DialogHeader className="sticky top-0 z-10 border-b border-border bg-white/90 px-8 py-6 backdrop-blur-md">
+          <DialogTitle className="text-xl font-black text-text-primary">
+            {product ? "Edit Produk" : "Tambah Produk Baru"}
+          </DialogTitle>
+        </DialogHeader>
 
-      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative shadow-2xl animate-in fade-in zoom-in duration-300">
-        <div className="sticky top-0 bg-white/80 backdrop-blur-md px-8 py-6 border-b border-border z-10 flex items-center justify-between">
-          <div>
-            <h3 className="text-xl font-black text-text-primary tracking-tight">
-              {product ? "Edit Produk" : "Tambah Produk Baru"}
-            </h3>
-          </div>
-          <button onClick={onClose} className="w-10 h-10 rounded-xl hover:bg-secondary-50 text-text-muted transition-colors flex items-center justify-center">
-            <span className="material-symbols-outlined">close</span>
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Field label="ID Produk" value={formData.id || ""} onChange={(value) => setFormData({ ...formData, id: value })} required />
             <Field label="SKU" value={formData.sku || ""} onChange={(value) => setFormData({ ...formData, sku: value })} required />
@@ -141,25 +150,24 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
           </div>
 
           <div className="space-y-2">
-            <label className="text-[0.65rem] font-black uppercase tracking-widest text-text-muted ml-1">Deskripsi</label>
-            <textarea
+            <Label>Deskripsi</Label>
+            <Textarea
               value={formData.description || ""}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold focus:bg-white focus:border-primary-500 outline-none transition-all min-h-28"
             />
           </div>
 
-          <div className="pt-6 sticky bottom-0 bg-white/80 backdrop-blur-md mt-6 flex gap-3">
-            <button type="button" onClick={onClose} className="flex-1 py-4 rounded-xl bg-secondary-50 text-text-primary font-black uppercase tracking-widest text-xs hover:bg-secondary-100 transition-all">
+          <div className="sticky bottom-0 mt-6 flex gap-3 border-t border-border bg-white/90 pt-6 backdrop-blur-md">
+            <Button type="button" variant="secondary" size="lg" onClick={onClose} className="flex-1 font-black uppercase tracking-widest">
               Batal
-            </button>
-            <button type="submit" disabled={loading} className="flex-2 py-4 rounded-xl bg-primary-500 text-white font-black uppercase tracking-widest text-xs hover:bg-primary-600 shadow-lg shadow-primary-500/20 transition-all disabled:opacity-50">
+            </Button>
+            <Button type="submit" disabled={loading} size="lg" className="flex-2 font-black uppercase tracking-widest shadow-lg shadow-primary-500/20">
               {loading ? "Menyimpan..." : product ? "Simpan Perubahan" : "Tambah Produk"}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -176,12 +184,11 @@ function Field({
 }) {
   return (
     <div className="space-y-2">
-      <label className="text-[0.65rem] font-black uppercase tracking-widest text-text-muted ml-1">{label}</label>
-      <input
+      <Label>{label}</Label>
+      <Input
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold focus:bg-white focus:border-primary-500 outline-none transition-all"
       />
     </div>
   );
@@ -198,12 +205,11 @@ function NumberField({
 }) {
   return (
     <div className="space-y-2">
-      <label className="text-[0.6rem] font-black uppercase tracking-widest text-text-muted">{label}</label>
-      <input
+      <Label>{label}</Label>
+      <Input
         type="number"
         value={value}
         onChange={(e) => onChange(Number.parseFloat(e.target.value) || 0)}
-        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold text-sm focus:bg-white focus:border-primary-500 outline-none"
       />
     </div>
   );
@@ -222,17 +228,21 @@ function SelectField({
 }) {
   return (
     <div className="space-y-2">
-      <label className="text-[0.65rem] font-black uppercase tracking-widest text-text-muted ml-1">{label}</label>
-      <select
-        required
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full px-4 py-3 bg-secondary-50 border border-border rounded-lg font-bold focus:bg-white focus:border-primary-500 outline-none transition-all appearance-none"
-      >
-        {options.map(([optionValue, label]) => (
-          <option key={optionValue} value={optionValue}>{label}</option>
-        ))}
-      </select>
+      <Label>{label}</Label>
+      <Select value={value} onValueChange={(nextValue) => onChange(String(nextValue))}>
+        <SelectTrigger className="h-10 w-full bg-background px-3 font-bold">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {options.map(([optionValue, optionLabel]) => (
+              <SelectItem key={optionValue} value={optionValue}>
+                {optionLabel}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
   );
 }

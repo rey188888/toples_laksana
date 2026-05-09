@@ -5,6 +5,7 @@ import { formatPrice } from "@/lib/price-calculator";
 import { buildInquiryUrl } from "@/lib/whatsapp-builder";
 import type { Metadata } from "next";
 import { getCategoryLabel, getLowestRetailPrice, getPrimaryImage, getSpecValue, Product } from "@/types/product";
+import { AppIcon } from "@/components/ui/app-icon";
 
 export const metadata: Metadata = {
   title: "Bandingkan Spesifikasi Kemasan - Toples Laksana",
@@ -57,14 +58,13 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
     <div className="bg-[#F8FAFC] text-text-primary font-sans min-h-screen pt-8 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-primary-50/50 to-transparent -z-10" />
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-secondary-100/20 rounded-full blur-3xl -z-10" />
 
       <main className="max-w-7xl mx-auto px-6 pb-20 lg:px-12 relative">
         {/* Header */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <Link href="/catalog" className="group flex items-center gap-2 text-[0.65rem] font-black uppercase tracking-widest text-text-secondary hover:text-primary-500 transition-all">
-              <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+              <AppIcon name="arrow_back" className="text-sm transition-transform group-hover:-translate-x-1" />
               Kembali ke Katalog
             </Link>
           </div>
@@ -80,7 +80,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
         {products.length === 0 ? (
           <div className="bg-white border border-border rounded-2xl p-20 text-center max-w-2xl mx-auto shadow-xl shadow-secondary-900/5">
             <div className="w-24 h-24 bg-secondary-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
-              <span className="material-symbols-outlined text-5xl text-secondary-200">compare</span>
+              <AppIcon name="compare" className="text-5xl text-secondary-200" />
             </div>
             <h2 className="text-2xl font-black text-text-primary mb-3 tracking-tight">Belum ada produk yang dipilih</h2>
             <p className="text-text-secondary mb-10 font-medium opacity-70">
@@ -99,7 +99,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
                 return (
                   <div key={product.id} className="bg-white/70 backdrop-blur-md p-6 flex flex-col items-center text-center border border-white rounded-xl relative group transition-all duration-500">
                     <Link href={`/compare?ids=${ids?.split(",").filter((id) => id !== product.id).join(",")}`} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary-50 hover:bg-red-50 text-text-muted hover:text-red-500 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100">
-                      <span className="material-symbols-outlined text-base">close</span>
+                      <AppIcon name="close" className="text-base" />
                     </Link>
                     <div className="relative w-full aspect-square mb-6">
                       <div className="absolute inset-0 bg-secondary-50/50 rounded-2xl -z-10" />
@@ -107,7 +107,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
                         <img alt={product.name} className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-700 p-4" src={image} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-200">
-                          <span className="material-symbols-outlined text-6xl">inventory_2</span>
+                          <AppIcon name="inventory_2" className="text-6xl" />
                         </div>
                       )}
                     </div>
@@ -167,7 +167,7 @@ export default async function ComparisonPage({ searchParams }: ComparePageProps)
               <div />
               {products.map((p) => (
                 <a key={`${p.id}-cta`} href={buildInquiryUrl(p)} target="_blank" rel="noopener noreferrer" className="w-full bg-white border-2 border-primary-500/10 text-primary-600 py-3 px-6 rounded-xl font-black text-[0.7rem] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-xl shadow-primary-500/5 active:scale-95 group">
-                  <span className="material-symbols-outlined text-xl group-hover:rotate-12 transition-transform">chat</span>
+                  <AppIcon name="chat" className="text-xl transition-transform group-hover:rotate-12" />
                   Tanya Kami
                 </a>
               ))}

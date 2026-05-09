@@ -6,6 +6,7 @@ import { useProductFilters } from "@/hooks/useProductFilters";
 import ProductCard from "@/components/catalog/ProductCard";
 import FilterSidebar from "@/components/catalog/FilterSidebar";
 import ActiveFilterBar from "@/components/catalog/ActiveFilterBar";
+import { AppIcon } from "@/components/ui/app-icon";
 import {
   Select,
   SelectContent,
@@ -88,7 +89,7 @@ function CatalogContent() {
               onClick={() => setMobileFilterOpen(true)}
               className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-gray-200 text-sm font-medium hover:border-primary-500/30 transition-all"
             >
-              <span className="material-symbols-outlined text-lg">tune</span>
+              <AppIcon name="tune" className="text-lg" />
               Filter
               {activeFilterCount > 0 && (
                 <span className="bg-primary-500 text-white text-[0.65rem] font-bold px-1.5 py-0.5 rounded-full">
@@ -141,14 +142,14 @@ function CatalogContent() {
                 className={`p-2 transition-all ${viewMode === "grid" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
                 title="Grid view"
               >
-                <span className="material-symbols-outlined text-lg">grid_view</span>
+                <AppIcon name="grid_view" className="text-lg" />
               </button>
               <button
                 onClick={() => setViewMode("list")}
                 className={`p-2 transition-all ${viewMode === "list" ? "bg-primary-500 text-white" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"}`}
                 title="List view"
               >
-                <span className="material-symbols-outlined text-lg">view_list</span>
+                <AppIcon name="view_list" className="text-lg" />
               </button>
             </div>
             <span className="text-sm text-gray-400">
@@ -196,7 +197,7 @@ function CatalogContent() {
                     onClick={() => setMobileFilterOpen(false)}
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-50 text-text-secondary"
                   >
-                    <span className="material-symbols-outlined text-lg">close</span>
+                    <AppIcon name="close" className="text-lg" />
                   </button>
                 </div>
                 <FilterSidebar
@@ -215,7 +216,7 @@ function CatalogContent() {
                     className="w-full py-4 bg-primary-900 text-white font-black uppercase tracking-widest rounded-xl text-xs shadow-2xl shadow-primary-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                   >
                     Tampilkan {pagination.total} Produk
-                    <span className="material-symbols-outlined text-base">arrow_forward</span>
+                    <AppIcon name="arrow_forward" className="text-base" />
                   </button>
                 </div>
               </div>
@@ -251,9 +252,7 @@ function CatalogContent() {
             ) : products.length === 0 ? (
               /* Empty State */
               <div className="text-center py-24 bg-white rounded-xl border border-dashed border-border">
-                <span className="material-symbols-outlined text-7xl text-text-muted/20 mb-6">
-                  inventory_2
-                </span>
+                <AppIcon name="inventory_2" className="mb-6 text-7xl text-text-muted/20" />
                 <h3 className="text-2xl font-bold text-text-primary mb-3">
                   Produk tidak ditemukan
                 </h3>
@@ -298,7 +297,7 @@ function CatalogContent() {
                             {heroImage ? (
                               <img src={heroImage} alt={product.name} className="w-full h-full object-contain scale-75 group-hover:scale-90 transition-transform duration-500" />
                             ) : (
-                              <span className="material-symbols-outlined text-3xl text-gray-200">inventory_2</span>
+                              <AppIcon name="inventory_2" className="text-3xl text-gray-200" />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -310,7 +309,7 @@ function CatalogContent() {
                               {retailPrice > 0 ? formatPrice(retailPrice) : "Hubungi Kami"}
                             </span>
                           </div>
-                          <span className="material-symbols-outlined text-gray-300 group-hover:text-primary-500 transition-colors shrink-0">chevron_right</span>
+                          <AppIcon name="chevron_right" className="shrink-0 text-gray-300 transition-colors group-hover:text-primary-500" />
                         </Link>
                       );
                     })}
@@ -325,7 +324,7 @@ function CatalogContent() {
                       onClick={() => setPage(pagination.page - 1)}
                       className="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-text-secondary hover:bg-primary-500 hover:text-white transition-all border border-border shadow-sm disabled:opacity-30 disabled:pointer-events-none active:scale-90"
                     >
-                      <span className="material-symbols-outlined">chevron_left</span>
+                      <AppIcon name="chevron_left" />
                     </button>
                     <div className="flex items-center gap-2">
                       {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
@@ -358,7 +357,7 @@ function CatalogContent() {
                       onClick={() => setPage(pagination.page + 1)}
                       className="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-text-secondary hover:bg-primary-500 hover:text-white transition-all border border-border shadow-sm disabled:opacity-30 disabled:pointer-events-none active:scale-90"
                     >
-                      <span className="material-symbols-outlined">chevron_right</span>
+                      <AppIcon name="chevron_right" />
                     </button>
                   </div>
                 )}
@@ -379,7 +378,7 @@ function CatalogContent() {
                     key={i}
                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-primary-900 bg-primary-700 flex items-center justify-center text-white"
                   >
-                    <span className="material-symbols-outlined text-xs sm:text-base">inventory_2</span>
+                    <AppIcon name="inventory_2" className="text-xs sm:text-base" />
                   </div>
                 ))}
               </div>
@@ -404,7 +403,7 @@ function CatalogContent() {
                 className="flex-1 sm:flex-none bg-primary-500 text-white px-4 sm:px-8 py-2.5 sm:py-3 rounded-xl text-[0.65rem] sm:text-xs font-black uppercase tracking-widest hover:bg-primary-600 transition-all flex items-center justify-center gap-2 shadow-xl shadow-primary-500/20 active:scale-95"
               >
                 Bandingkan
-                <span className="material-symbols-outlined text-sm">compare_arrows</span>
+                <AppIcon name="compare_arrows" className="text-sm" />
               </Link>
             </div>
           </div>

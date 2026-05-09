@@ -4,6 +4,10 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { MenuIcon, ShieldUserIcon, XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,20 +60,21 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="hidden lg:flex bg-white text-primary-500 px-4 py-2 rounded-xl text-sm font-bold hover:bg-primary-50 transition-all shadow-sm items-center gap-2"
+              className={cn(buttonVariants({ variant: "secondary" }), "hidden text-primary-500 shadow-sm lg:flex")}
             >
-              <span className="material-symbols-outlined text-[1.1rem]">shield_person</span>
+              <ShieldUserIcon className="size-4" />
             </Link>
 
             {/* Hamburger */}
-            <button
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-lg"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+              className="lg:hidden rounded-full bg-white/20 text-white hover:bg-white/30 hover:text-white"
             >
-              <span className="material-symbols-outlined">
-                {mobileMenuOpen ? "close" : "menu"}
-              </span>
-            </button>
+              {mobileMenuOpen ? <XIcon className="size-5" /> : <MenuIcon className="size-5" />}
+            </Button>
           </div>
         </div>
       </nav>
@@ -105,9 +110,9 @@ export default function Navbar() {
             <div className="mt-auto border-t border-white/20 pt-6">
               <Link
                 href="/login"
-                className="w-full bg-white text-primary-500 px-6 py-4 rounded-xl text-base font-bold hover:bg-primary-50 transition-all flex items-center justify-center gap-2"
+                className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full text-primary-500")}
               >
-                <span className="material-symbols-outlined">shield_person</span>
+                <ShieldUserIcon className="size-4" />
                 Login Portal Admin
               </Link>
             </div>

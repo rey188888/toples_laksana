@@ -25,7 +25,7 @@ async function getProduct(id: string): Promise<Product | null> {
 
   const category = await CategoryModel.findOne({ id: product.categoryId }).select("name").lean();
 
-  const colorIds = [...new Set((product.prices || []).map((p: { lidColorId: any; }) => p.lidColorId))];
+  const colorIds = [...new Set((product.prices || []).map((p: { lidColorId?: string }) => p.lidColorId).filter(Boolean))];
   const lidColors = await LidColorModel.find({ id: { $in: colorIds } }).select("id color colorCode").lean();
   const colorMap = new Map(lidColors.map((lc) => [lc.id, lc]));
 
@@ -34,11 +34,14 @@ async function getProduct(id: string): Promise<Product | null> {
     parsedProduct.categoryName = category.name;
   }
   if (parsedProduct.prices) {
-    parsedProduct.prices = parsedProduct.prices.map((p: any) => {
+    parsedProduct.prices = parsedProduct.prices.map((p: NonNullable<Product["prices"]>[number]) => {
       const doc = colorMap.get(p.lidColorId);
       if (doc) {
-        p.lidColorName = doc.color;
-        p.lidColorHex = doc.colorCode;
+        return {
+          ...p,
+          lidColorName: doc.color,
+          lidColorHex: doc.colorCode,
+        };
       }
       return p;
     });

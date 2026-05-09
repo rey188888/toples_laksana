@@ -1,6 +1,16 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { AlertTriangleIcon, HelpCircleIcon } from "lucide-react";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -27,55 +37,54 @@ export default function ConfirmModal({
   cancelLabel = "Batal",
   variant = "primary"
 }: ConfirmModalProps) {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-110 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
-        onClick={onClose}
-      />
-
-      {/* Modal Content */}
-      <div className="bg-white rounded-2xl w-full max-w-sm relative shadow-2xl animate-in zoom-in-95 fade-in duration-300 overflow-hidden">
-        <div className="p-8 text-center">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-sm p-0 overflow-hidden" showCloseButton={false}>
+        <DialogHeader className="p-8 text-center">
           <div className={cn(
-            "w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner",
-            variant === "danger" ? "bg-red-50 text-red-500" : "bg-primary-50 text-primary-500"
+            "flex size-16 items-center justify-center rounded-2xl mx-auto mb-4 shadow-inner",
+            variant === "danger" ? "bg-destructive/10 text-destructive" : "bg-primary-50 text-primary"
           )}>
-            <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-              {variant === "danger" ? "delete_forever" : "help"}
-            </span>
+            {variant === "danger" ? (
+              <AlertTriangleIcon className="size-7" />
+            ) : (
+              <HelpCircleIcon className="size-7" />
+            )}
           </div>
 
-          <h3 className="text-xl font-black text-text-primary tracking-tight mb-2">{title}</h3>
-          <p className="text-sm text-text-secondary font-medium leading-relaxed">
+          <DialogTitle className="text-xl font-black text-text-primary">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="text-sm font-medium leading-relaxed text-text-secondary">
             {message}
-          </p>
-        </div>
+          </DialogDescription>
+        </DialogHeader>
 
-        <div className="flex border-t border-border">
-          <button
+        <DialogFooter className="grid grid-cols-2 gap-0 border-t border-border sm:flex-none">
+          <Button
+            type="button"
+            variant="ghost"
             onClick={onClose}
-            className="flex-1 py-5 text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted hover:bg-secondary-50 transition-colors border-r border-border"
+            className="h-14 rounded-none border-r border-border text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted"
           >
             {cancelLabel}
-          </button>
-          <button
+          </Button>
+          <Button
+            type="button"
+            variant={variant === "danger" ? "destructive" : "ghost"}
             onClick={() => {
               onConfirm();
               onClose();
             }}
             className={cn(
-              "flex-1 py-5 text-[0.65rem] font-black uppercase tracking-[0.2em] transition-colors",
-              variant === "danger" ? "text-red-600 hover:bg-red-50" : "text-primary-600 hover:bg-primary-50"
+              "h-14 rounded-none text-[0.65rem] font-black uppercase tracking-[0.2em]",
+              variant === "primary" && "text-primary hover:bg-primary-50"
             )}
           >
             {confirmLabel}
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

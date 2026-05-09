@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
+import { AppIcon } from "@/components/ui/app-icon";
 import ProductDialog from "@/components/admin/ProductDialog";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { useRouter } from "next/navigation";
@@ -187,12 +188,10 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               )}
             >
               <div className="flex items-center gap-3.5">
-                <span className={cn(
-                  "material-symbols-outlined text-xl transition-colors",
+                <AppIcon name={item.icon} className={cn(
+                  "text-xl transition-colors",
                   item.active ? "text-white" : "text-text-muted group-hover:text-text-primary"
-                )} style={{ fontVariationSettings: item.active ? "'FILL' 1" : "" }}>
-                  {item.icon}
-                </span>
+                )} />
                 {item.label}
               </div>
               {item.count !== undefined && (
@@ -212,7 +211,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
             href="/login"
             className="flex items-center justify-center gap-2 w-full py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all font-bold text-[0.65rem] uppercase tracking-widest border border-border hover:border-red-200"
           >
-            <span className="material-symbols-outlined text-lg">logout</span>
+            <AppIcon name="logout" className="text-lg" />
             Keluar
           </Link>
         </div>
@@ -227,7 +226,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-secondary-50 text-text-secondary border border-border hover:bg-white transition-all"
               onClick={() => setIsSidebarOpen(true)}
             >
-              <span className="material-symbols-outlined">menu</span>
+              <AppIcon name="menu" />
             </button>
             <div>
               <h2 className="text-lg lg:text-2xl font-black text-text-primary tracking-tight">
@@ -239,7 +238,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
             onClick={() => { setEditingProduct(null); setIsDialogOpen(true); }}
             className="bg-primary-500 text-white px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl font-black flex items-center gap-2.5 text-xs lg:text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all active:scale-95 group"
           >
-            <span className="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform duration-300">add</span>
+            <AppIcon name="add" className="text-lg transition-transform duration-300 group-hover:rotate-90" />
             <span className="hidden sm:inline">Tambah Produk Baru</span>
             <span className="sm:hidden">Produk</span>
           </button>
@@ -254,7 +253,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all" />
                 <div className="flex items-center gap-4 mb-6 relative">
                   <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-md">
-                    <span className="material-symbols-outlined text-white text-2xl">inventory_2</span>
+                    <AppIcon name="inventory_2" className="text-2xl text-white" />
                   </div>
                   <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-white/80">Katalog Produk</span>
                 </div>
@@ -265,7 +264,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-border relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
                 <div className="flex items-center gap-4 mb-6 relative">
                   <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center group-hover:bg-primary-50 transition-colors">
-                    <span className="material-symbols-outlined text-text-primary group-hover:text-primary-500 transition-colors text-2xl">touch_app</span>
+                    <AppIcon name="touch_app" className="text-2xl text-text-primary transition-colors group-hover:text-primary-500" />
                   </div>
                   <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-text-muted">Interaksi User</span>
                 </div>
@@ -276,7 +275,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-border relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
                 <div className="flex items-center gap-4 mb-6 relative">
                   <div className="w-12 h-12 rounded-2xl bg-secondary-50 flex items-center justify-center group-hover:bg-green-50 transition-colors">
-                    <span className="material-symbols-outlined text-text-primary group-hover:text-green-600 transition-colors text-2xl">chat</span>
+                    <AppIcon name="chat" className="text-2xl text-text-primary transition-colors group-hover:text-green-600" />
                   </div>
                   <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-text-muted">WhatsApp Logs</span>
                 </div>
@@ -292,7 +291,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
               {/* Toolbar */}
               <div className="px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-white gap-4">
                 <div className="relative flex-1 sm:max-w-md group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary-500 transition-colors">search</span>
+                  <AppIcon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-xl text-text-muted transition-colors group-focus-within:text-primary-500" />
                   <input
                     type="text"
                     placeholder="Cari SKU, nama, atau material..."
@@ -301,10 +300,10 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 </div>
                 <div className="flex gap-2 lg:gap-3">
                   <button className="flex-1 sm:flex-none px-5 lg:px-6 py-3 text-[0.7rem] font-black bg-white border border-border rounded-xl text-text-secondary flex items-center justify-center gap-2 hover:bg-secondary-50 hover:text-text-primary transition-all shadow-sm uppercase tracking-widest">
-                    <span className="material-symbols-outlined text-sm">tune</span> Filter
+                    <AppIcon name="tune" className="text-sm" /> Filter
                   </button>
                   <button className="flex-1 sm:flex-none px-5 lg:px-6 py-3 text-[0.7rem] font-black bg-white border border-border rounded-xl text-text-secondary flex items-center justify-center gap-2 hover:bg-secondary-50 hover:text-text-primary transition-all shadow-sm uppercase tracking-widest">
-                    <span className="material-symbols-outlined text-sm">download</span> Ekspor
+                    <AppIcon name="download" className="text-sm" /> Ekspor
                   </button>
                 </div>
               </div>
@@ -314,7 +313,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                 {products.length === 0 ? (
                   <div className="p-20 flex flex-col items-center justify-center text-text-muted text-center">
                     <div className="w-24 h-24 bg-secondary-50 rounded-xl flex items-center justify-center mb-6">
-                      <span className="material-symbols-outlined text-5xl opacity-20">inventory_2</span>
+                      <AppIcon name="inventory_2" className="text-5xl opacity-20" />
                     </div>
                     <p className="text-xl font-black text-text-primary tracking-tight">Katalog masih kosong</p>
                     <p className="text-sm mt-2 max-w-xs text-text-secondary font-medium">Mulai kembangkan bisnis Anda dengan menambahkan produk pertama.</p>
@@ -343,7 +342,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                                   {image ? (
                                     <img className="w-full h-full object-cover rounded-lg" alt={p.name} src={image} />
                                   ) : (
-                                    <span className="material-symbols-outlined opacity-30 text-2xl">inventory_2</span>
+                                    <AppIcon name="inventory_2" className="text-2xl opacity-30" />
                                   )}
                                 </div>
                                 <div className="min-w-0">
@@ -389,7 +388,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                                   onClick={() => handleEdit(p)}
                                   className="w-9 h-9 rounded-xl hover:bg-white hover:text-primary-600 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border"
                                 >
-                                  <span className="material-symbols-outlined text-lg">edit_note</span>
+                                  <AppIcon name="edit_note" className="text-lg" />
                                 </button>
                                 <button
                                   onClick={() => {
@@ -398,7 +397,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                                   }}
                                   className="w-9 h-9 rounded-xl hover:bg-white hover:text-red-500 hover:shadow-sm text-text-muted flex items-center justify-center transition-all border border-transparent hover:border-border"
                                 >
-                                  <span className="material-symbols-outlined text-lg">delete</span>
+                                  <AppIcon name="delete" className="text-lg" />
                                 </button>
                               </div>
                             </TableCell>
@@ -418,11 +417,11 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   </span>
                   <div className="flex items-center gap-1.5">
                     <button className="w-9 h-9 rounded-xl bg-white border border-border flex items-center justify-center text-text-muted opacity-50 cursor-not-allowed shadow-sm transition-all">
-                      <span className="material-symbols-outlined text-lg">chevron_left</span>
+                      <AppIcon name="chevron_left" className="text-lg" />
                     </button>
                     <button className="w-9 h-9 rounded-xl bg-primary-500 text-white font-black text-[0.65rem] shadow-lg shadow-primary-500/20">1</button>
                     <button className="w-9 h-9 rounded-xl bg-white border border-border hover:bg-secondary-50 flex items-center justify-center text-text-primary transition-all shadow-sm">
-                      <span className="material-symbols-outlined text-lg">chevron_right</span>
+                      <AppIcon name="chevron_right" className="text-lg" />
                     </button>
                   </div>
                 </div>
@@ -438,7 +437,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <h3 className="font-black text-text-primary text-lg">Kategori Produk</h3>
                 </div>
                 <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">add</span> Tambah Kategori
+                  <AppIcon name="add" className="text-sm" /> Tambah Kategori
                 </button>
               </div>
               <Table>
@@ -460,7 +459,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       </TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
-                          <span className="material-symbols-outlined text-lg">edit</span>
+                          <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -478,7 +477,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <h3 className="font-black text-text-primary text-lg">Warna Tutup</h3>
                 </div>
                 <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">add</span> Tambah Warna
+                  <AppIcon name="add" className="text-sm" /> Tambah Warna
                 </button>
               </div>
               <Table>
@@ -496,13 +495,13 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{color.id}</TableCell>
                       <TableCell className="px-8 py-8">
                         <div className="w-8 h-8 rounded-full border border-border shadow-sm flex items-center justify-center bg-gray-50 overflow-hidden" style={{ backgroundColor: color.hex }}>
-                          {color.hex === "#ffffff" && <span className="material-symbols-outlined text-[10px] text-gray-300">texture</span>}
+                          {color.hex === "#ffffff" && <AppIcon name="texture" className="text-[10px] text-gray-300" />}
                         </div>
                       </TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{color.name}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
-                          <span className="material-symbols-outlined text-lg">edit</span>
+                          <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -520,7 +519,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <h3 className="font-black text-text-primary text-lg">Tipe Produk</h3>
                 </div>
                 <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">add</span> Tambah Tipe
+                  <AppIcon name="add" className="text-sm" /> Tambah Tipe
                 </button>
               </div>
               <Table>
@@ -538,7 +537,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{ptype.name}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
-                          <span className="material-symbols-outlined text-lg">edit</span>
+                          <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -556,7 +555,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <h3 className="font-black text-text-primary text-lg">Satuan</h3>
                 </div>
                 <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">add</span> Tambah Satuan
+                  <AppIcon name="add" className="text-sm" /> Tambah Satuan
                 </button>
               </div>
               <Table>
@@ -578,7 +577,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       </TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
-                          <span className="material-symbols-outlined text-lg">edit</span>
+                          <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -596,7 +595,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <h3 className="font-black text-text-primary text-lg">Tipe Harga</h3>
                 </div>
                 <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">add</span> Tambah Tipe Harga
+                  <AppIcon name="add" className="text-sm" /> Tambah Tipe Harga
                 </button>
               </div>
               <Table>
@@ -616,7 +615,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       <TableCell className="px-8 py-8 text-sm text-text-secondary">{pt.description}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
-                          <span className="material-symbols-outlined text-lg">edit</span>
+                          <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -634,7 +633,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   <h3 className="font-black text-text-primary text-lg">Promosi</h3>
                 </div>
                 <button className="bg-primary-50 text-primary-600 px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-primary-100 transition-colors uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">add</span> Tambah Promo
+                  <AppIcon name="add" className="text-sm" /> Tambah Promo
                 </button>
               </div>
               <Table>
@@ -676,7 +675,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                       </TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors">
-                          <span className="material-symbols-outlined text-lg">edit</span>
+                          <AppIcon name="edit" className="text-lg" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -708,7 +707,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   {allInteractions.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} className="px-8 py-16 text-center text-text-muted">
-                        <span className="material-symbols-outlined text-4xl opacity-20 mb-2 block">touch_app</span>
+                        <AppIcon name="touch_app" className="mx-auto mb-2 block text-4xl opacity-20" />
                         <p className="font-bold">Belum ada data interaksi</p>
                       </TableCell>
                     </TableRow>
@@ -759,7 +758,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   {waLogs.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={4} className="px-8 py-16 text-center text-text-muted">
-                        <span className="material-symbols-outlined text-4xl opacity-20 mb-2 block">chat</span>
+                        <AppIcon name="chat" className="mx-auto mb-2 block text-4xl opacity-20" />
                         <p className="font-bold">Belum ada log WhatsApp</p>
                       </TableCell>
                     </TableRow>

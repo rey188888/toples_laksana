@@ -9,6 +9,9 @@ import {
   getSpecValue,
 } from "@/types/product";
 import { formatPrice } from "@/lib/price-calculator";
+import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { PackageIcon } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -35,12 +38,12 @@ export default function ProductCard({
   };
 
   return (
-    <div className="group relative bg-white overflow-hidden transition-all duration-300 hover:shadow-md border border-gray-100 rounded-lg">
+    <Card className="group relative overflow-hidden rounded-lg border-border bg-card py-0 transition-all duration-300 hover:shadow-md">
       {/* Image Section */}
       <Link
         href={productHref}
         onClick={handleInteraction}
-        className="block aspect-square relative bg-white overflow-hidden p-6"
+        className="relative block aspect-square overflow-hidden bg-white p-6"
       >
         {heroImage ? (
           <div className="relative w-full h-full transform transition-transform duration-500 scale-75 group-hover:scale-90">
@@ -54,9 +57,7 @@ export default function ProductCard({
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-6xl text-gray-200">
-              inventory_2
-            </span>
+            <PackageIcon className="size-14 text-muted-foreground/30" />
           </div>
         )}
       </Link>
@@ -88,11 +89,10 @@ export default function ProductCard({
             className="flex items-center gap-2 cursor-pointer"
             onClick={(e) => e.stopPropagation()}
           >
-            <input
-              className="w-3.5 h-3.5 rounded border-gray-300 text-primary-500 focus:ring-primary-500 cursor-pointer accent-primary-500"
-              type="checkbox"
+            <Checkbox
+              className="size-3.5"
               checked={isComparing}
-              onChange={() => onCompareToggle?.(product.id)}
+              onCheckedChange={() => onCompareToggle?.(product.id)}
             />
             <span className="text-xs text-gray-400 font-medium">
               Bandingkan
@@ -100,6 +100,6 @@ export default function ProductCard({
           </label>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

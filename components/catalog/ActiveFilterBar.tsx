@@ -1,7 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import { CATEGORY_CONFIG, MATERIAL_LABELS, LID_TYPE_LABELS, COLOR_SWATCHES } from "@/lib/use-case-config";
+import { AppIcon } from "@/components/ui/app-icon";
+import { MATERIAL_LABELS, LID_TYPE_LABELS, COLOR_SWATCHES } from "@/lib/use-case-config";
 import { CatalogFilters, FacetCounts, getCategoryLabel, getLidColorLabel } from "@/types/product";
 
 interface ActiveFilterBarProps {
@@ -28,9 +29,9 @@ function getFilterLabel(key: string, value: string, facets: FacetCounts | null):
       const name = facetColor?.name || getLidColorLabel(value);
       return (
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full border border-border" style={{ backgroundColor: hex }} />
+          <span className="size-3 rounded-full border border-border" style={{ backgroundColor: hex }} />
           <span>{name}</span>
-          <span className="uppercase text-[10px] opacity-70 font-normal">{hex}</span>
+          <span className="text-[10px] font-normal uppercase opacity-70">{hex}</span>
         </span>
       );
     }
@@ -46,7 +47,6 @@ export default function ActiveFilterBar({
   onClearAll,
   facets,
 }: ActiveFilterBarProps) {
-  // Collect all active filter pills
   const pills: { key: keyof CatalogFilters; value: string; label: ReactNode }[] = [];
 
   if (filters.search) {
@@ -59,7 +59,7 @@ export default function ActiveFilterBar({
     pills.push({
       key: "volume_min",
       value: "",
-      label: `${filters.volume_min || 0}–${filters.volume_max || "∞"}ml`,
+      label: `${filters.volume_min || 0}-${filters.volume_max || "max"}ml`,
     });
   }
   filters.material_body?.forEach((v) =>
@@ -76,7 +76,7 @@ export default function ActiveFilterBar({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <span className="text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] mr-2">
+      <span className="mr-2 text-[0.65rem] font-black uppercase tracking-[0.2em] text-text-muted">
         Filter Aktif:
       </span>
 
@@ -91,24 +91,22 @@ export default function ActiveFilterBar({
               onRemove(pill.key, pill.value || undefined);
             }
           }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-50 text-primary-700 border border-primary-200 rounded-lg text-xs font-bold hover:bg-primary-100 transition-all group shadow-sm"
+          className="group inline-flex items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-1.5 text-xs font-bold text-primary-700 shadow-sm transition-all hover:bg-primary-100"
         >
           {pill.label}
-          <span className="material-symbols-outlined text-[0.8rem] opacity-40 group-hover:opacity-100 transition-opacity">
-            close
-          </span>
+          <AppIcon name="close" className="text-[0.8rem] opacity-40 transition-opacity group-hover:opacity-100" />
         </button>
       ))}
 
       <button
         onClick={onClearAll}
-        className="text-xs font-black text-red-500 hover:text-red-600 transition-colors ml-2 uppercase tracking-widest"
+        className="ml-2 text-xs font-black uppercase tracking-widest text-red-500 transition-colors hover:text-red-600"
       >
         Hapus Semua
       </button>
 
-      <span className="ml-auto text-xs font-bold text-text-secondary bg-secondary-50 px-3 py-1.5 rounded-lg border border-border">
-        Ditemukan <span className="text-text-primary font-black">{totalResults}</span> produk
+      <span className="ml-auto rounded-lg border border-border bg-secondary-50 px-3 py-1.5 text-xs font-bold text-text-secondary">
+        Ditemukan <span className="font-black text-text-primary">{totalResults}</span> produk
       </span>
     </div>
   );

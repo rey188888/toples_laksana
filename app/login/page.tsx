@@ -1,5 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ArrowRightIcon, HomeIcon, LockIcon, MailIcon } from "lucide-react";
+
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Portal Admin - Toples Laksana",
@@ -7,49 +14,38 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="bg-background text-text-primary min-h-screen flex flex-col relative overflow-hidden">
-      {/* Ambient BG */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-500/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary-500/5 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
-
-      <main className="grow flex items-center justify-center p-6 relative z-10 w-full max-w-screen-2xl mx-auto">
-        {/* Back Link */}
-        <div className="absolute top-8 left-8">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-background text-text-primary">
+      <main className="relative z-10 mx-auto flex w-full max-w-screen-2xl grow items-center justify-center p-6">
+        <div className="absolute left-8 top-8">
           <Link
             href="/"
-            className="flex items-center gap-2 text-text-secondary hover:text-primary-500 transition-colors font-bold uppercase tracking-widest text-xs px-4 py-2 rounded-full border border-border bg-white/50 backdrop-blur-sm"
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-full bg-white/70 font-bold uppercase tracking-widest text-text-secondary backdrop-blur-sm hover:text-primary")}
           >
-            <span className="material-symbols-outlined text-sm">home</span>
+            <HomeIcon className="size-3.5" />
             Beranda
           </Link>
         </div>
 
-        {/* Login Card */}
-        <div className="w-full max-w-[440px] bg-white/80 backdrop-blur-2xl shadow-2xl shadow-primary-500/5 rounded-2xl overflow-hidden flex flex-col border border-border transition-all duration-500">
-          {/* Header */}
-          <div className="px-10 pt-12 pb-6 text-center">
-            <Link href="/" className="inline-block text-2xl font-extrabold text-primary-500 tracking-tight mb-6">
+        <Card className="w-full max-w-[440px] overflow-hidden border-border bg-white/90 py-0 shadow-2xl shadow-primary-500/5 backdrop-blur-2xl transition-all duration-500">
+          <div className="px-10 pb-6 pt-12 text-center">
+            <Link href="/" className="mb-6 inline-block text-2xl font-extrabold tracking-tight text-primary-500">
               Toples Laksana
             </Link>
-            <h1 className="text-3xl font-extrabold tracking-tight text-text-primary mb-2">Login Admin</h1>
+            <h1 className="mb-2 text-3xl font-extrabold tracking-tight text-text-primary">Login Admin</h1>
           </div>
 
-          <form
-            className="px-10 pb-12 space-y-6"
-            action="/admin"
-          >
-            {/* Email Field */}
+          <form className="space-y-6 px-10 pb-12" action="/admin">
             <div className="space-y-2">
-              <label className="block text-[0.65rem] font-bold uppercase tracking-[0.2em] text-text-muted px-1" htmlFor="email">
+              <Label className="px-1" htmlFor="email">
                 Alamat Email
-              </label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary-500 transition-colors">
-                  <span className="material-symbols-outlined text-lg">mail</span>
+              </Label>
+              <div className="group relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-text-muted transition-colors group-focus-within:text-primary-500">
+                  <MailIcon className="size-4" />
                 </div>
-                <input
+                <Input
                   autoFocus
-                  className="block w-full pl-12 pr-4 py-4 bg-white border border-border rounded-xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all duration-300 outline-none text-sm font-bold shadow-sm"
+                  className="h-12 bg-white pl-12 pr-4 font-bold shadow-sm"
                   id="email"
                   name="email"
                   placeholder="admin@topleslaksana.com"
@@ -59,22 +55,19 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Password Field */}
             <div className="space-y-2">
-              <div className="flex justify-between items-end px-1">
-                <label className="block text-[0.65rem] font-bold uppercase tracking-[0.2em] text-text-muted" htmlFor="password">
-                  Kata Sandi
-                </label>
+              <div className="flex items-end justify-between px-1">
+                <Label htmlFor="password">Kata Sandi</Label>
               </div>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary-500 transition-colors">
-                  <span className="material-symbols-outlined text-lg">lock</span>
+              <div className="group relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-text-muted transition-colors group-focus-within:text-primary-500">
+                  <LockIcon className="size-4" />
                 </div>
-                <input
-                  className="block w-full pl-12 pr-12 py-4 bg-white border border-border rounded-xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all duration-300 outline-none text-sm font-bold shadow-sm"
+                <Input
+                  className="h-12 bg-white pl-12 pr-12 font-bold shadow-sm"
                   id="password"
                   name="password"
-                  placeholder="••••••••"
+                  placeholder="********"
                   required
                   type="password"
                 />
@@ -82,18 +75,16 @@ export default function LoginPage() {
             </div>
 
             <div className="pt-2">
-              <button
-                className="w-full bg-primary-500 text-white font-bold py-4 rounded-xl shadow-xl shadow-primary-500/20 hover:bg-primary-600 transition-all flex items-center justify-center gap-3 group uppercase tracking-widest text-xs active:scale-[0.98]"
+              <Button
+                className="group h-12 w-full font-bold uppercase tracking-widest shadow-xl shadow-primary-500/20"
                 type="submit"
               >
                 <span>Masuk</span>
-                <span className="material-symbols-outlined text-sm transform group-hover:translate-x-1 transition-transform">
-                  arrow_forward
-                </span>
-              </button>
+                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           </form>
-        </div>
+        </Card>
       </main>
     </div>
   );
