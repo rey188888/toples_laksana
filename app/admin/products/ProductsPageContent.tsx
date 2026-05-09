@@ -148,12 +148,12 @@ export default function ProductsPageContent({ initialProducts, masterData }: Pro
               <Table className="min-w-[900px]">
                 <TableHeader>
                   <TableRow className="bg-transparent hover:bg-transparent border-b border-border">
-                    <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Info Produk</TableHead>
-                    <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">SKU & Material</TableHead>
-                    <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Kategori</TableHead>
-                    <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Harga Dasar</TableHead>
-                    <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Status</TableHead>
-                    <TableHead className="px-8 py-3 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] text-right">Aksi</TableHead>
+                    <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Info Produk</TableHead>
+                    <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">SKU & Material</TableHead>
+                    <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Kategori</TableHead>
+                    <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Harga Dasar</TableHead>
+                    <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em]">Status</TableHead>
+                    <TableHead className="px-8 py-4 text-[0.65rem] font-black text-text-muted uppercase tracking-[0.2em] text-right">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -162,7 +162,7 @@ export default function ProductsPageContent({ initialProducts, masterData }: Pro
 
                     return (
                       <TableRow key={p.id} className="transition-all duration-200 group border-border">
-                        <TableCell className="px-8 py-8">
+                        <TableCell className="px-8 py-5">
                           <div className="flex items-center gap-5">
                             <div className="w-14 h-14 rounded-lg bg-[#F9FAFB] flex items-center justify-center p-1.5 border border-border shrink-0 overflow-hidden transition-all">
                               {image ? (
@@ -181,21 +181,21 @@ export default function ProductsPageContent({ initialProducts, masterData }: Pro
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="px-8 py-8">
+                        <TableCell className="px-8 py-5">
                           <p className="text-xs font-black text-text-primary font-mono tracking-tighter">{p.sku}</p>
                           <p className="text-[10px] font-bold text-text-muted mt-0.5 uppercase tracking-widest">{p.lidType}</p>
                         </TableCell>
-                        <TableCell className="px-8 py-8">
+                        <TableCell className="px-8 py-5">
                           <Badge variant="outline" className="bg-white border-border text-text-secondary text-[0.6rem] font-black uppercase tracking-widest px-2 py-0.5">
                             {categoryMap[p.categoryId] || getCategoryLabel(p.categoryId)}
                           </Badge>
                         </TableCell>
-                        <TableCell className="px-8 py-8">
+                        <TableCell className="px-8 py-5">
                           <p className="text-sm font-black text-text-primary tracking-tight">
                             {formatPrice(getLowestRetailPrice(p))}
                           </p>
                         </TableCell>
-                        <TableCell className="px-8 py-8">
+                        <TableCell className="px-8 py-5">
                           {!p.deletedAt ? (
                             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
                               <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
@@ -208,7 +208,7 @@ export default function ProductsPageContent({ initialProducts, masterData }: Pro
                             </div>
                           )}
                         </TableCell>
-                        <TableCell className="px-8 py-8 text-right">
+                        <TableCell className="px-8 py-5 text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
                               onClick={() => handleEdit(p)}

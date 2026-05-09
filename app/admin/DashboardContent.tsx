@@ -18,14 +18,14 @@ export default function DashboardContent({ stats }: DashboardContentProps) {
     <>
       <header className="hidden lg:flex h-24 bg-white border-b border-border items-center justify-between px-10 sticky top-0 z-40">
         <div>
-          <h2 className="text-[1.6rem] font-black text-text-primary tracking-tight">Dashboard Overview</h2>
+          <h2 className="text-[1.6rem] font-black text-text-primary tracking-tight">Dashboard</h2>
         </div>
       </header>
 
       <div className="p-6 lg:p-10 space-y-8 flex-1 w-full">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-primary-500 rounded-2xl p-8 text-white relative overflow-hidden group">
+          <div className="bg-primary-500 rounded-2xl p-8 text-white relative overflow-hidden group border border-primary-600">
             <div className="flex items-center gap-4 mb-6 relative">
               <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-md">
                 <AppIcon name="inventory_2" className="text-2xl text-white" />

@@ -34,7 +34,7 @@ export default function HomePage() {
   return (
     <main className="bg-background">
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center pt-20 pb-12 px-6 lg:px-12 max-w-screen-2xl mx-auto">
+      <section className="relative min-h-screen flex items-center pt-28 pb-12 px-6 lg:px-12 max-w-screen-2xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
           <div className="lg:col-span-7">
             <span className="inline-block text-primary-600 font-bold tracking-[0.2em] text-xs mb-4 uppercase">
