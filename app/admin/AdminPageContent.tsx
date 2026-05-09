@@ -24,9 +24,16 @@ import type { IInteraction } from "@/models/Interaction";
 interface AdminPageProps {
   initialProducts: Product[];
   initialInteractions: IInteraction[];
+  masterData: {
+    categories: any[];
+    productTypes: any[];
+    units: any[];
+    lidColors: any[];
+    priceTypes: any[];
+  };
 }
 
-export default function AdminPageContent({ initialProducts, initialInteractions }: AdminPageProps) {
+export default function AdminPageContent({ initialProducts, initialInteractions, masterData }: AdminPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -100,44 +107,20 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
   ];
 
   // Reference data for admin tables
-  const MOCK_CATEGORIES = [
-    { id: "cat_001", name: "Jar Cylinder", count: products.filter(p => p.categoryId === "cat_001").length },
-    { id: "cat_002", name: "Jar Kaca", count: products.filter(p => p.categoryId === "cat_002").length },
-    { id: "cat_003", name: "Jar Plastik", count: products.filter(p => p.categoryId === "cat_003").length },
-    { id: "cat_004", name: "Botol Plastik", count: products.filter(p => p.categoryId === "cat_004").length },
-    { id: "cat_005", name: "Tin Kaleng", count: products.filter(p => p.categoryId === "cat_005").length },
-  ];
+  const CATEGORIES = masterData.categories.map(c => ({
+    ...c,
+    count: products.filter(p => p.categoryId === c.id).length
+  }));
 
-  const MOCK_COLORS = [
-    { id: "lc_001", name: "Bening", hex: "#ffffff" },
-    { id: "lc_002", name: "Putih", hex: "#f0f0f0" },
-    { id: "lc_003", name: "Cling", hex: "#e0e0e0" },
-    { id: "lc_004", name: "Silver", hex: "#c0c0c0" },
-    { id: "lc_005", name: "Emas", hex: "#ffd700" },
-    { id: "lc_006", name: "Rose", hex: "#ff007f" },
-    { id: "lc_007", name: "Hitam", hex: "#000000" },
-  ];
+  const COLORS = masterData.lidColors;
+  const TYPES = masterData.productTypes;
+  const UNITS = masterData.units;
+  const PRICE_TYPES = masterData.priceTypes;
 
-  const MOCK_TYPES = [
-    { id: "pt_001", name: "Premium" },
-    { id: "pt_002", name: "Economis" },
-    { id: "pt_003", name: "Standard" },
-  ];
-
-  const MOCK_UNITS = [
-    { id: "unit_001", name: "Centimeter", symbol: "cm" },
-    { id: "unit_002", name: "Mililiter", symbol: "ml" },
-    { id: "unit_003", name: "Gram", symbol: "gr" },
-    { id: "unit_004", name: "Pcs", symbol: "pcs" },
-    { id: "unit_005", name: "Lusin", symbol: "lsn" },
-    { id: "unit_006", name: "Bal", symbol: "bal" },
-    { id: "unit_007", name: "Dus", symbol: "dus" },
-  ];
-
-  const MOCK_PRICE_TYPES = [
-    { id: "price_with_lid", name: "Harga Ecer (Dengan Tutup)", description: "Harga per pcs dengan tutup" },
-    { id: "price_per_bal", name: "Harga Grosir (Per Bal)", description: "Harga per bal untuk pembelian grosir" },
-  ];
+  // Lookup maps for name resolution
+  const categoryMap = Object.fromEntries(masterData.categories.map(c => [c.id, c.name]));
+  const typeMap = Object.fromEntries(masterData.productTypes.map(t => [t.id, t.name]));
+  const unitMap = Object.fromEntries(masterData.units.map(u => [u.id, u.name]));
 
   const MOCK_PROMOS = [
     { id: "promo_001", code: "DISKON10", name: "Diskon 10%", type: "percentage" as const, value: 10, isActive: true },
@@ -233,7 +216,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
             onClick={() => { setEditingProduct(null); setIsDialogOpen(true); }}
             className="bg-primary-500 text-white px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl font-black flex items-center gap-2.5 text-xs lg:text-sm shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all active:scale-95 group cursor-pointer"
           >
-            <AppIcon name="add" className="text-lg transition-transform duration-300 group-hover:rotate-90" />
+            <AppIcon name="add" className="text-lg" />
             <span className="hidden sm:inline">Tambah Produk Baru</span>
             <span className="sm:hidden">Produk</span>
           </button>
@@ -344,7 +327,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                                   <p className="text-sm font-black text-text-primary group-hover:text-primary-600 transition-colors line-clamp-1 tracking-tight">{p.name}</p>
                                   <div className="flex items-center gap-2 mt-1">
                                     <Badge variant="secondary" className="bg-secondary-50 text-secondary-600 border-none text-[0.55rem] font-black uppercase px-1.5 h-4">
-                                      {getProductTypeLabel(p.productTypeId)}
+                                      {typeMap[p.productTypeId || ""] || getProductTypeLabel(p.productTypeId)}
                                     </Badge>
                                   </div>
                                 </div>
@@ -356,7 +339,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                             </TableCell>
                             <TableCell className="px-8 py-8">
                               <Badge variant="outline" className="bg-white border-border text-text-secondary text-[0.6rem] font-black uppercase tracking-widest px-2 py-0.5">
-                                {getCategoryLabel(p.categoryId)}
+                                {categoryMap[p.categoryId] || getCategoryLabel(p.categoryId)}
                               </Badge>
                             </TableCell>
                             <TableCell className="px-8 py-8">
@@ -445,7 +428,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {MOCK_CATEGORIES.map(cat => (
+                  {CATEGORIES.map(cat => (
                     <TableRow key={cat.id} className="hover:bg-primary-50/20 transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{cat.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{cat.name}</TableCell>
@@ -485,7 +468,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {MOCK_COLORS.map(color => (
+                  {COLORS.map(color => (
                     <TableRow key={color.id} className="hover:bg-primary-50/20 transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{color.id}</TableCell>
                       <TableCell className="px-8 py-8">
@@ -526,10 +509,10 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {MOCK_TYPES.map(ptype => (
-                    <TableRow key={ptype.id} className="hover:bg-primary-50/20 transition-all border-border">
-                      <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{ptype.id}</TableCell>
-                      <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{ptype.name}</TableCell>
+                  {masterData.productTypes.map(type => (
+                    <TableRow key={type.id} className="hover:bg-primary-50/20 transition-all border-border">
+                      <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{type.id}</TableCell>
+                      <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{type.name}</TableCell>
                       <TableCell className="px-8 py-8 text-right">
                         <button className="w-9 h-9 rounded-xl hover:bg-primary-50 text-primary-500 inline-flex items-center justify-center transition-colors cursor-pointer">
                           <AppIcon name="edit" className="text-lg" />
@@ -563,7 +546,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {MOCK_UNITS.map(unit => (
+                  {masterData.units.map(unit => (
                     <TableRow key={unit.id} className="hover:bg-primary-50/20 transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{unit.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{unit.name}</TableCell>
@@ -603,7 +586,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {MOCK_PRICE_TYPES.map(pt => (
+                  {masterData.priceTypes.map(pt => (
                     <TableRow key={pt.id} className="hover:bg-primary-50/20 transition-all border-border">
                       <TableCell className="px-8 py-8 font-mono text-xs font-black text-text-muted">{pt.id}</TableCell>
                       <TableCell className="px-8 py-8 font-black text-sm text-text-primary">{pt.name}</TableCell>
@@ -796,6 +779,7 @@ export default function AdminPageContent({ initialProducts, initialInteractions 
           onClose={() => setIsDialogOpen(false)}
           product={editingProduct}
           onSave={handleSave}
+          masterData={masterData}
         />
 
         {/* Delete Confirmation */}

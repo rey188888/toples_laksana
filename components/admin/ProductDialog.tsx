@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 import type { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +22,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { AppIcon } from "../ui/app-icon";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 interface ProductDialogProps {
   isOpen: boolean;
   onClose: () => void;
   product?: Product | null;
   onSave: (productData: Partial<Product>) => Promise<void>;
+  masterData: {
+    categories: any[];
+    productTypes: any[];
+    units: any[];
+    lidColors: any[];
+    priceTypes: any[];
+  };
 }
 
 const emptyProduct: Partial<Product> = {
@@ -52,28 +63,27 @@ const emptyProduct: Partial<Product> = {
   deletedAt: null,
 };
 
-export default function ProductDialog({ isOpen, onClose, product, onSave }: ProductDialogProps) {
+export default function ProductDialog({ isOpen, onClose, product, onSave, masterData }: ProductDialogProps) {
   const [formData, setFormData] = useState<Partial<Product>>(emptyProduct);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setFormData(product || {
-      ...emptyProduct,
-      id: `prod_${Date.now()}`,
-    });
+    if (isOpen) {
+      setFormData(product || {
+        ...emptyProduct,
+        id: `prod_${Date.now()}`,
+      });
+    }
   }, [product, isOpen]);
 
   const updateDimension = (key: keyof NonNullable<Product["dimension"]>, value: number) => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       dimension: {
-        heightCm: formData.dimension?.heightCm || 0,
-        diameterCm: formData.dimension?.diameterCm || 0,
-        volumeMl: formData.dimension?.volumeMl || 0,
-        weightGram: formData.dimension?.weightGram || 0,
+        ...(prev.dimension || { heightCm: 0, diameterCm: 0, volumeMl: 0, weightGram: 0 }),
         [key]: value,
       },
-    });
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -101,64 +111,290 @@ export default function ProductDialog({ isOpen, onClose, product, onSave }: Prod
 
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-8 py-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Field label="ID Produk" value={formData.id || ""} onChange={(value) => setFormData({ ...formData, id: value })} required />
-            <Field label="SKU" value={formData.sku || ""} onChange={(value) => setFormData({ ...formData, sku: value })} required />
-            <Field label="Nama Produk" value={formData.name || ""} onChange={(value) => setFormData({ ...formData, name: value })} required />
-            <SelectField
-              label="Kategori"
-              value={formData.categoryId || ""}
-              onChange={(value) => setFormData({ ...formData, categoryId: value })}
-              options={[
-                ["cat_jar_cylinder", "Jar Cylinder"],
-                ["cat_jar_kaca", "Jar Kaca"],
-                ["cat_jar_plastik", "Jar Plastik"],
-                ["cat_botol_plastik", "Botol Plastik"],
-                ["cat_botol", "Botol"],
-                ["cat_tin", "Tin Kaleng"],
-              ]}
-            />
-            <SelectField
-              label="Tipe Produk"
-              value={formData.productTypeId || ""}
-              onChange={(value) => setFormData({ ...formData, productTypeId: value })}
-              options={[
-                ["type_premium", "Premium"],
-                ["type_reguler", "Reguler"],
-              ]}
-            />
-            <Field label="Unit ID" value={formData.unitId || ""} onChange={(value) => setFormData({ ...formData, unitId: value })} required />
-          </div>
-
-          <div className="space-y-4 pt-4 border-t border-border">
-            <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Material</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Field label="Material Badan" value={formData.bodyMaterial || ""} onChange={(value) => setFormData({ ...formData, bodyMaterial: value })} required />
-              <Field label="Material Tutup" value={formData.lidMaterial || ""} onChange={(value) => setFormData({ ...formData, lidMaterial: value })} required />
-              <Field label="Varian Tutup" value={formData.lidVariant || ""} onChange={(value) => setFormData({ ...formData, lidVariant: value })} required />
-              <Field label="Tipe Tutup" value={formData.lidType || ""} onChange={(value) => setFormData({ ...formData, lidType: value })} required />
+              <Field label="ID Produk" value={formData.id || ""} onChange={(value) => setFormData({ ...formData, id: value })} required />
+              <Field label="SKU" value={formData.sku || ""} onChange={(value) => setFormData({ ...formData, sku: value })} required />
+              <Field label="Nama Produk" value={formData.name || ""} onChange={(value) => setFormData({ ...formData, name: value })} required />
+              <SelectField
+                label="Kategori"
+                value={formData.categoryId || ""}
+                onChange={(value) => setFormData({ ...formData, categoryId: value })}
+                options={masterData.categories.map(c => [c.id, c.name])}
+              />
+              <SelectField
+                label="Tipe Produk"
+                value={formData.productTypeId || ""}
+                onChange={(value) => setFormData({ ...formData, productTypeId: value })}
+                options={masterData.productTypes.map(pt => [pt.id, pt.name])}
+              />
+              <SelectField
+                label="Satuan"
+                value={formData.unitId || ""}
+                onChange={(value) => setFormData({ ...formData, unitId: value })}
+                options={masterData.units.map(u => [u.id, u.name])}
+              />
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-border">
+              <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Material</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Field label="Material Badan" value={formData.bodyMaterial || ""} onChange={(value) => setFormData({ ...formData, bodyMaterial: value })} required />
+                <Field label="Material Tutup" value={formData.lidMaterial || ""} onChange={(value) => setFormData({ ...formData, lidMaterial: value })} required />
+                <Field label="Varian Tutup" value={formData.lidVariant || ""} onChange={(value) => setFormData({ ...formData, lidVariant: value })} required />
+                <Field label="Tipe Tutup" value={formData.lidType || ""} onChange={(value) => setFormData({ ...formData, lidType: value })} required />
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-border">
+              <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Dimensi</h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <NumberField label="Tinggi cm" value={formData.dimension?.heightCm || 0} onChange={(value) => updateDimension("heightCm", value)} />
+                <NumberField label="Diameter cm" value={formData.dimension?.diameterCm || 0} onChange={(value) => updateDimension("diameterCm", value)} />
+                <NumberField label="Volume ml" value={formData.dimension?.volumeMl || 0} onChange={(value) => updateDimension("volumeMl", value)} />
+                <NumberField label="Berat gr" value={formData.dimension?.weightGram || 0} onChange={(value) => updateDimension("weightGram", value)} />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Deskripsi</Label>
+              <Textarea
+                value={formData.description || ""}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="min-h-[100px]"
+              />
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-border">
+              <div className="flex items-center justify-between">
+                <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Gambar Produk</h4>
+              </div>
+              <div className="bg-secondary-50/30 rounded-2xl border-2 border-dashed border-border p-6 flex flex-col items-center justify-center min-h-[160px] w-full">
+                <UploadDropzone
+                  endpoint="productImage"
+                  onClientUploadComplete={(res) => {
+                    if (res) {
+                      const newImages = res.map((file: any, i: number) => ({
+                        imageUrl: file.serverData?.url || file.ufsUrl || file.url || (file as any).appUrl,
+                        order: (formData.images?.length || 0) + i,
+                        isPrimary: (formData.images?.length || 0) === 0 && i === 0
+                      }));
+                      setFormData(prev => ({
+                        ...prev,
+                        images: [...(prev.images || []), ...newImages]
+                      }));
+                    }
+                  }}
+                  onUploadError={(error: Error) => {
+                    alert(`Gagal mengupload: ${error.message}`);
+                  }}
+                  className="ut-label:text-primary-500 ut-button:bg-primary-500 ut-button:ut-readying:bg-primary-400 border-none bg-transparent w-full"
+                />
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {(formData.images || []).map((img, index) => (
+                  <div key={index} className={cn(
+                    "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all group",
+                    img.isPrimary ? "border-primary-500 shadow-lg shadow-primary-500/10" : "border-border hover:border-primary-200"
+                  )}>
+                    <img src={img.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            images: (prev.images || []).filter((_, i) => i !== index)
+                          }));
+                        }}
+                        className="self-end w-7 h-7 rounded-lg bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors cursor-pointer shadow-lg"
+                      >
+                        <AppIcon name="delete" className="text-sm" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            images: (prev.images || []).map((im, i) => ({ ...im, isPrimary: i === index }))
+                          }));
+                        }}
+                        className={cn(
+                          "w-full py-1.5 rounded-lg text-[0.55rem] font-black uppercase tracking-widest transition-all cursor-pointer",
+                          img.isPrimary ? "bg-primary-500 text-white" : "bg-white/90 text-text-primary hover:bg-white"
+                        )}
+                      >
+                        {img.isPrimary ? "Utama" : "Set Utama"}
+                      </button>
+                    </div>
+                    {img.isPrimary && (
+                      <div className="absolute top-2 left-2 px-2 py-0.5 bg-primary-500 text-white text-[0.5rem] font-black uppercase tracking-widest rounded-md shadow-lg">
+                        Utama
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-border">
+              <div className="flex items-center justify-between">
+                <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Varian Harga</h4>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({
+                    ...prev,
+                    prices: [...(prev.prices || []), { lidColorId: masterData.lidColors[0]?.id || "", priceTypeId: masterData.priceTypes[0]?.id || "", price: 0, validFrom: new Date().toISOString() }]
+                  }))}
+                  className="h-8 px-3 text-[0.6rem] font-black uppercase tracking-widest gap-2 border border-border rounded-lg hover:bg-secondary-50 transition-colors flex items-center"
+                >
+                  <AppIcon name="add" className="text-sm" /> Tambah Harga
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(formData.prices || []).map((price, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end bg-secondary-50/50 p-4 rounded-xl border border-border relative">
+                    <SelectField
+                      label="Warna Tutup"
+                      value={price.lidColorId}
+                      onChange={(val) => {
+                        setFormData(prev => {
+                          const newPrices = [...(prev.prices || [])];
+                          if (newPrices[index]) newPrices[index].lidColorId = val;
+                          return { ...prev, prices: newPrices };
+                        });
+                      }}
+                      options={masterData.lidColors.map(c => [
+                        c.id,
+                        <div key={c.id} className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full border border-border shadow-inner" style={{ backgroundColor: c.colorCode }}></div>
+                          <span>{c.color}</span>
+                        </div>
+                      ])}
+                    />
+                    <SelectField
+                      label="Tipe Harga"
+                      value={price.priceTypeId}
+                      onChange={(val) => {
+                        setFormData(prev => {
+                          const newPrices = [...(prev.prices || [])];
+                          if (newPrices[index]) newPrices[index].priceTypeId = val;
+                          return { ...prev, prices: newPrices };
+                        });
+                      }}
+                      options={masterData.priceTypes.map(t => [t.id, t.name.replace(/_/g, ' ')])}
+                    />
+                    <div className="flex gap-2 items-end">
+                      <div className="flex-1 space-y-2">
+                        <Label className="text-[0.65rem] uppercase tracking-wider opacity-60">Harga (Rp)</Label>
+                        <Input
+                          type="number"
+                          value={price.price}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            setFormData(prev => {
+                              const newPrices = [...(prev.prices || [])];
+                              if (newPrices[index]) newPrices[index].price = val;
+                              return { ...prev, prices: newPrices };
+                            });
+                          }}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({
+                          ...prev,
+                          prices: (prev.prices || []).filter((_, i) => i !== index)
+                        }))}
+                        className="h-10 w-10 text-red-500 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors flex items-center justify-center border border-transparent hover:border-red-100"
+                      >
+                        <AppIcon name="delete" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-border">
+              <div className="flex items-center justify-between">
+                <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Spesifikasi Kemasan</h4>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({
+                    ...prev,
+                    packaging: [...(prev.packaging || []), { quantityPerPack: 1, lengthCm: 0, widthCm: 0, heightCm: 0, weightKg: 0 }]
+                  }))}
+                  className="h-8 px-3 text-[0.6rem] font-black uppercase tracking-widest gap-2 border border-border rounded-lg hover:bg-secondary-50 transition-colors flex items-center"
+                >
+                  <AppIcon name="add" className="text-sm" /> Tambah Kemasan
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(formData.packaging || []).map((pack, index) => (
+                  <div key={index} className="bg-secondary-50/50 p-4 rounded-xl border border-border relative space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div className="flex-1 max-w-[120px]">
+                        <Label className="text-[0.65rem] uppercase tracking-wider opacity-60">Isi Per Bal</Label>
+                        <Input
+                          type="number"
+                          value={pack.quantityPerPack}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            setFormData(prev => {
+                              const newPack = [...(prev.packaging || [])];
+                              if (newPack[index]) newPack[index].quantityPerPack = val;
+                              return { ...prev, packaging: newPack };
+                            });
+                          }}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({
+                          ...prev,
+                          packaging: (prev.packaging || []).filter((_, i) => i !== index)
+                        }))}
+                        className="text-red-500 hover:bg-red-50 text-[0.6rem] font-black uppercase tracking-widest h-8 px-3 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <NumberField label="P (cm)" value={pack.lengthCm || 0} onChange={(val) => {
+                        setFormData(prev => {
+                          const newPack = [...(prev.packaging || [])];
+                          if (newPack[index]) newPack[index].lengthCm = val;
+                          return { ...prev, packaging: newPack };
+                        });
+                      }} />
+                      <NumberField label="L (cm)" value={pack.widthCm || 0} onChange={(val) => {
+                        setFormData(prev => {
+                          const newPack = [...(prev.packaging || [])];
+                          if (newPack[index]) newPack[index].widthCm = val;
+                          return { ...prev, packaging: newPack };
+                        });
+                      }} />
+                      <NumberField label="T (cm)" value={pack.heightCm || 0} onChange={(val) => {
+                        setFormData(prev => {
+                          const newPack = [...(prev.packaging || [])];
+                          if (newPack[index]) newPack[index].heightCm = val;
+                          return { ...prev, packaging: newPack };
+                        });
+                      }} />
+                      <NumberField label="Berat (kg)" value={pack.weightKg || 0} onChange={(val) => {
+                        setFormData(prev => {
+                          const newPack = [...(prev.packaging || [])];
+                          if (newPack[index]) newPack[index].weightKg = val;
+                          return { ...prev, packaging: newPack };
+                        });
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="space-y-4 pt-4 border-t border-border">
-            <h4 className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-primary-600">Dimensi</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <NumberField label="Tinggi cm" value={formData.dimension?.heightCm || 0} onChange={(value) => updateDimension("heightCm", value)} />
-              <NumberField label="Diameter cm" value={formData.dimension?.diameterCm || 0} onChange={(value) => updateDimension("diameterCm", value)} />
-              <NumberField label="Volume ml" value={formData.dimension?.volumeMl || 0} onChange={(value) => updateDimension("volumeMl", value)} />
-              <NumberField label="Berat gr" value={formData.dimension?.weightGram || 0} onChange={(value) => updateDimension("weightGram", value)} />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label>Deskripsi</Label>
-            <Textarea
-              value={formData.description || ""}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            />
-          </div>
-
-          </div>
           <div className="flex-none border-t border-border bg-white/95 px-8 py-6 backdrop-blur-md">
             <div className="flex gap-3">
               <Button type="button" variant="secondary" size="lg" onClick={onClose} className="flex-1 h-14 font-black uppercase tracking-widest">
@@ -209,7 +445,7 @@ function NumberField({
 }) {
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label className="text-[0.65rem] uppercase tracking-wider opacity-60">{label}</Label>
       <Input
         type="number"
         value={value}
@@ -228,14 +464,17 @@ function SelectField({
   label: string;
   value: string;
   onChange: (value: string) => void;
-  options: [string, string][];
+  options: [string, ReactNode][];
 }) {
+  const selectedOption = options.find(([optValue]) => optValue === value);
+  const selectedLabel = selectedOption ? selectedOption[1] : value;
+
   return (
     <div className="space-y-2">
       <Label>{label}</Label>
-      <Select value={value} onValueChange={(nextValue) => onChange(String(nextValue))}>
-        <SelectTrigger className="h-10 w-full bg-background px-3 font-bold">
-          <SelectValue />
+      <Select value={value} onValueChange={(val) => onChange(val || "")}>
+        <SelectTrigger className="h-10 w-full bg-background px-3 font-bold text-left">
+          <SelectValue>{selectedLabel}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
