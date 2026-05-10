@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function LidColorsPage() {
   await connectDB();
-  const rawColors = await LidColorModel.find().sort({ name: 1 }).lean();
+  const rawColors = await LidColorModel.find().sort({ color: 1 }).lean();
 
   return (
     <LidColorsPageContent

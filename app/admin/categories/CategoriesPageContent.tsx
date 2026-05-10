@@ -14,23 +14,115 @@ import {
 import { Card } from "@/components/ui/card";
 import { AppIcon } from "@/components/ui/app-icon";
 import { Product } from "@/types/product";
+import { ICategory } from "@/models/Category";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import MasterDataDialog, { MasterDataField } from "@/components/admin/MasterDataDialog";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 interface CategoriesPageContentProps {
   initialProducts: Product[];
-  initialCategories: any[];
+  initialCategories: ICategory[];
 }
+
+const CATEGORY_FIELDS: MasterDataField[] = [
+  { name: "id", label: "ID Kategori", type: "text", placeholder: "misal: toples-bulat", required: true },
+  { name: "name", label: "Nama Kategori", type: "text", placeholder: "misal: Toples Bulat", required: true },
+  { name: "description", label: "Deskripsi", type: "textarea", placeholder: "Deskripsi kategori (opsional)" },
+];
 
 export default function CategoriesPageContent({ initialProducts, initialCategories }: CategoriesPageContentProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [categories] = useState(initialCategories.map(c => ({
+  const [categories, setCategories] = useState(initialCategories.map(c => ({
     ...c,
     count: initialProducts.filter(p => p.categoryId === c.id).length
   })));
+  
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<ICategory | null>(null);
+  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
+  
+  const router = useRouter();
 
   const filteredCategories = categories.filter(cat => 
     cat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     cat.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleSave = async (data: any) => {
+    const isEditing = !!editingCategory;
+    const url = isEditing ? `/api/categories/${editingCategory.id}` : "/api/categories";
+    const method = isEditing ? "PATCH" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menyimpan kategori");
+      }
+
+      toast.success(isEditing ? "Kategori berhasil diperbarui" : "Kategori berhasil ditambahkan");
+      
+      const saved = await response.json();
+      const savedItem = {
+        ...saved.data,
+        count: isEditing ? (categories.find(c => c.id === editingCategory.id)?.count || 0) : 0
+      };
+
+      if (isEditing) {
+        setCategories(categories.map(c => c.id === editingCategory.id ? savedItem : c));
+      } else {
+        setCategories([savedItem, ...categories]);
+      }
+      
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!categoryToDelete) return;
+
+    try {
+      const response = await fetch(`/api/categories/${categoryToDelete}`, { method: "DELETE" });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menghapus kategori");
+      }
+
+      setCategories(categories.filter(c => c.id !== categoryToDelete));
+      toast.success("Kategori berhasil dihapus");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsConfirmOpen(false);
+      setCategoryToDelete(null);
+    }
+  };
+
+  const openAddDialog = () => {
+    setEditingCategory(null);
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (category: ICategory) => {
+    setEditingCategory(category);
+    setIsDialogOpen(true);
+  };
+
+  const openDeleteConfirm = (id: string) => {
+    setCategoryToDelete(id);
+    setIsConfirmOpen(true);
+  };
 
   return (
     <>
@@ -39,14 +131,20 @@ export default function CategoriesPageContent({ initialProducts, initialCategori
         <div>
           <h2 className="text-[1.6rem] font-black text-text-primary tracking-tight">Kategori</h2>
         </div>
-        <button className="bg-primary-50 text-primary-600 px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-100 transition-all active:scale-95 group cursor-pointer border border-primary-100">
+        <button 
+          onClick={openAddDialog}
+          className="bg-primary-500 text-white px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-600 transition-all active:scale-95 group cursor-pointer shadow-lg shadow-primary-500/20"
+        >
           <AppIcon name="add" className="text-lg" />
           Tambah Kategori
         </button>
       </header>
 
       {/* Floating Action Button for Mobile */}
-      <button className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all">
+      <button 
+        onClick={openAddDialog}
+        className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all shadow-xl shadow-primary-500/30"
+      >
         <AppIcon name="add" className="text-2xl" />
       </button>
 
@@ -111,10 +209,16 @@ export default function CategoriesPageContent({ initialProducts, initialCategori
                       </TableCell>
                       <TableCell className="px-8 py-5 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openEditDialog(cat)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="edit" className="text-lg" />
                           </button>
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openDeleteConfirm(cat.id)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="delete" className="text-lg" />
                           </button>
                         </div>
@@ -127,6 +231,25 @@ export default function CategoriesPageContent({ initialProducts, initialCategori
           </div>
         </Card>
       </div>
+
+      <MasterDataDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onSave={handleSave}
+        title={editingCategory ? "Edit Kategori" : "Tambah Kategori"}
+        fields={CATEGORY_FIELDS}
+        initialData={editingCategory}
+      />
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="Hapus Kategori?"
+        message="Tindakan ini tidak dapat dibatalkan. Kategori akan dihapus secara permanen."
+        confirmLabel="Hapus Sekarang"
+        variant="danger"
+      />
     </>
   );
 }

@@ -26,8 +26,8 @@ export default function InteractionsPageContent({ initialInteractions, products 
   const filteredInteractions = interactions.filter(interaction => {
     const productName = productMap[interaction.productId] || interaction.productId;
     return productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-           interaction.userId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-           interaction.interactionType.toLowerCase().includes(searchQuery.toLowerCase());
+      interaction.userId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      interaction.interactionType.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
@@ -89,12 +89,12 @@ export default function InteractionsPageContent({ initialInteractions, products 
                     <TableRow key={interaction.id} className="transition-all duration-200 group border-border">
                       <TableCell className="px-8 py-5">
                         <p className="text-sm font-black text-text-primary tracking-tight">
-                          {new Date(interaction.createdAt).toLocaleString("id-ID", { 
-                            day: "2-digit", 
-                            month: "short", 
-                            year: "numeric", 
-                            hour: "2-digit", 
-                            minute: "2-digit" 
+                          {new Date(interaction.createdAt).toLocaleString("id-ID", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
                           })}
                         </p>
                       </TableCell>

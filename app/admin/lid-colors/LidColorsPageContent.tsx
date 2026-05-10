@@ -12,19 +12,106 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { AppIcon } from "@/components/ui/app-icon";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import MasterDataDialog, { MasterDataField } from "@/components/admin/MasterDataDialog";
+import ConfirmModal from "@/components/ui/ConfirmModal";
+import { ILidColor } from "@/models/LidColor";
 
 interface LidColorsPageContentProps {
-  initialColors: any[];
+  initialColors: ILidColor[];
 }
 
+const LID_COLOR_FIELDS: MasterDataField[] = [
+  { name: "id", label: "ID Warna", type: "text", placeholder: "misal: merah", required: true },
+  { name: "color", label: "Nama Warna", type: "text", placeholder: "misal: Merah", required: true },
+  { name: "colorCode", label: "Kode Warna (HEX)", type: "color", placeholder: "misal: #FF0000", required: true },
+];
+
 export default function LidColorsPageContent({ initialColors }: LidColorsPageContentProps) {
-  const [colors] = useState(initialColors);
+  const [colors, setColors] = useState(initialColors);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [editingColor, setEditingColor] = useState<ILidColor | null>(null);
+  const [colorToDelete, setColorToDelete] = useState<string | null>(null);
+  
+  const router = useRouter();
 
   const filteredColors = colors.filter(color => 
     color.color.toLowerCase().includes(searchQuery.toLowerCase()) ||
     color.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleSave = async (data: any) => {
+    const isEditing = !!editingColor;
+    const url = isEditing ? `/api/lid-colors/${editingColor.id}` : "/api/lid-colors";
+    const method = isEditing ? "PATCH" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menyimpan warna");
+      }
+
+      toast.success(isEditing ? "Warna berhasil diperbarui" : "Warna berhasil ditambahkan");
+      
+      const saved = await response.json();
+      if (isEditing) {
+        setColors(colors.map(c => c.id === editingColor.id ? saved.data : c));
+      } else {
+        setColors([saved.data, ...colors]);
+      }
+      
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!colorToDelete) return;
+
+    try {
+      const response = await fetch(`/api/lid-colors/${colorToDelete}`, { method: "DELETE" });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menghapus warna");
+      }
+
+      setColors(colors.filter(c => c.id !== colorToDelete));
+      toast.success("Warna berhasil dihapus");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsConfirmOpen(false);
+      setColorToDelete(null);
+    }
+  };
+
+  const openAddDialog = () => {
+    setEditingColor(null);
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (color: ILidColor) => {
+    setEditingColor(color);
+    setIsDialogOpen(true);
+  };
+
+  const openDeleteConfirm = (id: string) => {
+    setColorToDelete(id);
+    setIsConfirmOpen(true);
+  };
 
   return (
     <>
@@ -33,14 +120,20 @@ export default function LidColorsPageContent({ initialColors }: LidColorsPageCon
         <div>
           <h2 className="text-[1.6rem] font-black text-text-primary tracking-tight">Warna Tutup</h2>
         </div>
-        <button className="bg-primary-50 text-primary-600 px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-100 transition-all active:scale-95 group cursor-pointer border border-primary-100">
+        <button 
+          onClick={openAddDialog}
+          className="bg-primary-500 text-white px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-600 transition-all active:scale-95 group cursor-pointer shadow-lg shadow-primary-500/20"
+        >
           <AppIcon name="add" className="text-lg" />
           Tambah Warna
         </button>
       </header>
 
       {/* Floating Action Button for Mobile */}
-      <button className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all">
+      <button 
+        onClick={openAddDialog}
+        className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all shadow-xl shadow-primary-500/30"
+      >
         <AppIcon name="add" className="text-2xl" />
       </button>
 
@@ -100,7 +193,6 @@ export default function LidColorsPageContent({ initialColors }: LidColorsPageCon
                           className="w-10 h-10 rounded-full border border-border flex items-center justify-center bg-gray-50 overflow-hidden" 
                           style={{ backgroundColor: color.colorCode || "#FFFFFF" }}
                         >
-                          {(color.colorCode?.toLowerCase() === "#ffffff" || !color.colorCode) && <AppIcon name="texture" className="text-xs text-gray-200" />}
                         </div>
                       </TableCell>
                       <TableCell className="px-8 py-5">
@@ -108,10 +200,16 @@ export default function LidColorsPageContent({ initialColors }: LidColorsPageCon
                       </TableCell>
                       <TableCell className="px-8 py-5 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openEditDialog(color)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="edit" className="text-lg" />
                           </button>
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openDeleteConfirm(color.id)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="delete" className="text-lg" />
                           </button>
                         </div>
@@ -124,6 +222,25 @@ export default function LidColorsPageContent({ initialColors }: LidColorsPageCon
           </div>
         </Card>
       </div>
+
+      <MasterDataDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onSave={handleSave}
+        title={editingColor ? "Edit Warna" : "Tambah Warna"}
+        fields={LID_COLOR_FIELDS}
+        initialData={editingColor}
+      />
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="Hapus Warna?"
+        message="Tindakan ini tidak dapat dibatalkan. Warna akan dihapus secara permanen."
+        confirmLabel="Hapus Sekarang"
+        variant="danger"
+      />
     </>
   );
 }

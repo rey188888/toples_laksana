@@ -58,12 +58,6 @@ export default function Navbar() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-            className={cn(buttonVariants({ variant: "secondary" }), "hidden text-primary-500 lg:flex cursor-pointer border border-primary-100")}
-            >
-              <ShieldUserIcon className="size-4" />
-            </Link>
 
             {/* Hamburger */}
             <Button
@@ -108,13 +102,6 @@ export default function Navbar() {
             </div>
 
             <div className="mt-auto border-t border-white/20 pt-6">
-              <Link
-                href="/login"
-                className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full text-primary-500 cursor-pointer")}
-              >
-                <ShieldUserIcon className="size-4" />
-                Login Portal Admin
-              </Link>
             </div>
           </motion.div>
         )}

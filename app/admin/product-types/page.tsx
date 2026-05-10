@@ -15,7 +15,7 @@ export default async function ProductTypesPage() {
 
   return (
     <ProductTypesPageContent
-      initialTypes={JSON.parse(JSON.stringify(rawTypes))}
+      initialProductTypes={JSON.parse(JSON.stringify(rawTypes))}
     />
   );
 }

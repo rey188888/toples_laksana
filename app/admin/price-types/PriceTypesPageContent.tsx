@@ -11,20 +11,107 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { AppIcon } from "@/components/ui/app-icon";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import MasterDataDialog, { MasterDataField } from "@/components/admin/MasterDataDialog";
+import ConfirmModal from "@/components/ui/ConfirmModal";
+import { IPriceType } from "@/models/PriceType";
 
 interface PriceTypesPageContentProps {
-  initialPriceTypes: any[];
+  initialPriceTypes: IPriceType[];
 }
 
+const PRICE_TYPE_FIELDS: MasterDataField[] = [
+  { name: "id", label: "ID Tipe", type: "text", placeholder: "misal: retail", required: true },
+  { name: "name", label: "Nama Tipe", type: "text", placeholder: "misal: Retail", required: true },
+  { name: "description", label: "Deskripsi", type: "textarea", placeholder: "Deskripsi tipe harga (opsional)" },
+];
+
 export default function PriceTypesPageContent({ initialPriceTypes }: PriceTypesPageContentProps) {
-  const [priceTypes] = useState(initialPriceTypes);
+  const [priceTypes, setPriceTypes] = useState(initialPriceTypes);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [editingPriceType, setEditingPriceType] = useState<IPriceType | null>(null);
+  const [priceTypeToDelete, setPriceTypeToDelete] = useState<string | null>(null);
+  
+  const router = useRouter();
 
   const filteredPriceTypes = priceTypes.filter(pt => 
     pt.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     pt.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     pt.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleSave = async (data: any) => {
+    const isEditing = !!editingPriceType;
+    const url = isEditing ? `/api/price-types/${editingPriceType.id}` : "/api/price-types";
+    const method = isEditing ? "PATCH" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menyimpan tipe harga");
+      }
+
+      toast.success(isEditing ? "Tipe harga berhasil diperbarui" : "Tipe harga berhasil ditambahkan");
+      
+      const saved = await response.json();
+      if (isEditing) {
+        setPriceTypes(priceTypes.map(p => p.id === editingPriceType.id ? saved.data : p));
+      } else {
+        setPriceTypes([saved.data, ...priceTypes]);
+      }
+      
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!priceTypeToDelete) return;
+
+    try {
+      const response = await fetch(`/api/price-types/${priceTypeToDelete}`, { method: "DELETE" });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Gagal menghapus tipe harga");
+      }
+
+      setPriceTypes(priceTypes.filter(p => p.id !== priceTypeToDelete));
+      toast.success("Tipe harga berhasil dihapus");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsConfirmOpen(false);
+      setPriceTypeToDelete(null);
+    }
+  };
+
+  const openAddDialog = () => {
+    setEditingPriceType(null);
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (pt: IPriceType) => {
+    setEditingPriceType(pt);
+    setIsDialogOpen(true);
+  };
+
+  const openDeleteConfirm = (id: string) => {
+    setPriceTypeToDelete(id);
+    setIsConfirmOpen(true);
+  };
 
   return (
     <>
@@ -33,14 +120,20 @@ export default function PriceTypesPageContent({ initialPriceTypes }: PriceTypesP
         <div>
           <h2 className="text-[1.6rem] font-black text-text-primary tracking-tight">Tipe Harga</h2>
         </div>
-        <button className="bg-primary-50 text-primary-600 px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-100 transition-all active:scale-95 group cursor-pointer border border-primary-100">
+        <button 
+          onClick={openAddDialog}
+          className="bg-primary-500 text-white px-7 py-3 rounded-xl font-black flex items-center gap-2.5 text-sm hover:bg-primary-600 transition-all active:scale-95 group cursor-pointer shadow-lg shadow-primary-500/20"
+        >
           <AppIcon name="add" className="text-lg" />
           Tambah Tipe Harga
         </button>
       </header>
 
       {/* Floating Action Button for Mobile */}
-      <button className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all">
+      <button 
+        onClick={openAddDialog}
+        className="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary-500 text-white rounded-2xl flex items-center justify-center active:scale-90 transition-all shadow-xl shadow-primary-500/30"
+      >
         <AppIcon name="add" className="text-2xl" />
       </button>
 
@@ -103,10 +196,16 @@ export default function PriceTypesPageContent({ initialPriceTypes }: PriceTypesP
                       </TableCell>
                       <TableCell className="px-8 py-5 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openEditDialog(pt)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="edit" className="text-lg" />
                           </button>
-                          <button className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none">
+                          <button 
+                            onClick={() => openDeleteConfirm(pt.id)}
+                            className="w-9 h-9 rounded-xl text-text-muted hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all cursor-pointer border-none shadow-none"
+                          >
                             <AppIcon name="delete" className="text-lg" />
                           </button>
                         </div>
@@ -119,6 +218,25 @@ export default function PriceTypesPageContent({ initialPriceTypes }: PriceTypesP
           </div>
         </Card>
       </div>
+
+      <MasterDataDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onSave={handleSave}
+        title={editingPriceType ? "Edit Tipe Harga" : "Tambah Tipe Harga"}
+        fields={PRICE_TYPE_FIELDS}
+        initialData={editingPriceType}
+      />
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="Hapus Tipe Harga?"
+        message="Tindakan ini tidak dapat dibatalkan. Tipe harga akan dihapus secara permanen."
+        confirmLabel="Hapus Sekarang"
+        variant="danger"
+      />
     </>
   );
 }

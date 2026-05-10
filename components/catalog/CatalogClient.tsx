@@ -77,11 +77,11 @@ function CatalogContent() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
-      <main className="pb-12 max-w-screen-2xl mx-auto px-4 lg:px-8">
+      <main className="w-full">
 
         {/* Sticky Header: Controls Bar + Active Filters */}
-        <div className="sticky top-[68px] z-30 bg-background/95 backdrop-blur-md -mx-4 px-4 lg:-mx-8 lg:px-8 border-b border-gray-100 mb-6">
-          <div className="flex items-center justify-between gap-4 py-5">
+        <div className="sticky top-[75px] z-30 bg-background/95 backdrop-blur-md px-6 lg:px-10 border-b border-border">
+          <div className="flex items-center justify-between gap-4 h-20">
             <div className="flex items-center gap-3">
               {/* Mobile/Tablet filter button */}
               <button
@@ -157,23 +157,14 @@ function CatalogContent() {
             </div>
           </div>
 
-          {activeFilterCount > 0 && (
-            <div className="pb-4">
-              <ActiveFilterBar
-                filters={filters}
-                totalResults={pagination.total}
-                onRemove={removeFilter}
-                onClearAll={clearAll}
-                facets={facets}
-              />
-            </div>
-          )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] relative">
+          {/* Vertical Border Line (Non-breaking) */}
+          <div className="hidden lg:block absolute left-[300px] top-0 bottom-0 border-r border-border z-10" />
 
-          {/* Desktop Sidebar */}
-          <div className="hidden lg:block h-[calc(100vh-150px)] overflow-y-auto no-scrollbar px-6 py-8 border border-border/50 rounded-2xl bg-secondary-50/10 sticky top-[132px]">
+          {/* Desktop Sidebar (Sticky & Fit Height) */}
+          <div className="hidden lg:block sticky top-[140px] h-fit px-6 py-10 bg-white z-20">
             <FilterSidebar
               filters={filters}
               facets={facets}
@@ -182,51 +173,63 @@ function CatalogContent() {
             />
           </div>
 
-          {/* Mobile Filter Drawer */}
-          {mobileFilterOpen && (
-            <div className="fixed inset-0 z-100 lg:hidden">
-              <div
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-                onClick={() => setMobileFilterOpen(false)}
+          {/* Product Grid Area */}
+          <div className="min-h-[600px] px-6 lg:px-10 py-10 flex flex-col gap-6">
+            {activeFilterCount > 0 && (
+              <ActiveFilterBar
+                filters={filters}
+                totalResults={pagination.total}
+                onRemove={removeFilter}
+                onClearAll={clearAll}
+                facets={facets}
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-background rounded-t-2xl max-h-[92vh] overflow-y-auto p-5 sm:p-8 pb-32 border-t border-border">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-xl font-bold text-text-primary">Filter Produk</h2>
-                  <button
-                    onClick={() => setMobileFilterOpen(false)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-50 text-text-secondary"
-                  >
-                    <AppIcon name="close" className="text-lg" />
-                  </button>
-                </div>
-                <FilterSidebar
-                  filters={filters}
-                  facets={facets}
-                  onToggleArray={(key, value) => {
-                    toggleArrayFilter(key, value);
-                  }}
-                  onSetFilters={(f) => {
-                    setFilters(f);
-                  }}
+            )}
+          
+            {/* Mobile Filter Drawer */}
+            {mobileFilterOpen && (
+              <div className="fixed inset-0 z-100 lg:hidden">
+                <div
+                  className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                  onClick={() => setMobileFilterOpen(false)}
                 />
-                <div className="mt-auto absolute bottom-0 left-0 right-0 bg-white p-6 border-t border-border rounded-b-2xl">
-                  <button
-                    onClick={() => setMobileFilterOpen(false)}
-                    className="w-full py-4 bg-primary-900 text-white font-black uppercase tracking-widest rounded-xl text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                  >
-                    Tampilkan {pagination.total} Produk
-                    <AppIcon name="arrow_forward" className="text-base" />
-                  </button>
+                <div className="absolute bottom-0 left-0 right-0 bg-background rounded-t-2xl max-h-[92vh] overflow-y-auto p-5 sm:p-8 pb-32 border-t border-border">
+                  <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-xl font-bold text-text-primary">Filter Produk</h2>
+                    <button
+                      onClick={() => setMobileFilterOpen(false)}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-50 text-text-secondary"
+                    >
+                      <AppIcon name="close" className="text-lg" />
+                    </button>
+                  </div>
+                  <FilterSidebar
+                    filters={filters}
+                    facets={facets}
+                    onToggleArray={(key, value) => {
+                      toggleArrayFilter(key, value);
+                    }}
+                    onSetFilters={(f) => {
+                      setFilters(f);
+                    }}
+                  />
+                  <div className="mt-auto absolute bottom-0 left-0 right-0 bg-white p-6 border-t border-border rounded-b-2xl">
+                    <button
+                      onClick={() => setMobileFilterOpen(false)}
+                      className="w-full py-4 bg-primary-900 text-white font-black uppercase tracking-widest rounded-xl text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    >
+                      Tampilkan {pagination.total} Produk
+                      <AppIcon name="arrow_forward" className="text-base" />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Product Grid */}
-          <div className="min-h-[600px] h-[calc(100vh-150px)] overflow-y-auto no-scrollbar px-6 py-8 border border-border/50 rounded-2xl bg-white/50">
-            {loading ? (
-              /* Skeleton Grid */
-              <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "flex flex-col gap-3"}>
+            {/* Product Grid Content */}
+            <div className="w-full">
+              {loading ? (
+                /* Skeleton Grid */
+                <div className={viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                 {Array.from({ length: 8 }).map((_, i) => (
                   viewMode === "grid" ? (
                     <div key={i} className="bg-white border border-gray-100 overflow-hidden rounded-lg animate-pulse">
@@ -269,7 +272,7 @@ function CatalogContent() {
               <>
                 {viewMode === "grid" ? (
                   /* Product Cards Grid */
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                     {products.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -280,8 +283,8 @@ function CatalogContent() {
                     ))}
                   </div>
                 ) : (
-                  /* Product List View */
-                  <div className="flex flex-col gap-3">
+                  /* Product List View (2 Columns) */
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {products.map((product) => {
                       const volume = getSpecValue(product, "volume_ml");
                       const retailPrice = getLowestRetailPrice(product);
@@ -294,7 +297,7 @@ function CatalogContent() {
                         >
                           <div className="w-24 h-24 shrink-0 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
                             {heroImage ? (
-                              <img src={heroImage} alt={product.name} className="w-full h-full object-contain scale-75 group-hover:scale-90 transition-transform duration-500" />
+                              <img src={heroImage} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                             ) : (
                               <AppIcon name="inventory_2" className="text-3xl text-gray-200" />
                             )}
@@ -364,6 +367,7 @@ function CatalogContent() {
             )}
           </div>
         </div>
+      </div>
       </main>
 
       {/* Floating Comparison Bar */}

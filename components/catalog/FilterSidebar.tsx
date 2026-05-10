@@ -48,7 +48,7 @@ export default function FilterSidebar({
           <Input
             type="text"
             placeholder="Cari produk..."
-            className="h-11 bg-white pl-11 pr-6 font-bold"
+            className="h-12 bg-secondary-50/50 border-border font-bold text-sm pl-11 pr-6 focus:bg-white transition-all rounded-xl"
             defaultValue={filters.search || ""}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -61,7 +61,7 @@ export default function FilterSidebar({
 
       {/* Primary Filter: Packaging Type (Category) */}
       <section>
-        <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-primary-600 mb-5 flex items-center gap-2">
+        <h3 className="text-[0.65rem] font-black uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
           <PackageIcon className="size-4" />
           Jenis Kemasan
         </h3>
@@ -87,7 +87,7 @@ export default function FilterSidebar({
 
       {/* Volume Range */}
       <section>
-        <h3 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-primary-600 mb-5 flex items-center gap-2">
+        <h3 className="text-[0.65rem] font-black uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
           <RulerIcon className="size-4" />
           Volume / Ukuran
         </h3>
@@ -148,11 +148,11 @@ export default function FilterSidebar({
       {/* Advanced Filters Toggle */}
       <Button
         type="button"
-        variant="outline"
+        variant="ghost"
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="h-12 w-full justify-between px-5 font-black uppercase tracking-[0.2em]"
+        className="h-12 w-full justify-between px-4 font-bold text-text-secondary hover:bg-secondary-50 hover:text-text-primary rounded-xl transition-all"
       >
-        <span className="flex items-center gap-3 text-[0.65rem]">
+        <span className="flex items-center gap-3 text-sm">
           <SlidersHorizontalIcon className="size-4" />
           Filter Lanjutan
         </span>
@@ -255,16 +255,6 @@ export default function FilterSidebar({
         </section>
       </div>
 
-      {/* Trust Badge / Certification */}
-      <div className="p-6 bg-primary-50 rounded-xl border border-primary-100">
-        <BadgeCheckIcon className="mb-3 size-8 text-primary-500" />
-        <h4 className="text-xs font-black text-primary-700 mb-2 uppercase tracking-tight">
-          Standar Food Grade
-        </h4>
-        <p className="text-[0.7rem] text-primary-600/80 font-bold leading-relaxed">
-          Semua produk kemasan kami bersertifikat aman untuk kontak makanan dan memenuhi standar kualitas industri.
-        </p>
-      </div>
     </aside>
   );
 }

@@ -1,0 +1,44 @@
+import { NextRequest, NextResponse } from "next/server";
+import connectDB from "@/lib/mongodb";
+import ProductType from "@/models/ProductType";
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await connectDB();
+    const body = await request.json();
+    const { id } = params;
+
+    const item = await ProductType.findOneAndUpdate({ id }, body, { new: true }).lean();
+    if (!item) {
+      return NextResponse.json({ error: "Product type not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ data: item });
+  } catch (error) {
+    console.error("[API] PATCH /api/product-types/[id] error:", error);
+    return NextResponse.json({ error: "Failed to update product type" }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await connectDB();
+    const { id } = params;
+
+    const item = await ProductType.findOneAndDelete({ id });
+    if (!item) {
+      return NextResponse.json({ error: "Product type not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Product type deleted successfully" });
+  } catch (error) {
+    console.error("[API] DELETE /api/product-types/[id] error:", error);
+    return NextResponse.json({ error: "Failed to delete product type" }, { status: 500 });
+  }
+}

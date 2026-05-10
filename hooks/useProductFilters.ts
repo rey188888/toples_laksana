@@ -35,7 +35,7 @@ export function useProductFilters() {
       page: searchParams.get("page")
         ? Number.parseInt(searchParams.get("page")!)
         : 1,
-      limit: 10,
+      limit: 16,
     };
   }, [searchParams]);
 
@@ -56,6 +56,7 @@ export function useProductFilters() {
       merged.colors?.forEach((c) => params.append("colors", c));
       if (merged.sort && merged.sort !== "popular") params.set("sort", merged.sort);
       if (merged.page && merged.page > 1) params.set("page", String(merged.page));
+      if (merged.limit) params.set("limit", String(merged.limit));
 
       return params.toString();
     },
